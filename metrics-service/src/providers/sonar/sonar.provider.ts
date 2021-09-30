@@ -1,4 +1,4 @@
-import { ISonarMeasure, ISonarMeasureResponse, ISonarMetadata } from './sonar.types';
+import { ISonarMeasureHistory, ISonarMeasure, ISonarMeasureResponse, ISonarMetadata } from './sonar.types';
 import { IPoint } from 'influx';
 import { logger } from '../../shared/logger';
 import axios from 'axios';
@@ -32,15 +32,53 @@ export async function getSonarMetrics(metadata: ISonarMetadata) {
 }
 
 function map(project: string, measure: ISonarMeasure):IPoint[] {
-  return measure.history.filter(registry => !!registry.value).map(registry => ({
-    measurement: measure.metric,
+  if(measure.metric === 'ncloc_language_distribution'){
+    const allTechnologies:IPoint[] = [];
+    for (let historyMeasure of measure.history.filter(registry => !!registry.value)){
+      allTechnologies.push(...mapTechnologies(project, measure.metric, historyMeasure));
+    }
+    return allTechnologies;
+  } else {
+    return measure.history.filter(registry => !!registry.value).map(registry => ({
+      measurement: measure.metric,
+      tags: {
+        project,
+      },
+      fields: {
+        value: Number(registry.value) || 0,
+        project: project
+      },
+      timestamp: new Date(registry.date),
+    }));
+  }
+}
+
+function mapTechnologies(project: string, measureName: string, registry: ISonarMeasureHistory):IPoint[] {      
+  const technologies = registry.value.split(';');
+  const allTechnologies:IPoint[] = [];
+
+  const technologyNames = [];
+  const technologyUsages = [];
+  
+  for(let technology of technologies){
+    const splitedValue = technology.split('=')
+    technologyNames.push(splitedValue[0]);
+    technologyUsages.push(new Number(splitedValue[1]));
+  }
+
+  allTechnologies.push({
+    measurement: measureName,
     tags: {
       project,
+      technology: technologyNames.join(' | ') || '',
     },
     fields: {
-      value: Number(registry.value) || 0,
+      value: technologyUsages.join(' | ') || '',
+      technology: technologyNames.join(' | ') || '',
       project: project
     },
     timestamp: new Date(registry.date),
-  }));
+  });
+
+  return allTechnologies;
 }

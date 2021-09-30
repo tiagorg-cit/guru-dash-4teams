@@ -57,7 +57,7 @@ export interface ISonarMeasure {
   history: ISonarMeasureHistory[];
 }
 
-interface ISonarMeasureHistory {
+export interface ISonarMeasureHistory {
   date: string;
   value: string;
 }

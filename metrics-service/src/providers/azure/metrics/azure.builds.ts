@@ -95,7 +95,6 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
       continuationToken = buildResponse.headers['x-ms-continuationtoken'];
       continuationToken && logger.debug(`Getting next page continuationToken: ${continuationToken}`);
     } while(continuationToken != null);
-  
     return buildsAndReleases;
 }
 
