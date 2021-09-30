@@ -2,8 +2,20 @@ export interface IAzureMetadata {
   organization: string;
   project: string;
   key: string;
-  releases: string[]
+  builds: IAzureMetadataBuilds;
+  releases: string[];
   bugsQuery: string;
+}
+
+export interface IAzureMetadataBuilds {
+  getLastNumMonths: number;
+  repositories: IAzureMetadataBuildsRepositories[];
+}
+
+export interface IAzureMetadataBuildsRepositories {
+  id: string;
+  type: string;
+  name: string;
 }
 
 export interface IAzureResponse<T> {
@@ -15,9 +27,29 @@ export interface IAzureBuild {
   definition: {
     name: string;
   };
+  _links: {
+    timeline: {
+      href: string;
+    }
+  };
+  buildNumber: number;
   result: string;
   startTime: string;
   finishTime: string;
+}
+
+export interface IAzureTimeline {
+  records: IRecordAzureTimeline[];
+}
+
+export interface IRecordAzureTimeline {
+  startTime: string;
+  finishTime: string;
+  name: string;
+  type: string;
+  state: string;
+  result: string;
+  identifier: string;
 }
 
 export interface IAzureRelease {

@@ -4,10 +4,12 @@ import axios from "axios";
 import {IPoint} from "influx";
 
 export async function getBugs(metadata: IAzureMetadata) {
-  const ids = await queryBugs(metadata);
-  const bugs = await getDetails(metadata, ids);
-  
-  return bugs.filter(filter).map(map);
+  if(metadata?.bugsQuery){
+    const ids = await queryBugs(metadata);
+    const bugs = await getDetails(metadata, ids);
+    return bugs.filter(filter).map(map);
+  }
+  return [];
 }
 
 async function queryBugs(metadata: IAzureMetadata) {
