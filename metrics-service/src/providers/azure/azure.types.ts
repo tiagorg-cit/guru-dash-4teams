@@ -2,6 +2,7 @@ export interface IAzureMetadata {
   organization: string;
   project: string;
   key: string;
+  gopsApiKey: string;
   builds: IAzureMetadataBuilds;
   releases: string[];
   bugsQuery: string;

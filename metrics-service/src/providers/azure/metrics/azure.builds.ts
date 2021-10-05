@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { IPoint } from 'influx';
 import { IAzureResponse, IAzureBuild, IAzureMetadata, IAzureTimeline, IRecordAzureTimeline } from '../azure.types';
+import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
 import { logger } from '../../../shared/logger';
 
 /**
@@ -55,6 +56,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     
     let continuationToken = '';
     const buildsAndReleases: IPoint[] = [];
+    const deploysToGalaxy: IGalaxyDeployments = { "deployments" : [] }; 
     
     do {  
       const buildResponse = await callAzureBuild(
@@ -87,6 +89,13 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
 
             for(let releaseFiltered of releasesFiltered){
               buildsAndReleases.push(mapReleases(buildItem?.definition?.name, buildsFiltered[0], releaseFiltered));
+
+              deploysToGalaxy.deployments.push({
+                "project": buildItem?.definition?.name,
+                "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
+                "duration": releaseFiltered.result === 'succeeded'? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
+                "success": releaseFiltered.result === 'succeeded'
+              });
             }
           }
         }
@@ -95,7 +104,24 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
       continuationToken = buildResponse.headers['x-ms-continuationtoken'];
       continuationToken && logger.debug(`Getting next page continuationToken: ${continuationToken}`);
     } while(continuationToken != null);
+    //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
+    const galaxyResponse = await sendDeploysToGalaxy(metadata.gopsApiKey, deploysToGalaxy);
+    
+    logger.info(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
+  
     return buildsAndReleases;
+}
+
+async function sendDeploysToGalaxy(gopsApiKey: string, deploysToGalaxy: IGalaxyDeployments){
+  logger.info(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
+  
+  const urlGalaxy = 'https://galaxyops-service-fl45i7mn4q-ue.a.run.app/gops-service/v1/data-ingest/deployment';
+
+  const galaxyResponse = await axios.post<IGalaxyDeploymentsResponse>(
+    urlGalaxy, deploysToGalaxy, { headers: { 'gops-api-key': gopsApiKey } }
+  );
+
+  return galaxyResponse;
 }
 
 function timelinePredicateForBuild(timelineItem: IRecordAzureTimeline) {
