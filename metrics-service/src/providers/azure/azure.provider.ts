@@ -1,11 +1,13 @@
 import {IAzureMetadata} from "./azure.types";
 
 import {getBugs} from "./metrics/azure.bugs";
-import {getBuildsAndReleases} from "./metrics/azure.builds";
+import {getReleases} from "./metrics/azure.releases";
+import {getBuilds} from "./metrics/azure.builds";
 
 export async function getAzureMetrics(metadata: IAzureMetadata) {
-  const buildsAndReleases = await getBuildsAndReleases(metadata);
+  const builds = await getBuilds(metadata);
+  const releases = await getReleases(metadata);
   const bugs = await getBugs(metadata);
 
-  return [...buildsAndReleases, ...bugs];
+  return [...builds, ...releases, ...bugs];
 }

@@ -2,7 +2,8 @@ export interface IAzureMetadata {
   organization: string;
   project: string;
   key: string;
-  gopsApiKey: string;
+  connectors: IAzureConnector;
+  deployOnBuild: Boolean;
   builds: IAzureMetadataBuilds;
   releases: string[];
   bugsQuery: string;
@@ -10,6 +11,8 @@ export interface IAzureMetadata {
 
 export interface IAzureMetadataBuilds {
   getLastNumMonths: number;
+  buildStepName: string;
+  deployStepName: string;
   repositories: IAzureMetadataBuildsRepositories[];
 }
 
@@ -17,6 +20,15 @@ export interface IAzureMetadataBuildsRepositories {
   id: string;
   type: string;
   name: string;
+}
+
+interface IAzureConnector{
+   galaxy: IAzureConnectorGalaxy;
+}
+
+interface IAzureConnectorGalaxy {
+  apiKey: string;
+  apiUrl: string;
 }
 
 export interface IAzureResponse<T> {
