@@ -21,6 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "iteration": 1634145385660,
   "links": [],
   "panels": [
     {
@@ -102,7 +103,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"success\") as deploys FROM \"deploy\" GROUP BY time(1w, 3d) fill(none)",
+          "query": "SELECT sum(\"success\") as deploys FROM \"deploy\" WHERE project =~ /^(${buildDefinitionName:pipe})$/ GROUP BY time(1w, 3d) fill(none)",
           "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
@@ -240,7 +241,7 @@
           "measurement": "deploy",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "select 100-(mean(\"success\")*100) from deploy where $timeFilter",
+          "query": "select 100-(mean(\"success\")*100) from deploy where $timeFilter and project =~ /^(${buildDefinitionName:pipe})$/",
           "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
@@ -324,7 +325,7 @@
           "measurement": "build",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"duration\") FROM \"deploy\" WHERE success = 1 AND $timeFilter",
+          "query": "SELECT mean(\"duration\") FROM \"deploy\" WHERE success = 1 AND $timeFilter AND project =~ /^(${buildDefinitionName:pipe})$/",
           "queryType": "randomWalk",
           "rawQuery": true,
           "refId": "A",
@@ -344,7 +345,7 @@
         {
           "alias": "WORST",
           "hide": false,
-          "query": "SELECT max(deployDuration) FROM (SELECT \"duration\" AS deployDuration FROM \"deploy\" WHERE success = 1 AND $timeFilter GROUP BY \"project\" )",
+          "query": "SELECT max(deployDuration) FROM (SELECT \"duration\" AS deployDuration FROM \"deploy\" WHERE success = 1 AND $timeFilter AND project =~ /^(${buildDefinitionName:pipe})$/ GROUP BY \"project\" )",
           "rawQuery": true,
           "refId": "B"
         }
@@ -420,7 +421,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"duration\") FROM \"build\" WHERE $timeFilter",
+          "query": "SELECT mean(\"duration\") FROM \"build\" WHERE $timeFilter AND project =~ /^(${buildDefinitionName:pipe})$/",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -459,7 +460,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT MAX(projectDuration) FROM (SELECT \"duration\" AS projectDuration  FROM \"build\" WHERE $timeFilter GROUP BY \"project\" )",
+          "query": "SELECT MAX(projectDuration) FROM (SELECT \"duration\" AS projectDuration  FROM \"build\" WHERE $timeFilter AND project =~ /^(${buildDefinitionName:pipe})$/ GROUP BY \"project\" )",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -539,7 +540,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select count(success) from deploy where $timeFilter and success = 1 group by project",
+              "query": "select count(success) from deploy where $timeFilter and success = 1 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -621,7 +622,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select \"duration\" from deploy where $timeFilter and success = 1 group by project",
+              "query": "select \"duration\" from deploy where $timeFilter and success = 1 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -675,7 +676,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select count(success) from deploy where $timeFilter and success = 0 group by project",
+              "query": "select count(success) from deploy where $timeFilter and success = 0 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -720,7 +721,7 @@
             "h": 6,
             "w": 8,
             "x": 0,
-            "y": 10
+            "y": 16
           },
           "id": 27,
           "options": {
@@ -743,7 +744,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select count(success) from build where $timeFilter and success = 1 group by project",
+              "query": "select count(success) from build where $timeFilter and success = 1 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -810,7 +811,7 @@
             "h": 6,
             "w": 8,
             "x": 8,
-            "y": 10
+            "y": 16
           },
           "id": 29,
           "options": {
@@ -826,7 +827,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select \"duration\" from build where $timeFilter  group by project",
+              "query": "select \"duration\" from build where $timeFilter and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -857,7 +858,7 @@
             "h": 6,
             "w": 8,
             "x": 16,
-            "y": 10
+            "y": 16
           },
           "id": 28,
           "options": {
@@ -880,7 +881,7 @@
           "targets": [
             {
               "alias": "$tag_project",
-              "query": "select count(success) from build where $timeFilter and success = 0 group by project",
+              "query": "select count(success) from build where $timeFilter and success = 0 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
               "rawQuery": true,
               "refId": "A"
             }
@@ -893,12 +894,49 @@
       "type": "row"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "price-service",
+            "deal-service",
+            "charge-service",
+            "pricing-engine",
+            "cart-calculation-service"
+          ],
+          "value": [
+            "price-service",
+            "deal-service",
+            "charge-service",
+            "pricing-engine",
+            "cart-calculation-service"
+          ]
+        },
+        "datasource": "influxdb",
+        "definition": "select distinct(project) from deploy",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Build Definition Name",
+        "multi": true,
+        "name": "buildDefinitionName",
+        "options": [],
+        "query": "select distinct(project) from deploy",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-90d",
@@ -908,5 +946,5 @@
   "timezone": "",
   "title": "Tech Metrics",
   "uid": "O70U1RsGz2",
-  "version": 14
+  "version": 16
 }

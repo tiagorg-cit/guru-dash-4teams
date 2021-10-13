@@ -1,6 +1,7 @@
 export interface IAzureMetadata {
   organization: string;
   project: string;
+  stepInsert: Boolean;
   key: string;
   connectors: IAzureConnector;
   deployOnBuild: Boolean;

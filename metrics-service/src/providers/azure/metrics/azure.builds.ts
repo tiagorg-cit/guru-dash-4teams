@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { IPoint } from 'influx';
+import { InfluxDB, IPoint } from 'influx';
 import { IAzureResponse, IAzureBuild, IAzureMetadata, IAzureTimeline, IRecordAzureTimeline } from '../azure.types';
 import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
 import { logger } from '../../../shared/logger';
+
 
 let buildStepName = '';
 let deployStepName = '';
@@ -14,6 +15,8 @@ let deployStepName = '';
  */
 export async function getBuilds(metadata: IAzureMetadata) {
   logger.info(`Getting Build Information from Azure Devops for ${metadata.organization} - ${metadata.project}`);
+  const stepInsert:Boolean = metadata?.stepInsert;
+  let influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
   if(metadata?.deployOnBuild){
     const buildsAndReleases: IPoint[] = [];
@@ -40,7 +43,12 @@ export async function getBuilds(metadata: IAzureMetadata) {
         
         const buildsAndReleasesResponse: IPoint[] = await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, minDate)
         buildsAndReleases.push(...buildsAndReleasesResponse);  
-  
+        
+        if(stepInsert){
+          logger.info(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
+          influxDBInstance.writePoints(buildsAndReleasesResponse);
+        }
+
         logger.info(`Finishing BUILD and RELEASE information for repository: ${repositoryName}`);
       }
     } else {
@@ -58,14 +66,21 @@ export async function getBuilds(metadata: IAzureMetadata) {
       throw new Error(`Error getting Azure Devops Builds, status code: ${res.status}`);
     }
   
+    const response: IPoint[] = res.data.value.filter(predicate).map(map);
+    
+    if(stepInsert){
+      logger.info(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+      influxDBInstance.writePoints(response);
+    }
     logger.info(`Finishing BUILD and RELEASE information from Azure Devops for ${metadata.organization} - ${metadata.project}!`);
-    return res.data.value.filter(predicate).map(map);
+
+    return response;
   }
 
 }
 
 function predicate(build: IAzureBuild) {
-  return build?.result === 'succeeded' || build?.result === 'failed';
+  return build?.result === 'succeeded' || build?.result === 'succeededWithIssues' || build?.result === 'failed';
 }
 
 async function getBuildsAndReleasesResponse(metadata: IAzureMetadata, 
@@ -86,35 +101,39 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
         logger.info(`For build number: ${buildItem?.buildNumber}, with result: ${buildItem?.result}, we get timeline steps in ${timelineHref}`);
 
         if(timelineHref){
-          const timelineResponse = await axios.get<IAzureTimeline>(
-            `${timelineHref}`,
-            { auth: { username: 'username', password: metadata.key } }
-          );
+          try {
+            const timelineResponse = await axios.get<IAzureTimeline>(
+              `${timelineHref}`,
+              { auth: { username: 'username', password: metadata.key } }
+            );
 
-          logger.info(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
+            logger.info(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
 
-          if(timelineResponse?.data?.records?.length > 0){
-            const buildsFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForBuild);
-            const releasesFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForReleases);
+            if(timelineResponse?.data?.records?.length > 0){
+              const buildsFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForBuild);
+              const releasesFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForReleases);
 
-            logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
-            logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
+              logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
+              logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
 
-            for(let buildFiltered of buildsFiltered){
-              buildsAndReleases.push(mapBuilds(buildItem?.definition?.name, buildFiltered));
-            }
+              for(let buildFiltered of buildsFiltered){
+                buildsAndReleases.push(mapBuilds(buildItem?.definition?.name, buildFiltered));
+              }
 
-            for(let releaseFiltered of releasesFiltered){
-              buildsAndReleases.push(mapReleases(buildItem?.definition?.name, buildsFiltered[0], releaseFiltered));
-              if(metadata?.connectors?.galaxy){
-                deploysToGalaxy.deployments.push({
-                  "project": buildItem?.definition?.name,
-                  "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
-                  "duration": releaseFiltered.result === 'succeeded'? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
-                  "success": releaseFiltered.result === 'succeeded'
-                });
+              for(let releaseFiltered of releasesFiltered){
+                buildsAndReleases.push(mapReleases(buildItem?.definition?.name, buildsFiltered[0], releaseFiltered));
+                if(metadata?.connectors?.galaxy){
+                  deploysToGalaxy.deployments.push({
+                    "project": buildItem?.definition?.name,
+                    "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
+                    "duration": releaseFiltered.result === 'succeeded'? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
+                    "success": releaseFiltered.result === 'succeeded'
+                  });
+                }
               }
             }
+          } catch (err){
+            logger.error(err, `Error while get timeline information about build number: ${buildItem?.buildNumber}`);
           }
         }
       }
@@ -179,6 +198,7 @@ function mapBuilds(buildDefinitionName:string, build: IRecordAzureTimeline): IPo
     },
     fields: { 
       duration: new Date(build.finishTime).getTime() - new Date(build.startTime).getTime(),
+      project: buildDefinitionName,
       success: build.result === 'succeeded' ? 1 : 0,
     },
     timestamp: new Date(build.startTime),
@@ -192,8 +212,9 @@ function mapReleases(releaseDefinitionName:string, build: IRecordAzureTimeline, 
       project: releaseDefinitionName,
     },
     fields: { 
-      duration: release.result === 'succeeded'? new Date(release.finishTime).getTime() - new Date(build.finishTime).getTime() : 0,
+      duration: release.result === 'succeeded' ? new Date(release.finishTime).getTime() - new Date(build.finishTime).getTime() : 0,
       success: release.result === 'succeeded' ? 1 : 0,
+      project: releaseDefinitionName
     },
     timestamp: release.startTime ? new Date(release.startTime) : new Date(build.finishTime)
   }
@@ -209,6 +230,7 @@ function map(build: IAzureBuild): IPoint {
     fields: { 
       duration: new Date(build.finishTime).getTime() - new Date(build.startTime).getTime(),
       success: build.result === 'succeeded' ? 1 : 0,
+      project: build.definition?.name
     },
     timestamp: new Date(build.startTime),
   };

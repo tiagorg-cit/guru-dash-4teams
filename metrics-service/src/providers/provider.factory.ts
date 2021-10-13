@@ -26,9 +26,11 @@ export async function providerFactory(datasource: IDataSource) {
 
   logger.info('Starting ' + datasource.name);
   const metrics = await provider(datasource.meta);
-  logger.info('Finishing ' + datasource.name);
-
-  if (metrics?.length > 0) {
+  
+  if (metrics?.length > 0 && !datasource?.meta.stepInsert) {
+    logger.info('Writing InfluxDB points for ' + datasource.name);
+    logger.info('Finishing ' + datasource.name);
     return new InfluxDB(process.env.INFLUXDB!).writePoints(metrics);
   }
+  logger.info('Finishing ' + datasource.name);
 }
