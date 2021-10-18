@@ -1,6 +1,7 @@
 export interface ISonarMetadata {
     key: string;
     url: string;
+    stepInsert: Boolean;
     projects: string[];
     metrics: string[];
   }

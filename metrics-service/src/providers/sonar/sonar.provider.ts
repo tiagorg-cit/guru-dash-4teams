@@ -1,10 +1,12 @@
 import { ISonarMeasureHistory, ISonarMeasure, ISonarMeasureResponse, ISonarMetadata } from './sonar.types';
-import { IPoint } from 'influx';
+import { InfluxDB, IPoint } from 'influx';
 import { logger } from '../../shared/logger';
 import axios from 'axios';
 
 export async function getSonarMetrics(metadata: ISonarMetadata) {
   const result: IPoint[] = [];
+  const stepInsert:Boolean = metadata?.stepInsert;
+  let influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
   for (const project of metadata.projects) {
     logger.info(`Getting sonar measures for: ${project}`);
@@ -14,17 +16,27 @@ export async function getSonarMetrics(metadata: ISonarMetadata) {
 
     while (next) {
       page > 1 && logger.debug(`Getting next page: ${page}`);
-  
-      const res = await axios.post<ISonarMeasureResponse>(`${metadata.url}/api/measures/search_history?component=${project}&metrics=${metadata.metrics}&p=${page}`, {}, {
-        auth: { username: metadata.key, password: '' }
-      });
-      
-      for (const measure of res.data.measures) {
-        result.push(...map(project, measure));
+      try {
+        const res = await axios.post<ISonarMeasureResponse>(`${metadata.url}/api/measures/search_history?component=${project}&metrics=${metadata.metrics}&p=${page}`, {}, {
+          auth: { username: metadata.key, password: '' }
+        });
+        
+        for (const measure of res.data.measures) {
+          result.push(...map(project, measure));
+        }
+
+        if(stepInsert){
+          logger.info(`Writing InfluxDB points in BABY STEPS for PROJECT NAME: ${project}`);
+          influxDBInstance.writePoints(result);
+          result.length = 0;
+        }
+
+        next = page < res.data.paging.total / res.data.paging.pageSize;
+        page++;
+      } catch (err) {
+        logger.error(err, `Error while get sonar information about project: ${project}`);
+        next = false;
       }
-  
-      next = page < res.data.paging.total / res.data.paging.pageSize;
-      page++;
     }
   }
 
