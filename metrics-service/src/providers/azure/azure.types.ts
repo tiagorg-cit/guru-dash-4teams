@@ -41,6 +41,9 @@ export interface IAzureBuild {
   definition: {
     name: string;
   };
+  repository: {
+    name: string;
+  };
   _links: {
     timeline: {
       href: string;
