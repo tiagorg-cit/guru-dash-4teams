@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 6,
-  "iteration": 1634827686291,
+  "iteration": 1634828097475,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1333,7 +1333,7 @@
             "h": 6,
             "w": 8,
             "x": 0,
-            "y": 14
+            "y": 13
           },
           "hiddenSeries": false,
           "id": 14,
@@ -1353,7 +1353,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1467,7 +1467,7 @@
             "h": 6,
             "w": 8,
             "x": 8,
-            "y": 14
+            "y": 13
           },
           "hiddenSeries": false,
           "id": 15,
@@ -1487,7 +1487,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1601,7 +1601,7 @@
             "h": 6,
             "w": 8,
             "x": 16,
-            "y": 14
+            "y": 13
           },
           "hiddenSeries": false,
           "id": 16,
@@ -1621,7 +1621,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1746,7 +1746,7 @@
             "h": 7,
             "w": 6,
             "x": 0,
-            "y": 15
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 2,
@@ -1766,7 +1766,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -1888,7 +1888,7 @@
             "h": 7,
             "w": 6,
             "x": 6,
-            "y": 15
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 6,
@@ -1908,7 +1908,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -2012,7 +2012,7 @@
             "h": 7,
             "w": 6,
             "x": 12,
-            "y": 15
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 8,
@@ -2032,7 +2032,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -2142,7 +2142,7 @@
             "h": 7,
             "w": 6,
             "x": 18,
-            "y": 15
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 10,
@@ -2162,7 +2162,7 @@
             "alertThreshold": true
           },
           "percentage": false,
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -2298,7 +2298,7 @@
             "h": 8,
             "w": 4,
             "x": 0,
-            "y": 16
+            "y": 28
           },
           "id": 34,
           "options": {
@@ -2316,7 +2316,7 @@
             "text": {},
             "textMode": "auto"
           },
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "targets": [
             {
               "alias": "Tech Debt (wd)",
@@ -2631,14 +2631,14 @@
             "h": 8,
             "w": 20,
             "x": 4,
-            "y": 16
+            "y": 28
           },
           "id": 40,
           "options": {
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "8.1.5",
+          "pluginVersion": "8.2.1",
           "targets": [
             {
               "alias": "projects",
@@ -2681,7 +2681,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [],
           "value": []
         },
@@ -2708,12 +2708,12 @@
     ]
   },
   "time": {
-    "from": "now-90d",
+    "from": "now-5y",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Sonar Metrics",
   "uid": "27s0s3lGz",
-  "version": 3
+  "version": 4
 }
