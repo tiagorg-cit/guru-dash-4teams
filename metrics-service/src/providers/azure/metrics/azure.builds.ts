@@ -39,7 +39,7 @@ export async function getBuilds(metadata: IAzureMetadata) {
         const repositoryName = metadataBuild.name;
         const repositoryType = metadataBuild.type;
         
-        logger.debug(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
+        logger.info(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
         
         const buildsAndReleasesResponse: IPoint[] = await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, minDate)
         buildsAndReleases.push(...buildsAndReleasesResponse);  
