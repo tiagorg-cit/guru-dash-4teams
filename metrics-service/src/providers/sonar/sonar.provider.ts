@@ -26,7 +26,7 @@ export async function getSonarMetrics(metadata: ISonarMetadata) {
         }
 
         if(stepInsert){
-          logger.info(`Writing InfluxDB points in BABY STEPS for PROJECT NAME: ${project}`);
+          logger.debug(`Writing InfluxDB points in BABY STEPS for PROJECT NAME: ${project}`);
           influxDBInstance.writePoints(result);
           result.length = 0;
         }

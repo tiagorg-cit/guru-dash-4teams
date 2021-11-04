@@ -39,13 +39,13 @@ export async function getBuilds(metadata: IAzureMetadata) {
         const repositoryName = metadataBuild.name;
         const repositoryType = metadataBuild.type;
         
-        logger.info(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
+        logger.debug(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
         
         const buildsAndReleasesResponse: IPoint[] = await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, minDate)
         buildsAndReleases.push(...buildsAndReleasesResponse);  
         
         if(stepInsert){
-          logger.info(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
+          logger.debug(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
           influxDBInstance.writePoints(buildsAndReleasesResponse);
         }
 
@@ -69,7 +69,7 @@ export async function getBuilds(metadata: IAzureMetadata) {
     const response: IPoint[] = res.data.value.filter(predicate).map(map);
     
     if(stepInsert){
-      logger.info(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+      logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
       influxDBInstance.writePoints(response);
     }
     logger.info(`Finishing BUILD and RELEASE information from Azure Devops for ${metadata.organization} - ${metadata.project}!`);
@@ -98,7 +98,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
       for(let buildItem of buildResponse.data.value){
         const timelineHref = buildItem?._links?.timeline?.href;
 
-        logger.info(`For build number: ${buildItem?.buildNumber}, with result: ${buildItem?.result}, we get timeline steps in ${timelineHref}`);
+        logger.debug(`For build number: ${buildItem?.buildNumber}, with result: ${buildItem?.result}, we get timeline steps in ${timelineHref}`);
 
         if(timelineHref){
           try {
@@ -107,14 +107,14 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
               { auth: { username: 'username', password: metadata.key } }
             );
 
-            logger.info(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
+            logger.debug(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
 
             if(timelineResponse?.data?.records?.length > 0){
               const buildsFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForBuild);
               const releasesFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForReleases);
 
-              logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
-              logger.info(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
+              logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
+              logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
 
               for(let buildFiltered of buildsFiltered){
                 buildsAndReleases.push(mapBuilds(buildItem?.repository?.name, buildFiltered));
@@ -144,7 +144,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
     if(metadata?.connectors?.galaxy){
       const galaxyResponse = await sendDeploysToGalaxy(metadata?.connectors?.galaxy.apiUrl, metadata?.connectors?.galaxy.apiKey, deploysToGalaxy);
-      logger.info(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
+      logger.debug(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
     }
     
   
@@ -152,7 +152,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
 }
 
 async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deploysToGalaxy: IGalaxyDeployments){
-  logger.info(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
+  logger.debug(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
 
   const galaxyResponse = await axios.post<IGalaxyDeploymentsResponse>(
     gopsApiUrl, deploysToGalaxy, { headers: { 'gops-api-key': gopsApiKey } }

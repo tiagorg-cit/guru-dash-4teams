@@ -31,5 +31,5 @@ export const logger = pino({
     translateTime: true,
     messageFormat: messageFormatter
   },
-  level: 'debug'
+  level: 'info'
 });
