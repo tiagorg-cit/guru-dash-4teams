@@ -144,7 +144,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
     if(metadata?.connectors?.galaxy){
       const galaxyResponse = await sendDeploysToGalaxy(metadata?.connectors?.galaxy.apiUrl, metadata?.connectors?.galaxy.apiKey, deploysToGalaxy);
-      logger.debug(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
+      logger.info(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
     }
     
   
@@ -152,7 +152,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
 }
 
 async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deploysToGalaxy: IGalaxyDeployments){
-  logger.debug(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
+  logger.info(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
 
   const galaxyResponse = await axios.post<IGalaxyDeploymentsResponse>(
     gopsApiUrl, deploysToGalaxy, { headers: { 'gops-api-key': gopsApiKey } }
