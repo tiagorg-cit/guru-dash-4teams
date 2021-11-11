@@ -64,6 +64,7 @@ async function updatePermissions(strapi) {
   const authRole = await getRole("authenticated");
   authRole.permissions.application.controllers.datasources.find.enabled = true;
   authRole.permissions.application.controllers['custom-metrics'].find.enabled = true;
+  authRole.permissions.application.controllers['pod-relashionship'].find.enabled = true;
   await service.updateRole(authRole.id, authRole);
 }
 

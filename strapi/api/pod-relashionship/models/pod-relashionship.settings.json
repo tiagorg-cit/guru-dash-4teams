@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pod_relashionships",
+  "info": {
+    "name": "Pod Relashionship",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "json"
+    }
+  }
+}

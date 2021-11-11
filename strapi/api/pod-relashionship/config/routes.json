@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/pod-relashionships",
+      "handler": "pod-relashionship.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/pod-relashionships/count",
+      "handler": "pod-relashionship.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/pod-relashionships/:id",
+      "handler": "pod-relashionship.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/pod-relashionships",
+      "handler": "pod-relashionship.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/pod-relashionships/:id",
+      "handler": "pod-relashionship.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/pod-relashionships/:id",
+      "handler": "pod-relashionship.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
