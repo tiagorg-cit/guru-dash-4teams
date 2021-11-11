@@ -26,7 +26,8 @@
     "security_rating",
     "sqale_rating",
     "blocker_violations",
-    "critical_violations"
+    "critical_violations",
+    "ncloc_language_distribution"
   ]
 }
 ```
