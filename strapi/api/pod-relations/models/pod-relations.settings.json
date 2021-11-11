@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "pod_relashionships",
+  "collectionName": "pod_relations",
   "info": {
-    "name": "Pod Relashionship",
-    "description": ""
+    "name": "Pod Relations"
   },
   "options": {
     "increments": true,

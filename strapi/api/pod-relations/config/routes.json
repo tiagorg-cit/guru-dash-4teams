@@ -2,48 +2,48 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/pod-relashionships",
-      "handler": "pod-relashionship.find",
+      "path": "/pod-relations",
+      "handler": "pod-relations.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/pod-relashionships/count",
-      "handler": "pod-relashionship.count",
+      "path": "/pod-relations/count",
+      "handler": "pod-relations.count",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/pod-relashionships/:id",
-      "handler": "pod-relashionship.findOne",
+      "path": "/pod-relations/:id",
+      "handler": "pod-relations.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/pod-relashionships",
-      "handler": "pod-relashionship.create",
+      "path": "/pod-relations",
+      "handler": "pod-relations.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/pod-relashionships/:id",
-      "handler": "pod-relashionship.update",
+      "path": "/pod-relations/:id",
+      "handler": "pod-relations.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/pod-relashionships/:id",
-      "handler": "pod-relashionship.delete",
+      "path": "/pod-relations/:id",
+      "handler": "pod-relations.delete",
       "config": {
         "policies": []
       }
