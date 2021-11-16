@@ -1,7 +1,7 @@
 import { logger } from '../shared/logger';
 import { IPoint } from "influx";
 import { IPodRelations, IPodRelationsMetaItem } from "../providers/strapi/strapi.types";
-import { getSuceededDeploysByRepositoryIdOrderByTimeDesc } from "../database/database.deploy";
+import { getSucceededDeploysByRepositoryIdOrderByTimeDesc } from "../database/database.deploy";
 import { generateMonthYearDateKey, getDaysInMonth } from "../shared/date_utils";
 import { IDeploymentFrequencyMeasure } from "../database/database.types";
 import { save } from "../database/database.functions";
@@ -34,7 +34,7 @@ async function getPODDeploysPerMonth(relation: IPodRelationsMetaItem){
         );
      
         const deployDBResponse = 
-            await getSuceededDeploysByRepositoryIdOrderByTimeDesc(repositoryId); 
+            await getSucceededDeploysByRepositoryIdOrderByTimeDesc(repositoryId); 
         logger.debug(`Retrieving ${deployDBResponse?.length} items!`); 
 
         if(deployDBResponse?.length > 0){

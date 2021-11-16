@@ -17,3 +17,17 @@ export interface IDeploymentFrequencyMeasure {
     numberOfDeploys: number;
     deploymentFrequency: number; 
 }
+
+export interface IChangeFailureRateMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    valueStreamId: string;
+    valueStreamName: string;
+    podId: string;
+    podName: string;
+    numberOfAllDeploys: number;
+    numberOfSucceededDeploys: number;
+    numberOfFailedDeploys: number;
+    changeFailureRate: number; 
+}
