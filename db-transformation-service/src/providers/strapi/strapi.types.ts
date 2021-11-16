@@ -7,7 +7,7 @@ interface IPodRelationsMeta {
   relations: IPodRelationsMetaItem[];
 }
 
-interface IPodRelationsMetaItem {
+export interface IPodRelationsMetaItem {
   productId: string
   productName: string;
   valueStreamId: string;
