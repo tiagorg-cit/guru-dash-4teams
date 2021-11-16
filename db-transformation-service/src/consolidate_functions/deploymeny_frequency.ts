@@ -4,7 +4,7 @@ import { IPodRelations, IPodRelationsMetaItem } from "../providers/strapi/strapi
 import { getSuceededDeploysByRepositoryIdOrderByTimeDesc } from "../database/database.deploy";
 import { generateMonthYearDateKey, getDaysInMonth } from "../shared/date_utils";
 import { IDeploymentFrequencyMeasure } from "../database/database.types";
-import { save } from "../database/database.deployment_frequency";
+import { save } from "../database/database.functions";
 
 export async function consolidateDeploymentFrequency(metricName: string, 
     podRelations: IPodRelations){
