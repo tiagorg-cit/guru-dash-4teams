@@ -14,7 +14,7 @@ Stack responsible for providing technical and operational metrics to be visualiz
 #### Componentes:
 - Grafana: Responsible for dashboards, the ./grafana folder has all the configuration of datasources and dashboards to upload via docker.
 - Influxdb: Timeseries database for metrics, is rising via docker with no mapped volume, so when the container dies the records are reset.
-- Strapi: CMS for configurations, today we have two collections, datasources and custom-metrics.
+- Strapi: CMS for configurations, today we have three collections, datasources, custom-metrics and pod_relashionship.
 - metrics-service: Service in nodeJS, responsible for reading the configurations of the strapi, and accessing the different datasources to obtain metrics, process them and insert in influxdb, in a recurring way according to the CRON configuration in the docker-compose.
 
 ## Requirements

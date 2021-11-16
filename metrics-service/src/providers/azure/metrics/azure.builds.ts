@@ -117,11 +117,11 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
               logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
 
               for(let buildFiltered of buildsFiltered){
-                buildsAndReleases.push(mapBuilds(buildItem?.repository?.name, buildFiltered));
+                buildsAndReleases.push(mapBuilds(buildItem?.repository?.id, buildItem?.repository?.name, buildFiltered));
               }
 
               for(let releaseFiltered of releasesFiltered){
-                buildsAndReleases.push(mapReleases(buildItem?.repository?.name, buildsFiltered[0], releaseFiltered));
+                buildsAndReleases.push(mapReleases(buildItem?.repository?.id, buildItem?.repository?.name, buildsFiltered[0], releaseFiltered));
                 if(metadata?.connectors?.galaxy){
                   deploysToGalaxy.deployments.push({
                     "project": buildItem?.repository?.name,
@@ -189,7 +189,7 @@ async function callAzureBuild(key:string, organization: string, project: string,
     return buildResponse;
 }
 
-function mapBuilds(repositoryName:string, build: IRecordAzureTimeline): IPoint {
+function mapBuilds(repositoryId: string, repositoryName:string, build: IRecordAzureTimeline): IPoint {
   return {
     measurement: 'build',
     tags: { 
@@ -199,13 +199,15 @@ function mapBuilds(repositoryName:string, build: IRecordAzureTimeline): IPoint {
     fields: { 
       duration: new Date(build.finishTime).getTime() - new Date(build.startTime).getTime(),
       project: repositoryName,
+      repositoryId: repositoryId,
       success: build.result === 'succeeded' ? 1 : 0,
     },
     timestamp: new Date(build.startTime),
   }
 }
 
-function mapReleases(repositoryName:string, build: IRecordAzureTimeline, release: IRecordAzureTimeline): IPoint {
+function mapReleases(repositoryId: string, repositoryName:string, build: IRecordAzureTimeline, release: IRecordAzureTimeline): IPoint {
+  const timestamp = release.startTime ? new Date(release.startTime) : new Date(build.finishTime);
   return {
     measurement: 'deploy',
     tags: { 
@@ -214,9 +216,10 @@ function mapReleases(repositoryName:string, build: IRecordAzureTimeline, release
     fields: { 
       duration: release.result === 'succeeded' ? new Date(release.finishTime).getTime() - new Date(build.finishTime).getTime() : 0,
       success: release.result === 'succeeded' ? 1 : 0,
-      project: repositoryName
+      project: repositoryName,
+      repositoryId: repositoryId
     },
-    timestamp: release.startTime ? new Date(release.startTime) : new Date(build.finishTime)
+    timestamp: timestamp
   }
 }
 
@@ -230,7 +233,8 @@ function map(build: IAzureBuild): IPoint {
     fields: { 
       duration: new Date(build.finishTime).getTime() - new Date(build.startTime).getTime(),
       success: build.result === 'succeeded' ? 1 : 0,
-      project: build.repository?.name
+      project: build.repository?.name,
+      repositoryId: build.repository?.id
     },
     timestamp: new Date(build.startTime),
   };

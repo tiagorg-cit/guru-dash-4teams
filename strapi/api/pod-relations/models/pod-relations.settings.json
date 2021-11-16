@@ -1,8 +1,9 @@
 {
-  "kind": "collectionType",
+  "kind": "singleType",
   "collectionName": "pod_relations",
   "info": {
-    "name": "Pod Relations"
+    "name": "Pod Relations",
+    "description": ""
   },
   "options": {
     "increments": true,

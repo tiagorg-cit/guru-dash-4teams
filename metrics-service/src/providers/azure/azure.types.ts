@@ -42,6 +42,7 @@ export interface IAzureBuild {
     name: string;
   };
   repository: {
+    id: string;
     name: string;
   };
   _links: {

@@ -9,32 +9,8 @@
       }
     },
     {
-      "method": "GET",
-      "path": "/pod-relations/count",
-      "handler": "pod-relations.count",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "GET",
-      "path": "/pod-relations/:id",
-      "handler": "pod-relations.findOne",
-      "config": {
-        "policies": []
-      }
-    },
-    {
-      "method": "POST",
-      "path": "/pod-relations",
-      "handler": "pod-relations.create",
-      "config": {
-        "policies": []
-      }
-    },
-    {
       "method": "PUT",
-      "path": "/pod-relations/:id",
+      "path": "/pod-relations",
       "handler": "pod-relations.update",
       "config": {
         "policies": []
@@ -42,7 +18,7 @@
     },
     {
       "method": "DELETE",
-      "path": "/pod-relations/:id",
+      "path": "/pod-relations",
       "handler": "pod-relations.delete",
       "config": {
         "policies": []

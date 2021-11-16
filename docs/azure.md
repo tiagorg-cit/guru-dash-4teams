@@ -6,16 +6,26 @@
   (*) "key": "123",
   (*) "organization": "Your Organization",
   (*) "project": "Your Project",
+  "stepInsert": "true/false: Indicates to metrics-service proceed a batch insert by repository in database. For big quantities of repositories, use this flag in 'true' mode",
+  "deployOnBuild": "true/false: If true, builds section is mandatory. This flag indicates if in build pipeline have a deploy (release) step",
   (*) "releases": [
     "Name of the stages in the pipeline that should be considered as deploys"
   ],
   "bugsQuery": "WIQL to query bugs in Azure Devops",
+  "connectors": {
+    "galaxy": {
+      "apiKey": "GALAXY API KEY",
+      "apiUrl": "Galaxy url for deployments"
+    }
+  },
   "builds": {
     "getLastNumMonths": "Number of previous months to obtain data",
+    (*) "buildStepName": "Step name in build pipeline that should be considered as build",
+    (*) "deployStepName": "Step name in build pipeline that should be considered as deploy"
     (*) "repositories": [{
       (*) "id": "Git repository id to count build",
       (*) "type": "Git repository type to count build. Can be: Git and TfsGit",
-      "name": "Git repository name. Using just to log" 		
+      (*) "name": "Git repository name." 		
       }
     ]
   }
