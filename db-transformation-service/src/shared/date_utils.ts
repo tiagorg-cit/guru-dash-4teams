@@ -9,7 +9,7 @@ export function generateDayMonthYearDateKey(originalDate:Date): string {
 export function generateMonthYearDateKey(originalDate:Date): string {
     const month = extractMonthOfDate(originalDate);
     const year = extractYearOfDate(originalDate);
-    const yearMonthDate = year.concat('-').concat(month).concat('-01T00:00:00');
+    const yearMonthDate = year.concat('-').concat(month).concat('-01T03:00:00');
     return yearMonthDate;
 }
 
