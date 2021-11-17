@@ -14,7 +14,7 @@ export interface IDeploymentFrequencyMeasure {
     valueStreamName: string;
     podId: string;
     podName: string;
-    numberOfDeploys: number;
+    numberOfUniqueDeploys: number;
     deploymentFrequency: number; 
 }
 
@@ -30,4 +30,17 @@ export interface IChangeFailureRateMeasure {
     numberOfSucceededDeploys: number;
     numberOfFailedDeploys: number;
     changeFailureRate: number; 
+}
+
+export interface ICycleTimePostDevMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    valueStreamId: string;
+    valueStreamName: string;
+    podId: string;
+    podName: string;
+    numberOfDeploys: number;
+    meanCycleTimePostDev: number;
+    worstDurationDeployInMonth: number;
 }

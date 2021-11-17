@@ -1,8 +1,20 @@
+export function generateDayMonthYearDateKey(originalDate:Date): string {
+    const day = extractDayOfDate(originalDate);
+    const month = extractMonthOfDate(originalDate);
+    const year = extractYearOfDate(originalDate);
+    const yearMonthDate = year.concat('-').concat(month).concat('-').concat(day);
+    return yearMonthDate;
+}
+
 export function generateMonthYearDateKey(originalDate:Date): string {
     const month = extractMonthOfDate(originalDate);
     const year = extractYearOfDate(originalDate);
     const yearMonthDate = year.concat('-').concat(month).concat('-01T00:00:00');
     return yearMonthDate;
+}
+
+function extractDayOfDate(date:Date): string {
+    return date?.getDate()?.toString();
 }
 
 function extractMonthOfDate(date:Date): string{
