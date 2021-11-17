@@ -21,6 +21,7 @@ export async function consolidateMetrics() {
       await metricFn(metricName, podRelations);
       logger.info(`Finishing consolidate metric: ${metricName}`);  
     }
+    logger.info(`Finising consolidate metrics for: ${podRelations.name}`);
   } catch (err) {
     logger.error(err, `Error consolidating metrics`);
   }
