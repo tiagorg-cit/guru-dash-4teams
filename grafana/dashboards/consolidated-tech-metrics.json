@@ -1,0 +1,602 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1637245323486,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 37,
+      "options": {
+        "content": "<h1>Deployment Frequency</h1>\n\n  How often does your organization deploy code to production? This measure can be read as: \"One deploy is done on average every...\" \n  Source: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>\n           ",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.1.5",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 38,
+      "options": {
+        "content": "<h1>Cycle Time Post Dev</h1>\n\nOnce the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.1.5",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 39,
+      "options": {
+        "content": "<h1>Change Failure Rate</h1>\n\nPercentage of deploys that failed their automated execution.\n<br>\nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.1.5",
+      "type": "text"
+    },
+    {
+      "datasource": "influxdb",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "#EAB839",
+                "value": 7
+              },
+              {
+                "color": "red",
+                "value": 31
+              }
+            ]
+          },
+          "unit": "day(s)"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 4
+      },
+      "hideTimeOverride": false,
+      "id": 31,
+      "interval": null,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/^deployment_frequency\\.deploymentFrequencyValue$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.1.5",
+      "targets": [
+        {
+          "query": "SELECT deploymentFrequencyValue  FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "rawQuery": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "type": "stat"
+    },
+    {
+      "datasource": "influxdb",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "#EAB839",
+                "value": 7
+              },
+              {
+                "color": "red",
+                "value": 31
+              }
+            ]
+          },
+          "unit": "day(s)"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 8,
+        "y": 4
+      },
+      "hideTimeOverride": false,
+      "id": 40,
+      "interval": null,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/^cycle_time_post_dev\\.meanCycleTimePostDev$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.1.5",
+      "targets": [
+        {
+          "query": "SELECT meanCycleTimePostDev/(1000*60*60*24) FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "rawQuery": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "type": "stat"
+    },
+    {
+      "datasource": "influxdb",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "#EAB839",
+                "value": 30
+              },
+              {
+                "color": "red",
+                "value": 45
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 4
+      },
+      "hideTimeOverride": false,
+      "id": 41,
+      "interval": null,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "/^change_failure_rate\\.changeFailureRate$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.1.5",
+      "targets": [
+        {
+          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "rawQuery": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "type": "stat"
+    },
+    {
+      "datasource": "influxdb",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#606060",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "day(s)"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 43,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_podName",
+          "query": "SELECT deploymentFrequencyValue FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "timeFrom": "6M",
+      "timeShift": null,
+      "type": "timeseries"
+    },
+    {
+      "datasource": "influxdb",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 9
+      },
+      "id": 44,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_podName",
+          "query": "SELECT meanCycleTimePostDev FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "timeFrom": "6M",
+      "timeShift": null,
+      "type": "timeseries"
+    },
+    {
+      "datasource": "influxdb",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 45,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_podName",
+          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "timeFrom": "6M",
+      "timeShift": null,
+      "type": "timeseries"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "1",
+            "2"
+          ],
+          "value": [
+            "1",
+            "2"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Galaxy Pod Id",
+        "name": "podId",
+        "options": [
+          {
+            "selected": true,
+            "text": "1",
+            "value": "1"
+          }
+        ],
+        "query": [
+          "1",
+          "2"
+        ],
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/M",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Consolidated Tech Metrics",
+  "uid": "180U1RsGz3",
+  "version": 19
+}
