@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637270145555,
+  "iteration": 1637268081425,
   "links": [],
   "panels": [
     {
@@ -132,7 +132,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "/^deployment_frequency\\.deploymentFrequencyValue$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -141,13 +141,25 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT deploymentFrequencyValue  FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -207,7 +219,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "/^cycle_time_post_dev\\.meanCycleTimePostDev$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -216,13 +228,25 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT meanCycleTimePostDev/(1000*60*60*24) FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT mean(meanCycleTimePostDev)/(1000*60*60*24) FROM cycle_time_post_dev WHERE valueStreamId =~ /^(${vsId:pipe})$/  AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -282,7 +306,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "/^change_failure_rate\\.changeFailureRate$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -291,13 +315,25 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -327,7 +363,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -356,7 +392,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "All POD's (avg)"
+              "options": "All VS's (avg)"
             },
             "properties": [
               {
@@ -402,8 +438,8 @@
       },
       "targets": [
         {
-          "alias": "$tag_podName",
-          "query": "SELECT deploymentFrequencyValue FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "alias": "$tag_valueStreamName",
+          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -415,7 +451,7 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "All POD's (avg)",
+            "alias": "All VS's (avg)",
             "mode": "reduceRow",
             "reduce": {
               "reducer": "mean"
@@ -451,7 +487,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -480,7 +516,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "All POD's (avg)"
+              "options": "All VS's (avg)"
             },
             "properties": [
               {
@@ -526,8 +562,8 @@
       },
       "targets": [
         {
-          "alias": "$tag_podName",
-          "query": "SELECT meanCycleTimePostDev FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "alias": "$tag_valueStreamName",
+          "query": "SELECT mean(meanCycleTimePostDev) FROM cycle_time_post_dev WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -539,7 +575,7 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "All POD's (avg)",
+            "alias": "All VS's (avg)",
             "mode": "reduceRow",
             "reduce": {
               "reducer": "mean"
@@ -575,7 +611,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -604,7 +640,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "All POD's (avg)"
+              "options": "All VS's (avg)"
             },
             "properties": [
               {
@@ -650,8 +686,8 @@
       },
       "targets": [
         {
-          "alias": "$tag_podName",
-          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ GROUP BY podName",
+          "alias": "$tag_valueStreamName",
+          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -663,11 +699,12 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "All POD's (avg)",
+            "alias": "All VS's (avg)",
             "mode": "reduceRow",
             "reduce": {
               "reducer": "mean"
-            }
+            },
+            "replaceFields": false
           }
         }
       ],
@@ -689,8 +726,8 @@
         "description": null,
         "error": null,
         "hide": 0,
-        "label": "Galaxy Pod Id",
-        "name": "podId",
+        "label": "Galaxy VS Id",
+        "name": "vsId",
         "options": [
           {
             "selected": true,
@@ -709,8 +746,8 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "",
-  "title": "Consolidated Tech Metrics",
-  "uid": "180U1RsGz3",
-  "version": 4
+  "timezone": "utc",
+  "title": "Consolidated Tech Metrics by Product",
+  "uid": "190U1RsGz4",
+  "version": 3
 }
