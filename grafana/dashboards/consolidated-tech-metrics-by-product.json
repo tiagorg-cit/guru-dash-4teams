@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637592131342,
+  "iteration": 1637592534885,
   "links": [],
   "panels": [
     {
@@ -146,7 +146,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "transformations": [
         {
@@ -233,7 +233,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "transformations": [
         {
@@ -320,7 +320,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "transformations": [
         {
@@ -749,5 +749,5 @@
   "timezone": "utc",
   "title": "Consolidated Tech Metrics by Product",
   "uid": "190U1RsGz4",
-  "version": 4
+  "version": 5
 }
