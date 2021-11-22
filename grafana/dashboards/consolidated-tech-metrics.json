@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637270145555,
+  "iteration": 1637590502346,
   "links": [],
   "panels": [
     {
@@ -89,23 +89,23 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "#171717",
                 "value": null
               },
               {
-                "color": "#6ED0E0",
+                "color": "#d8e5f3",
                 "value": 0
               },
               {
-                "color": "green",
+                "color": "#abdcf7",
                 "value": 1
               },
               {
-                "color": "#EAB839",
+                "color": "#0870aa",
                 "value": 7
               },
               {
-                "color": "red",
+                "color": "#d10413",
                 "value": 31
               }
             ]
@@ -146,7 +146,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "type": "stat"
     },
@@ -164,23 +164,23 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "#171717",
                 "value": null
               },
               {
-                "color": "#6ED0E0",
+                "color": "#d8e5f3",
                 "value": 0
               },
               {
-                "color": "green",
+                "color": "#abdcf7",
                 "value": 1
               },
               {
-                "color": "#EAB839",
+                "color": "#0870aa",
                 "value": 7
               },
               {
-                "color": "red",
+                "color": "#d10413",
                 "value": 31
               }
             ]
@@ -221,7 +221,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "type": "stat"
     },
@@ -239,23 +239,23 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "#171717",
                 "value": null
               },
               {
-                "color": "#6ED0E0",
+                "color": "#d8e5f3",
                 "value": 0
               },
               {
-                "color": "green",
+                "color": "#abdcf7",
                 "value": 15
               },
               {
-                "color": "#EAB839",
+                "color": "#0870aa",
                 "value": 30
               },
               {
-                "color": "red",
+                "color": "#d10413",
                 "value": 45
               }
             ]
@@ -296,7 +296,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
+      "timeFrom": "now/M",
       "timeShift": null,
       "type": "stat"
     },
@@ -712,5 +712,5 @@
   "timezone": "",
   "title": "Consolidated Tech Metrics",
   "uid": "180U1RsGz3",
-  "version": 4
+  "version": 6
 }
