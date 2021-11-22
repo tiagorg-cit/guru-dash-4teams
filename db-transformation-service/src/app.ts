@@ -13,7 +13,6 @@ async function main() {
   }
 }
 
-main();
-/*main()
+main()
   .then(() => schedule(cron, main))
-  .catch(err => logger.error(err, `Error in scheduling execution.`));*/
+  .catch(err => logger.error(err, `Error in scheduling execution.`));

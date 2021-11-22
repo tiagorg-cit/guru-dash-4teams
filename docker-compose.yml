@@ -36,7 +36,7 @@ services:
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
-      - CRON=* * * * *
+      - CRON=0 * */3 * * *
     depends_on:
       - influxdb
       - strapi
@@ -49,7 +49,7 @@ services:
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
-      - CRON=*/180 * * * *
+      - CRON=0 0 11 * * *
     depends_on:
       - influxdb
       - strapi
