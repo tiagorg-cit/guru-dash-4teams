@@ -708,7 +708,7 @@
           "value": []
         },
         "datasource": "influxdb",
-        "definition": "select distinct(project) from deploy",
+        "definition": "select distinct(project) from build",
         "description": null,
         "error": null,
         "hide": 0,
@@ -717,7 +717,7 @@
         "multi": true,
         "name": "buildDefinitionName",
         "options": [],
-        "query": "select distinct(project) from deploy",
+        "query": "select distinct(project) from build",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
