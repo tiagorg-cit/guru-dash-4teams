@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637603228356,
+  "iteration": 1638214179045,
   "links": [],
   "panels": [
     {
@@ -709,8 +709,8 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "",
+  "timezone": "utc",
   "title": "Consolidated Tech Metrics",
   "uid": "180U1RsGz3",
-  "version": 7
+  "version": 8
 }

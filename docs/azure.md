@@ -20,12 +20,14 @@
   },
   "builds": {
     "getLastNumMonths": "Number of previous months to obtain data",
-    (*) "buildStepName": "Step name in build pipeline that should be considered as build",
-    (*) "deployStepName": "Step name in build pipeline that should be considered as deploy"
+    (*) "defaultBuildStep": "Default step name in build pipeline that should be considered as build",
+    (*) "defaultDeployStep": "Default step name in build pipeline that should be considered as deploy"
     (*) "repositories": [{
       (*) "id": "Git repository id to count build",
       (*) "type": "Git repository type to count build. Can be: Git and TfsGit",
-      (*) "name": "Git repository name." 		
+      (*) "name": "Git repository name.",
+      "buildSteps": "Array of custom step name in build pipeline that should be considered as build"
+      "deploySteps": "Array of custom step name in build pipeline that should be considered as build" 		
       }
     ]
   }

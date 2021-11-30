@@ -37,6 +37,7 @@ services:
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
       - CRON=0 * */3 * * *
+      - GALAXY_HOST=https://galaxyops-svc.ciandt.com
     depends_on:
       - influxdb
       - strapi

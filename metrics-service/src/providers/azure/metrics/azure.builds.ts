@@ -4,10 +4,6 @@ import { IAzureResponse, IAzureBuild, IAzureMetadata, IAzureTimeline, IRecordAzu
 import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
 import { logger } from '../../../shared/logger';
 
-
-let buildStepName = '';
-let deployStepName = '';
-
 /**
  * In this fork, in azure pipeline builds, build and release are presents in the same pipeline build with diferent stages
  * @param metadata 
@@ -23,8 +19,8 @@ export async function getBuilds(metadata: IAzureMetadata) {
     if(metadata?.builds){
       const metadataBuildDefinitions = metadata.builds.repositories;
       const lastNumMonths = metadata.builds.getLastNumMonths;
-      buildStepName = metadata.builds.buildStepName;
-      deployStepName = metadata.builds.deployStepName;
+      const defaultBuildStepName = metadata.builds.defaultBuildStep;
+      const defaultDeployStepName = metadata.builds.defaultDeployStep;
 
       let minDate = '';
   
@@ -38,10 +34,13 @@ export async function getBuilds(metadata: IAzureMetadata) {
         const repositoryId = metadataBuild.id;
         const repositoryName = metadataBuild.name;
         const repositoryType = metadataBuild.type;
+        const customBuildSteps: string[] = metadataBuild.buildSteps;
+        const customDeploySteps: string[] = metadataBuild.deploySteps;
         
         logger.info(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
         
-        const buildsAndReleasesResponse: IPoint[] = await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, minDate)
+        const buildsAndReleasesResponse: IPoint[] = 
+              await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, defaultBuildStepName, customBuildSteps, defaultDeployStepName, customDeploySteps ,minDate)
         buildsAndReleases.push(...buildsAndReleasesResponse);  
         
         if(stepInsert){
@@ -84,7 +83,9 @@ function predicate(build: IAzureBuild) {
 }
 
 async function getBuildsAndReleasesResponse(metadata: IAzureMetadata, 
-  repositoryId:string, repositoryType:string, minTime:string){
+  repositoryId:string, repositoryType:string, defaultBuildStepName: string, 
+  customBuildStepNames: string[], defaultDeployStepName: string, 
+  customDeployStepNames: string[], minTime:string){
     
     let continuationToken = '';
     const buildsAndReleases: IPoint[] = [];
@@ -110,9 +111,15 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
             logger.debug(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
 
             if(timelineResponse?.data?.records?.length > 0){
-              const buildsFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForBuild);
-              const releasesFiltered = timelineResponse?.data?.records?.filter(timelinePredicateForReleases);
-
+              
+              const buildsFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
+                return filterTimelineItem(timelineItem, defaultBuildStepName, customBuildStepNames);
+              });
+              
+              const releasesFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
+                return filterTimelineItem(timelineItem, defaultDeployStepName, customDeployStepNames);  
+              });
+              
               logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
               logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
 
@@ -143,16 +150,18 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     } while(continuationToken != null);
     //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
     if(metadata?.connectors?.galaxy){
-      const galaxyResponse = await sendDeploysToGalaxy(metadata?.connectors?.galaxy.apiUrl, metadata?.connectors?.galaxy.apiKey, deploysToGalaxy);
-      logger.info(`Enviado com sucesso os deploys para o client_id: ${galaxyResponse.data.client_id}`);
+      try{
+        const galaxyResponse = await sendDeploysToGalaxy(process.env.GALAXY_HOST + '/' + metadata?.connectors?.galaxy.apiUrl, metadata?.connectors?.galaxy.apiKey, deploysToGalaxy);
+        logger.info(`Send deploys to Galaxy with success for client_id: ${galaxyResponse.data.client_id}`);
+      } catch (err){
+        logger.error(`Error sending deploys to Galaxy`, err);
+      } 
     }
-    
-  
     return buildsAndReleases;
 }
 
 async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deploysToGalaxy: IGalaxyDeployments){
-  logger.info(`Enviando ${deploysToGalaxy.deployments.length} deploys para o galaxy para o gops-api-key: ${gopsApiKey}`);
+  logger.info(`Sending ${deploysToGalaxy.deployments.length} deploys to galaxy for the gops-api-key: ${gopsApiKey}`);
 
   const galaxyResponse = await axios.post<IGalaxyDeploymentsResponse>(
     gopsApiUrl, deploysToGalaxy, { headers: { 'gops-api-key': gopsApiKey } }
@@ -161,18 +170,24 @@ async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deplo
   return galaxyResponse;
 }
 
-function timelinePredicateForBuild(timelineItem: IRecordAzureTimeline) {
-   return timelineItem?.type === 'Stage' 
-      && timelineItem?.state === 'completed' 
-      && (timelineItem?.result === 'succeeded' || timelineItem?.result === 'succeededWithIssues' || timelineItem?.result === 'failed')
-      && timelineItem?.identifier === buildStepName;
+function filterTimelineItem(timelineItem: IRecordAzureTimeline, defaultStepName: string, customStepNames: string[]){
+  return timelineItem?.type === 'Stage' 
+            && timelineItem?.state === 'completed' 
+            && (timelineItem?.result === 'succeeded' || timelineItem?.result === 'succeededWithIssues' || timelineItem?.result === 'failed')
+            && filterIdentifier(timelineItem?.identifier, defaultStepName, customStepNames);
 }
 
-function timelinePredicateForReleases(timelineItem: IRecordAzureTimeline) {
-  return timelineItem?.type === 'Stage' 
-     && timelineItem?.state === 'completed' 
-     && (timelineItem?.result === 'succeeded' || timelineItem?.result === 'succeededWithIssues' || timelineItem?.result === 'failed')
-     && timelineItem?.identifier === deployStepName;
+
+function filterIdentifier(timelineIdentifier: string, defaultIdentifier: string, customIdentifiers: string[]){
+  logger.debug(`timelineIdentifier: ${timelineIdentifier} | defaultIdentifier: ${defaultIdentifier} | customIdentifiers: ${customIdentifiers}`);
+  if(customIdentifiers && customIdentifiers.length > 0){
+    for(let customIdentifier of customIdentifiers){
+      if(timelineIdentifier === customIdentifier){
+        return true;
+      }
+    }
+  }
+  return timelineIdentifier === defaultIdentifier;
 }
 
 async function callAzureBuild(key:string, organization: string, project: string, 

@@ -12,8 +12,8 @@ export interface IAzureMetadata {
 
 export interface IAzureMetadataBuilds {
   getLastNumMonths: number;
-  buildStepName: string;
-  deployStepName: string;
+  defaultBuildStep: string;
+  defaultDeployStep: string;
   repositories: IAzureMetadataBuildsRepositories[];
 }
 
@@ -21,6 +21,8 @@ export interface IAzureMetadataBuildsRepositories {
   id: string;
   type: string;
   name: string;
+  buildSteps: string[];
+  deploySteps: string[];
 }
 
 interface IAzureConnector{
