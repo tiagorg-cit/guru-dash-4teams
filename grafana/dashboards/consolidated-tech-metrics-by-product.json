@@ -19,10 +19,13 @@
     ]
   },
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637603063902,
+  "id": 15,
+  "iteration": 1638374468559,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "datasource": null,
@@ -38,7 +41,7 @@
         "content": "<h1>Deployment Frequency</h1>\n\n  How often does your organization deploy code to production? This measure can be read as: \"One deploy is done on average every...\" \n  Source: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>\n           ",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "type": "text"
     },
     {
@@ -55,7 +58,7 @@
         "content": "<h1>Cycle Time Post Dev</h1>\n\nOnce the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "type": "text"
     },
     {
@@ -72,7 +75,7 @@
         "content": "<h1>Change Failure Rate</h1>\n\nPercentage of deploys that failed their automated execution.\n<br>\nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
         "mode": "html"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "type": "text"
     },
     {
@@ -138,7 +141,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "targets": [
         {
           "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
@@ -146,7 +149,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now/M",
+      "timeFrom": "now-90d",
       "timeShift": null,
       "transformations": [
         {
@@ -225,7 +228,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "targets": [
         {
           "query": "SELECT mean(meanCycleTimePostDev)/(1000*60*60*24) FROM cycle_time_post_dev WHERE valueStreamId =~ /^(${vsId:pipe})$/  AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
@@ -233,7 +236,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now/M",
+      "timeFrom": "now-90d",
       "timeShift": null,
       "transformations": [
         {
@@ -312,7 +315,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.2.1",
       "targets": [
         {
           "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
@@ -320,7 +323,7 @@
           "refId": "A"
         }
       ],
-      "timeFrom": "now/M",
+      "timeFrom": "now-90d",
       "timeShift": null,
       "transformations": [
         {
@@ -712,14 +715,14 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 30,
+  "schemaVersion": 31,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "",
           "value": ""
         },
@@ -742,12 +745,12 @@
     ]
   },
   "time": {
-    "from": "now/M",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "utc",
   "title": "Consolidated Tech Metrics by Product",
   "uid": "190U1RsGz4",
-  "version": 7
+  "version": 4
 }
