@@ -171,7 +171,7 @@ async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deplo
 }
 
 function filterTimelineItem(timelineItem: IRecordAzureTimeline, defaultStepName: string, customStepNames: string[]){
-  return timelineItem?.type === 'Stage' 
+  return (timelineItem?.type === 'Stage' || timelineItem?.type === 'Phase')
             && timelineItem?.state === 'completed' 
             && (timelineItem?.result === 'succeeded' || timelineItem?.result === 'succeededWithIssues' || timelineItem?.result === 'failed')
             && filterIdentifier(timelineItem?.identifier, defaultStepName, customStepNames);
