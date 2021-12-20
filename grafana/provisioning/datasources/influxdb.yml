@@ -8,7 +8,7 @@ datasources:
     url: http://influxdb:8086
     user: galaxy_user
     jsonData:
-      httpMode: POST
+      httpMode: GET
     secureJsonData:
       password: Cit@2021
     
