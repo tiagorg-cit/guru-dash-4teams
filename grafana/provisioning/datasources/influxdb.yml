@@ -6,7 +6,7 @@ datasources:
     access: server
     database: devops
     url: http://influxdb:8086
-    user: galaxy_user
+    user: dev_user
     jsonData:
       httpMode: GET
     secureJsonData:
