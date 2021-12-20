@@ -10,5 +10,5 @@ datasources:
     jsonData:
       httpMode: GET
     secureJsonData:
-      password: Cit@2021
+      password: Dev@2021
     
