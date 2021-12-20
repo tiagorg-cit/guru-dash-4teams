@@ -6,8 +6,10 @@ services:
     image: influxdb:1.8.4
     environment:
       - INFLUXDB_DB=devops
+    volumes:
+      - ./influx/influxdb.conf:/etc/influxdb/influxdb.conf
     ports:
-      - 8086:8086
+      - 8086:8086  
 
   grafana:
     image: grafana/grafana
@@ -36,7 +38,7 @@ services:
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
-      - CRON=0 * */3 * * *
+      - CRON=0 0 18 * * *
       - GALAXY_HOST=https://galaxyops-svc.ciandt.com
     depends_on:
       - influxdb
@@ -54,4 +56,4 @@ services:
     depends_on:
       - influxdb
       - strapi
-    restart: always  
+    restart: always 

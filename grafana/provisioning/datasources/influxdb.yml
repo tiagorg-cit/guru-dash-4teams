@@ -6,3 +6,9 @@ datasources:
     access: server
     database: devops
     url: http://influxdb:8086
+    user: galaxy_user
+    jsonData:
+      httpMode: POST
+    secureJsonData:
+      password: Cit@2021
+    
