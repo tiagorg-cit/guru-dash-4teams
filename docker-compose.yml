@@ -56,4 +56,28 @@ services:
     depends_on:
       - influxdb
       - strapi
-    restart: always 
+    restart: always
+
+  nginx:
+    image: nginx
+    volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+    - "8080:80"
+    environment:
+    - NGINX_PORT=80    
+
+  openresty:
+    image: openresty/openresty:alpine
+    volumes:
+    - ./openresty/conf.d:/etc/nginx/conf.d
+    ports:
+    - "8080:8080"
+    environment:
+    - NGINX_PORT=80
+  
+  nginxgrafana:
+    build: ./nginxgrafana
+    ports:
+    - "8080:80"
