@@ -12,7 +12,7 @@ import { logger } from '../../../shared/logger';
 export async function getBuilds(metadata: IAzureMetadata) {
   logger.info(`Getting Build Information from Azure Devops for ${metadata.organization} - ${metadata.project}`);
   const stepInsert:Boolean = metadata?.stepInsert;
-  let influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
+  const influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
   if(metadata?.deployOnBuild){
     const buildsAndReleases: IPoint[] = [];
@@ -45,7 +45,7 @@ export async function getBuilds(metadata: IAzureMetadata) {
         
         if(stepInsert){
           logger.debug(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
-          influxDBInstance.writePoints(buildsAndReleasesResponse);
+          await influxDBInstance.writePoints(buildsAndReleasesResponse);
         }
 
         logger.info(`Finishing BUILD and RELEASE information for repository: ${repositoryName}`);
@@ -69,7 +69,7 @@ export async function getBuilds(metadata: IAzureMetadata) {
     
     if(stepInsert){
       logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
-      influxDBInstance.writePoints(response);
+      await influxDBInstance.writePoints(response);
     }
     logger.info(`Finishing BUILD and RELEASE information from Azure Devops for ${metadata.organization} - ${metadata.project}!`);
 

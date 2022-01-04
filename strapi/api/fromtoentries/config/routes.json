@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/fromtoentries",
+      "handler": "fromtoentries.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/fromtoentries/count",
+      "handler": "fromtoentries.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/fromtoentries/:id",
+      "handler": "fromtoentries.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/fromtoentries",
+      "handler": "fromtoentries.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/fromtoentries/:id",
+      "handler": "fromtoentries.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/fromtoentries/:id",
+      "handler": "fromtoentries.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

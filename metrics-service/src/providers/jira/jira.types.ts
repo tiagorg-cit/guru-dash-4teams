@@ -3,6 +3,7 @@ export interface IJiraMetadata {
     key: string;
     url: string;
     apiVersion: string;
+    stepInsert: Boolean;
     queries: IJiraQuery[]; 
 }
 

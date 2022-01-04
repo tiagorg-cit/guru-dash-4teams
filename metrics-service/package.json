@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./build/app.js",
-    "debug": "STRAPI_URL=\"http://localhost:1337\" STRAPI_USERNAME=\"api\" STRAPI_PASSWORD=\"techmetrics\" INFLUXDB=\"http://localhost:8086/devops\" GALAXY_HOST=\"https://galaxyops-service-fl45i7mn4q-ue.a.run.app\" CRON=\"* * * * *\" node --inspect -r ts-node/register ./build/app.js",
-    "start:dev": "STRAPI_URL=\"http://localhost:1337\" STRAPI_USERNAME=\"api\" STRAPI_PASSWORD=\"techmetrics\" INFLUXDB=\"http://localhost:8086/devops\" GALAXY_HOST=\"https://galaxyops-service-fl45i7mn4q-ue.a.run.app\" CRON=\"* * * * *\" tsnd ./src/app.ts"
+    "debug": "STRAPI_URL=\"http://localhost:1337\" STRAPI_USERNAME=\"api\" STRAPI_PASSWORD=\"techmetrics\" INFLUXDB=\"http://admin:Cit2021@localhost:8086/devops\" GALAXY_HOST=\"https://galaxyops-service-fl45i7mn4q-ue.a.run.app\" CRON=\"* * * * *\" node --inspect -r ts-node/register ./build/app.js",
+    "start:dev": "STRAPI_URL=\"http://localhost:1337\" STRAPI_USERNAME=\"api\" STRAPI_PASSWORD=\"techmetrics\" INFLUXDB=\"http://admin:Cit2021@localhost:8086/devops\" GALAXY_HOST=\"https://galaxyops-service-fl45i7mn4q-ue.a.run.app\" CRON=\"* * * * *\" tsnd ./src/app.ts"
   },
   "author": "",
   "license": "ISC",

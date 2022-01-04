@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fromtoentries",
+  "info": {
+    "name": "From/To Entries",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "meta": {
+      "type": "json"
+    },
+    "provider": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

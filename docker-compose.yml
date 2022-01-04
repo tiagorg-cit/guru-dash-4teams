@@ -34,7 +34,7 @@ services:
   metrics-service:
     build: ./metrics-service
     environment:
-      - INFLUXDB=http://influxdb:8086/devops
+      - INFLUXDB=http://xxx:yyyy@influxdb:8086/devops
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
@@ -48,7 +48,7 @@ services:
   db-transformation-service:
     build: ./db-transformation-service
     environment:
-      - INFLUXDB=http://influxdb:8086/devops
+      - INFLUXDB=http://xxx:yyyy@influxdb:8086/devops
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
