@@ -30,7 +30,7 @@ async function consolidateByPod() {
   const podRelations = await getPodRelations();
   logger.info(`Starting consolidate metrics for: ${podRelations.name}`);
   if(podRelations){
-    for(let metricName in metricsToConsolidateByPod){
+    for(const metricName in metricsToConsolidateByPod){
       logger.info(`Starting consolidate metric: ${metricName}`);
       const metricFn = metricsToConsolidateByPod[metricName];
       await metricFn(metricName, podRelations);
@@ -44,7 +44,7 @@ async function consolidateByProduct() {
   const galaxyFromToEntries: IGalaxyFromTo[] = await getGalaxyFromTo();
 
   if(galaxyFromToEntries && galaxyFromToEntries.length > 0){
-    for(let metricName in metricsToConsolidateByProduct){
+    for(const metricName in metricsToConsolidateByProduct){
       logger.info(`Starting consolidate metric: ${metricName}`);
       const fnByProvider = metricsToConsolidateByProduct[metricName];
       const functionAndEntry = getDatasourceFromProvider(fnByProvider, galaxyFromToEntries, metricName);

@@ -34,7 +34,7 @@ function getPoints(metricName: string, relation:IPodRelationsMetaItem, deploysPe
             Mean of Deployment frequency for this repo/pod is:
             1 DEPLOY of EACH ${deploymentFrequency} DAYS!`
         );
-        //Persist in InfluxDB the measurement with deployment frequency history data.
+        //Push to array to persist in InfluxDB the measurement with deployment frequency history data.
         pointsForThisPOD.push(mapDeploymentFrequency(
             metricName, 
             {

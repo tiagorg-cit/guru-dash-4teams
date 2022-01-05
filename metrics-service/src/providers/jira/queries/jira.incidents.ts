@@ -99,8 +99,9 @@ function getPropertiesForIncidentCustomFields(customFields:IJiraQueryCustomField
               case 'crisisstartdate':
                   timestamp = new Date(issue.fields[field.key]);    
               default:
-                  ipointTags[field.name] = issue.fields[field.key]?.value || issue.fields[field.key] || field.defaultValue || null;
-                  ipointFields[field.name] = issue.fields[field.key]?.value || issue.fields[field.key] || field.defaultValue || null;
+                  const defaultValue = getDefaultValue(issue, field);
+                  ipointTags[field.name] = defaultValue;
+                  ipointFields[field.name] = defaultValue;
                   break;
           }  
          
@@ -111,6 +112,16 @@ function getPropertiesForIncidentCustomFields(customFields:IJiraQueryCustomField
         "ipointTags": ipointTags,
         "ipointFields": ipointFields
     };
+}
+
+function getDefaultValue(issue: any, field:IJiraQueryCustomField) {
+    return issue.fields[field.key]?.value?.toUpperCase() 
+        || issue.fields[field.key]?.value 
+        || issue.fields[field.key]?.toUpperCase() 
+        || issue.fields[field.key] 
+        || field.defaultValue?.toUpperCase() 
+        || field.defaultValue 
+        || null;
 }
 
 function applyErrorType(ipointTags: any, ipointFields:any, field: IJiraQueryCustomField, issue: any){

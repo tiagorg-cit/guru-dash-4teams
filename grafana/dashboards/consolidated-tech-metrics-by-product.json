@@ -19,29 +19,45 @@
     ]
   },
   "editable": true,
-  "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 15,
-  "iteration": 1638374468559,
+  "iteration": 1641409502683,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": null,
       "description": "",
       "gridPos": {
-        "h": 4,
-        "w": 8,
+        "h": 1,
+        "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 37,
+      "id": 50,
       "options": {
-        "content": "<h1>Deployment Frequency</h1>\n\n  How often does your organization deploy code to production? This measure can be read as: \"One deploy is done on average every...\" \n  Source: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>\n           ",
+        "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
+      "title": " Velocity Metrics",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 1,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 51,
+      "options": {
+        "content": "",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.1.5",
+      "title": " Stability Metrics",
       "type": "text"
     },
     {
@@ -49,16 +65,33 @@
       "description": "",
       "gridPos": {
         "h": 4,
-        "w": 8,
-        "x": 8,
-        "y": 0
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 37,
+      "options": {
+        "content": "<h3>Deployment Frequency</h3>\n\n<span style=\"font-size: 12px;\">How often does your organization deploy code to production? This measure can be read as: \"One deploy is done on average every...\" \n  Source: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>\n           ",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.1.5",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
       },
       "id": 38,
       "options": {
-        "content": "<h1>Cycle Time Post Dev</h1>\n\nOnce the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
+        "content": "<h3>Cycle Time Post Dev</h3>\n\n<span style=\"font-size: 12px;\">Once the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>",
         "mode": "markdown"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
       "type": "text"
     },
     {
@@ -66,16 +99,33 @@
       "description": "",
       "gridPos": {
         "h": 4,
-        "w": 8,
-        "x": 16,
-        "y": 0
+        "w": 6,
+        "x": 12,
+        "y": 1
       },
       "id": 39,
       "options": {
-        "content": "<h1>Change Failure Rate</h1>\n\nPercentage of deploys that failed their automated execution.\n<br>\nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>",
+        "content": "<h3>Change Failure Rate</h3>\n\n<span style=\"font-size: 12px;\">\nPercentage of deploys that failed their automated execution.\n<br>\nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>\n</span>",
         "mode": "html"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 47,
+      "options": {
+        "content": "<h3>Mean Time to Recover</h3>\n\n<span style=\"font-size: 12px;\">\nHow long it takes an organization to recover from a failure in production?\n<br>\nSource: <a href=\"https://ab-inbev.atlassian.net\" target=\"_blank\">JIRA (BEESOE Project)</a>\n</span>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.1.5",
       "type": "text"
     },
     {
@@ -119,9 +169,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 8,
+        "w": 6,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "hideTimeOverride": false,
       "id": 31,
@@ -141,10 +191,10 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
@@ -206,9 +256,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 8,
-        "x": 8,
-        "y": 4
+        "w": 6,
+        "x": 6,
+        "y": 5
       },
       "hideTimeOverride": false,
       "id": 40,
@@ -228,10 +278,10 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(meanCycleTimePostDev)/(1000*60*60*24) FROM cycle_time_post_dev WHERE valueStreamId =~ /^(${vsId:pipe})$/  AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(meanCycleTimePostDev)/(1000*60*60*24) FROM cycle_time_post_dev WHERE productId =~ /^(${prodId:pipe})$/  AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
@@ -293,9 +343,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 8,
-        "x": 16,
-        "y": 4
+        "w": 6,
+        "x": 12,
+        "y": 5
       },
       "hideTimeOverride": false,
       "id": 41,
@@ -315,10 +365,97 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.1",
+      "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE valueStreamId =~ /^(${vsId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "rawQuery": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "now-90d",
+      "timeShift": null,
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": "influxdb",
+      "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Mean Time to Recover</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #d10413;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #0870aa;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #abdcf7;\"><strong><span style=\"color: #000000;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #d8e5f3;\"><strong><span style=\"color: #000000;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>> 7 days</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>1 - 7 day(s)</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>1 - 24 hour(s)</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>< 1 hour</em></span></td>\n</tr>\n</tbody>\n</table>",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#171717",
+                "value": null
+              },
+              {
+                "color": "#d8e5f3",
+                "value": 0
+              },
+              {
+                "color": "#abdcf7",
+                "value": 0.9
+              },
+              {
+                "color": "#0870aa",
+                "value": 24
+              },
+              {
+                "color": "#d10413",
+                "value": 168
+              }
+            ]
+          },
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "hideTimeOverride": false,
+      "id": 46,
+      "interval": null,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "8.1.5",
+      "targets": [
+        {
+          "query": "SELECT mean(mttr)/3600000 FROM mean_time_to_recover WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY productName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A"
         }
@@ -365,7 +502,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -424,9 +561,9 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
+        "w": 6,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 43,
       "options": {
@@ -442,7 +579,7 @@
       "targets": [
         {
           "alias": "$tag_valueStreamName",
-          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE productId =~ /^(${prodId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -489,7 +626,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -548,9 +685,9 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 8,
-        "y": 9
+        "w": 6,
+        "x": 6,
+        "y": 10
       },
       "id": 44,
       "options": {
@@ -566,7 +703,7 @@
       "targets": [
         {
           "alias": "$tag_valueStreamName",
-          "query": "SELECT mean(meanCycleTimePostDev) FROM cycle_time_post_dev WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(meanCycleTimePostDev) FROM cycle_time_post_dev WHERE productId =~ /^(${prodId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -613,7 +750,7 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -672,9 +809,9 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 9
+        "w": 6,
+        "x": 12,
+        "y": 10
       },
       "id": 45,
       "options": {
@@ -690,7 +827,7 @@
       "targets": [
         {
           "alias": "$tag_valueStreamName",
-          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE valueStreamId =~ /^(${vsId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE productId =~ /^(${prodId:pipe})$/ GROUP BY valueStreamName, time(1d) fill(null)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -712,10 +849,123 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": "influxdb",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "All VS's (avg)"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 10
+      },
+      "id": 48,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "$tag_productName",
+          "query": "SELECT mean(mttr) FROM mean_time_to_recover WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY productName, time(1d) fill(null)",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "timeFrom": "6M",
+      "timeShift": null,
+      "transformations": [],
+      "type": "timeseries"
     }
   ],
   "refresh": false,
-  "schemaVersion": 31,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -729,8 +979,8 @@
         "description": null,
         "error": null,
         "hide": 0,
-        "label": "Galaxy VS Id",
-        "name": "vsId",
+        "label": "Galaxy Product Id",
+        "name": "prodId",
         "options": [
           {
             "selected": true,
@@ -752,5 +1002,5 @@
   "timezone": "utc",
   "title": "Consolidated Tech Metrics by Product",
   "uid": "190U1RsGz4",
-  "version": 4
+  "version": 11
 }
