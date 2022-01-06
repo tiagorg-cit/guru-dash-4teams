@@ -1,82 +1,101 @@
 import { logger } from '../shared/logger';
 import { IPoint } from "influx";
 import { save } from "../database/database.functions";
-import { IGalaxyFromTo, IGalaxyFromToMetaJiraItem } from "../providers/strapi/strapi.types";
-import { getIncidentsByProduct } from "../database/database.incident";
-import { IIncidentData, IMeanTimeToRecoverMeasure } from "../database/database.types";
+import { getIncidentsGroupedByProduct } from "../database/database.incident";
+import { IIncidentData, IGroupedIncidentData, IMeanTimeToRecoverMeasure } from "../database/database.types";
 import { generateMonthYearDateKey } from "../shared/date_utils";
 
-export async function consolidateMeanTimeToRecoverFromJira(metricName: string, galaxyFromTo: IGalaxyFromTo){   
-    try{
-        const entries: IGalaxyFromToMetaJiraItem[] = galaxyFromTo.meta?.entries;
-        if(entries && entries.length > 0){
-            for(let entry of entries){
-                const getGroupedIncidentsByDateForProduct = 
-                    await getProductIncidentsPerMonth(entry.jiraProductName?.toUpperCase());
-                const pointsToPersist: IPoint[] = getPoints(metricName, entry, getGroupedIncidentsByDateForProduct);
-                await save(pointsToPersist);
-            }
-        }
+export async function consolidateMeanTimeToRecoverFromJira(metricName: string){   
+    try{  
+        const getGroupedIncidentsByDateForProduct = 
+            await getProductIncidentsPerMonth();
+        const pointsToPersist: IPoint[] = getPoints(metricName, getGroupedIncidentsByDateForProduct);
+        await save(pointsToPersist);
+            
     } catch (e){
-        logger.error(e, `Error consolidating metric ${metricName} for: ${galaxyFromTo.name}`);
+        logger.error(e, `Error consolidating metric ${metricName}`);
     }     
 }
 
-async function getProductIncidentsPerMonth(jiraProductName: string) {
-    const incidentsDBResponse: IIncidentData[] = await getIncidentsByProduct(jiraProductName); 
-
-    logger.debug(`Retrieving ${incidentsDBResponse?.length} incident items!`); 
-    const incidentsPerMonth:any = {};
+async function getProductIncidentsPerMonth() {
+    const incidentsDBResponse: IGroupedIncidentData[] = await getIncidentsGroupedByProduct(); 
+ 
+    const incidentsPerAllProductIds:any = {};
 
     if(incidentsDBResponse?.length > 0){
         /* Getting all incident records to this product and calculate number of 
         incidents for each month/year */
-        for(let incidentDB of incidentsDBResponse){
-            const incidentDate:Date = incidentDB.time;
-            const incidentYearMonthDate = generateMonthYearDateKey(incidentDate);
-            if(incidentsPerMonth[incidentYearMonthDate]){
-                incidentsPerMonth[incidentYearMonthDate].push(incidentDB);   
-            } else {
-                incidentsPerMonth[incidentYearMonthDate] = [incidentDB];
-            }
+        for(const incidentDB of incidentsDBResponse){
+            const groupedRows: IIncidentData[] = incidentDB.rows;
+            const productId:string = incidentDB?.tags?.productId;
+            const productName:string = incidentDB?.tags?.affectedproduct;
+            incidentsPerAllProductIds[productId] = 
+                addNewIncidentsByMonth(productName, groupedRows);
         }
     }
-    return incidentsPerMonth;
+    return incidentsPerAllProductIds;
 }
 
 /* With all incidents for all PRODUCTS separated by year/month 
     we can persist in databse, calculating the MTTR 
     using the rational: <sum of each (crisisenddate - crisisstartdate)>/<number of incidents in month> */
-function getPoints(metricName: string, entry: IGalaxyFromToMetaJiraItem, incidentsPerMonth:any): IPoint[] {
-    const pointsForThisProduct: IPoint[] = [];  
-    for(let dateKey in incidentsPerMonth){
-        const arrayOfIncidentsByMonthYear: IIncidentData[] = incidentsPerMonth[dateKey];
-        const quantityOfIncidentsByMonthYear = arrayOfIncidentsByMonthYear.length;
-        if(quantityOfIncidentsByMonthYear > 0){
-            const mttr = calculateUnavailabilityTime(arrayOfIncidentsByMonthYear) / quantityOfIncidentsByMonthYear;
-            logger.debug(`
-                FOR PRODUCT NAME: ${entry.jiraProductName}
-                With Galaxy Product ID: ${entry.galaxyProductId} 
-                Getting ${quantityOfIncidentsByMonthYear} incidents in period ${dateKey}.  
-                Mean Time to Recover for this Product for this month/year is: 
-                ${mttr}!`
-            );
-        
-            //Push to array to persist in InfluxDB the measurement with Mean Time to Recover history data.
-            pointsForThisProduct.push(mapMeanTimeToRecover(
-                metricName, 
-                {
-                "productId": entry.galaxyProductId,
-                "productName": entry.jiraProductName,
-                "numberOfIncidents": quantityOfIncidentsByMonthYear,
-                "mttr": mttr,
-                "time": new Date(dateKey)
+function getPoints(metricName: string, incidentsPerAllProductIds:any): IPoint[] {
+    const pointsForAllProducts: IPoint[] = [];  
+    if(incidentsPerAllProductIds){
+        for(const productIdKey in incidentsPerAllProductIds){
+            const incidentsPerMonth = incidentsPerAllProductIds[productIdKey];
+            const productName = incidentsPerMonth.name;
+            for(const dateKey in incidentsPerMonth){
+                if(Array.isArray(incidentsPerMonth[dateKey])){
+                    const arrayOfIncidentsByMonthYear: IIncidentData[] = incidentsPerMonth[dateKey];
+                    const quantityOfIncidentsByMonthYear = arrayOfIncidentsByMonthYear.length;
+                    if(quantityOfIncidentsByMonthYear > 0){
+                        const mttr = calculateUnavailabilityTime(arrayOfIncidentsByMonthYear) / quantityOfIncidentsByMonthYear;
+                        logger.debug(`
+                            FOR PRODUCT ID: ${productIdKey}
+                            WITH NAME: ${productName} 
+                            Getting ${quantityOfIncidentsByMonthYear} incidents in period ${dateKey}.  
+                            Mean Time to Recover for this Product for this month/year is: 
+                            ${mttr/3600000}!`
+                        );
+                    
+                        //Push to array to persist in InfluxDB the measurement with Mean Time to Recover history data.
+                        pointsForAllProducts.push(mapMeanTimeToRecover(
+                            metricName, 
+                            {
+                            "productId": productIdKey,
+                            "productName": productName,
+                            "numberOfIncidents": quantityOfIncidentsByMonthYear,
+                            "mttr": mttr,
+                            "time": new Date(dateKey)
+                            }
+                        ));
+                        
+                    }
                 }
-            ));
-            
+            }
+        }
+    }  
+    return pointsForAllProducts;
+}
+
+function addIncidentsByMonth(incidentsPerProductId:any, groupedRows: IIncidentData[]) {
+    if(groupedRows && groupedRows.length > 0){
+        for(const row of groupedRows){
+            const incidentDate:Date = row.time;
+            const incidentYearMonthDate = generateMonthYearDateKey(incidentDate);
+            if(incidentsPerProductId[incidentYearMonthDate]){
+                incidentsPerProductId[incidentYearMonthDate].push(row);   
+            } else {
+                incidentsPerProductId[incidentYearMonthDate] = [row];
+            }
         }
     }
-    return pointsForThisProduct;
+    return incidentsPerProductId;
+}
+
+function addNewIncidentsByMonth(productName:string, groupedRows: IIncidentData[]) {
+    return addIncidentsByMonth({"name": productName}, groupedRows);     
 }
 
 function calculateUnavailabilityTime(arrayOfIncidentsByMonthYear:IIncidentData[]): number {

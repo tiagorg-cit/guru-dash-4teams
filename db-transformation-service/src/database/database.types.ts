@@ -1,5 +1,17 @@
+export interface IGroupedIncidentData {
+   name: string;
+   rows: IIncidentData[];
+   tags: IGroupedTagsIncidentData;
+}
+
+export interface IGroupedTagsIncidentData {
+    productId: string;
+    affectedproduct: string;
+}
+
 export interface IIncidentData {
     time: Date;
+    productId: string;
     affectedcountries: string;
     affectedplataforms: string;
     affectedproduct: string;

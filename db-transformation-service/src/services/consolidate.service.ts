@@ -4,7 +4,6 @@ import { consolidateDeploymentFrequency } from '../consolidate_functions/deploym
 import { consolidateChangeFailureRate } from '../consolidate_functions/change_failure_rate';
 import { consolidateCycleTimePostDev } from '../consolidate_functions/cycle_time_post_dev';
 import { consolidateMeanTimeToRecoverFromJira } from '../consolidate_functions/mean_time_to_recover_jira';
-import { IGalaxyFromTo } from '../providers/strapi/strapi.types';
 
 const metricsToConsolidateByPod: Record<string, Function> = {
   deployment_frequency: consolidateDeploymentFrequency,
@@ -13,7 +12,7 @@ const metricsToConsolidateByPod: Record<string, Function> = {
 };
 
 const metricsToConsolidateByProduct: Record<string, any> = {
-  mean_time_to_recover: {"jira": consolidateMeanTimeToRecoverFromJira},
+  mean_time_to_recover: consolidateMeanTimeToRecoverFromJira,
 };
 
 
@@ -40,30 +39,11 @@ async function consolidateByPod() {
   logger.info(`Finish to consolidate metrics for: ${podRelations.name}`);
 }
 
-async function consolidateByProduct() {
-  const galaxyFromToEntries: IGalaxyFromTo[] = await getGalaxyFromTo();
-
-  if(galaxyFromToEntries && galaxyFromToEntries.length > 0){
-    for(const metricName in metricsToConsolidateByProduct){
-      logger.info(`Starting consolidate metric: ${metricName}`);
-      const fnByProvider = metricsToConsolidateByProduct[metricName];
-      const functionAndEntry = getDatasourceFromProvider(fnByProvider, galaxyFromToEntries, metricName);
-      await functionAndEntry.fn(metricName, functionAndEntry.entry);
-      logger.info(`Finishing consolidate metric: ${metricName}`);  
-    }
+async function consolidateByProduct() { 
+  for(const metricName in metricsToConsolidateByProduct){
+    logger.info(`Starting consolidate metric: ${metricName}`);
+    const fnByProvider = metricsToConsolidateByProduct[metricName];
+    await fnByProvider(metricName);
+    logger.info(`Finishing consolidate metric: ${metricName}`);  
   }
-}
-
-function getDatasourceFromProvider(fnByProvider:any, galaxyFromToEntries: IGalaxyFromTo[], metricName: string): any {
-    for(const entryProviderKey in fnByProvider){
-      for(const galaxyFromToEntry of galaxyFromToEntries){
-        if(entryProviderKey === galaxyFromToEntry.provider){
-          return {
-            "fn": fnByProvider[entryProviderKey],
-            "entry": galaxyFromToEntry
-          }
-        }
-      }
-    }
-    throw new Error(`No valid provider was found that can be used for metrics consolidation for metric: ${metricName}!`);
 }

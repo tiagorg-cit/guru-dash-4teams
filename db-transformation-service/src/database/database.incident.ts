@@ -1,10 +1,9 @@
-import { IIncidentData } from "../database/database.types";
+import { IGroupedIncidentData } from "../database/database.types";
 import { query } from "./database.functions";
 
-export async function getIncidentsByProduct(productName:string): Promise<IIncidentData[]> {
-    const incidentDBResponse:IIncidentData[] = await query(
-        `SELECT * FROM jira_incidents WHERE affectedproduct = '${productName}' 
-            ORDER BY time`
+export async function getIncidentsGroupedByProduct(): Promise<IGroupedIncidentData[]> {
+    const incidentDBResponse:any = await query(
+        `SELECT * FROM jira_incidents GROUP BY productId, affectedproduct ORDER BY time`
     );
-    return incidentDBResponse;
+    return incidentDBResponse.groups();
 }
