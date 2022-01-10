@@ -1,4 +1,4 @@
-import {ICustomMetric, IStrapiMetadata} from "./strapi.types";
+import {ICustomMetric, IStrapiMetadata, IGalaxyFromTo} from "./strapi.types";
 import axios from "axios";
 import {IPoint} from "influx";
 import {IDataSource} from "../../shared/common.types";
@@ -15,6 +15,16 @@ async function getJWT(): Promise<string> {
 export async function getDatasources(): Promise<IDataSource[]> {
   const jwt = await getJWT();
   const res = await axios.get<IDataSource[]>(process.env.STRAPI_URL! + '/datasources', {
+    headers: {
+      authorization: 'Bearer ' + jwt
+    }
+  });
+  return res.data;
+}
+
+export async function getGalaxyFromTo(): Promise<IGalaxyFromTo[]> {
+  const jwt = await getJWT();
+  const res = await axios.get<IGalaxyFromTo[]>(process.env.STRAPI_URL! + '/fromtoentries', {
     headers: {
       authorization: 'Bearer ' + jwt
     }

@@ -23,7 +23,7 @@ export async function getJiraMetrics(metadata: IJiraMetadata) {
           await influxDBInstance.writePoints(queryResults);
         }
       } catch (e) {
-        logger.error(`Error while validating data from ${query.name} query results to insert in database!`, e);
+        logger.error(e, `Error while validating data from ${query.name} query results to insert in database!`);
       } 
   }
   return result;

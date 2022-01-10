@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1641408979213,
+  "iteration": 1641584254236,
   "links": [],
   "panels": [
     {
@@ -141,7 +141,7 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT deploymentFrequencyValue  FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT deploymentFrequencyValue FROM deployment_frequency WHERE podId =~ /^(${podId:pipe})$/ ORDER BY time DESC LIMIT 3",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -217,7 +217,7 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT meanCycleTimePostDev/(1000*60*60*24) FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT meanCycleTimePostDev/(1000*60*60*24) FROM cycle_time_post_dev WHERE podId =~ /^(${podId:pipe})$/  ORDER BY time DESC LIMIT 3",
           "rawQuery": true,
           "refId": "A"
         }
@@ -292,7 +292,7 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ and $timeFilter",
+          "query": "SELECT changeFailureRate FROM change_failure_rate WHERE podId =~ /^(${podId:pipe})$/ ORDER BY time DESC LIMIT 3",
           "rawQuery": true,
           "refId": "A"
         }
@@ -713,5 +713,5 @@
   "timezone": "utc",
   "title": "Consolidated Tech Metrics",
   "uid": "180U1RsGz3",
-  "version": 10
+  "version": 11
 }

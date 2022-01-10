@@ -21,6 +21,7 @@ export interface IIncidentData {
     createdDate: Date;
     crisisenddate: Date;
     crisisstartdate: Date;
+    crisisduration: number;
     errortype: string;
     errorsubtype: string;
     issueName: string;
@@ -47,6 +48,38 @@ export interface IMeanTimeToRecoverMeasure {
     productName: string;
     numberOfIncidents: number;
     mttr: number;
+}
+
+export interface IMttrByCorrectionLevelMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    correctionLevel: string;
+    value: number;
+}
+
+export interface IMttrByTargetSquadMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    targetSquad: string;
+    value: number;
+}
+
+export interface IMttrByPlatformMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    crisisDuration: number;
+    platform: string;
+}
+
+export interface IMttrByCountryMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    crisisDuration: number;
+    country: string;
 }
 
 export interface IDeploymentFrequencyMeasure {
