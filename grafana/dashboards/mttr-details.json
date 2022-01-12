@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1641923914305,
+  "iteration": 1641923914309,
   "links": [],
   "panels": [
     {
@@ -43,7 +43,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "blocker issues"
         },
         "overrides": []
       },
@@ -63,7 +63,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^Total blocker issues$/",
+          "fields": "/^This product had$/",
           "values": false
         },
         "text": {},
@@ -72,7 +72,7 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "alias": "Total blocker issues",
+          "alias": "This product had",
           "query": "SELECT count(issueName) FROM jira_incidents WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter",
           "rawQuery": true,
           "refId": "A"
