@@ -10,13 +10,17 @@ export async function consolidate(metricName: string,
     podRelations: IPodRelations, fnQueryDeploys: QueryDeployFunction, fnMapPoints: MapDeploymentPointsFunction, countUnique: Boolean){
     try {
         if(podRelations?.meta?.relations?.length > 0){
+            const pointsToSave: IPoint[] = [];
             for(let relation of podRelations?.meta?.relations){
                 const groupedDeploysPerMonthForPOD = await getPODDeploysPerMonth(relation, fnQueryDeploys, countUnique);
                 const pointsForThisPOD: IPoint[] = 
                     fnMapPoints(metricName, relation, groupedDeploysPerMonthForPOD);
                 parsePoints(pointsForThisPOD);
+                pointsToSave.push(...pointsForThisPOD);
+            }
+            if(pointsToSave.length > 0){
                 await dropMeasurement(metricName);
-                await save(pointsForThisPOD);
+                await save(pointsToSave);
             }
         }
     } catch (err) {
