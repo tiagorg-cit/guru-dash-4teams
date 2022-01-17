@@ -1,6 +1,6 @@
 import { logger } from '../../../shared/logger';
 import { IPoint } from "influx";
-import { save } from "../../../database/database.functions";
+import { dropMeasurement, parsePoints, save } from "../../../database/database.functions";
 import { generateMonthYearDateKey } from "../../../shared/date_utils";
 import { IIncidentData, IGroupedIncidentData } from "../../../database/database.types";
 import { MttrPointFunction } from "./mttr_consolidate_types";
@@ -10,9 +10,11 @@ export async function consolidate(metricName: string, fnMapPoints: MttrPointFunc
     try{
         const getGroupedIncidentsByDateForProduct = 
             await getProductIncidentsPerMonth();
-        const pointsToPersist: IPoint[] = getPoints(metricName, getGroupedIncidentsByDateForProduct, fnMapPoints);
+        const pointsToPersist: IPoint[] = 
+            getPoints(metricName, getGroupedIncidentsByDateForProduct, fnMapPoints);
+        parsePoints(pointsToPersist);
+        await dropMeasurement(metricName);    
         await save(pointsToPersist);        
-            
     } catch (e){
         logger.error(e, `Error consolidating metric ${metricName}`);   
     }

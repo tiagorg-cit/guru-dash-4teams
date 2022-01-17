@@ -8,3 +8,13 @@ export async function save(data: IPoint[]) {
 export async function query<T>(query: string): Promise<IResults<T>> {
     return await influxInstance.query(query);
 }
+
+export function parsePoints(results: IPoint[]){
+    for(let result of results){
+        influxInstance.parsePoint(result);  
+    }
+}
+
+export async function dropMeasurement(measurementName:string) {
+    return await influxInstance.dropMeasurement(measurementName);
+}

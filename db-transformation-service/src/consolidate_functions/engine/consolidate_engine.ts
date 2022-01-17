@@ -1,7 +1,7 @@
 import { logger } from '../../shared/logger';
 import { IPoint } from "influx";
 import { IPodRelations, IPodRelationsMetaItem } from "../../providers/strapi/strapi.types";
-import { save } from "../../database/database.functions";
+import { dropMeasurement, parsePoints, save } from "../../database/database.functions";
 import { IDeployData } from "../../database/database.types";
 import { generateMonthYearDateKey, generateDayMonthYearDateKey } from "../../shared/date_utils";
 import { QueryDeployFunction, MapDeploymentPointsFunction } from "./consolidate.types";
@@ -13,7 +13,9 @@ export async function consolidate(metricName: string,
             for(let relation of podRelations?.meta?.relations){
                 const groupedDeploysPerMonthForPOD = await getPODDeploysPerMonth(relation, fnQueryDeploys, countUnique);
                 const pointsForThisPOD: IPoint[] = 
-                    fnMapPoints(metricName, relation, groupedDeploysPerMonthForPOD);  
+                    fnMapPoints(metricName, relation, groupedDeploysPerMonthForPOD);
+                parsePoints(pointsForThisPOD);
+                await dropMeasurement(metricName);
                 await save(pointsForThisPOD);
             }
         }
