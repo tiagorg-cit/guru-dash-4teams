@@ -74,7 +74,7 @@ function map(jiraQuery: IJiraQuery, issue: any): IPoint {
       priority: issue.fields?.priority?.name || "Not classified",
     };
 
-    const customFields:IJiraQueryCustomField[] = jiraQuery.customFields;
+    const customFields:IJiraQueryCustomField[] = jiraQuery?.customFields || [];
     const iPointPropertiesForCustomFields = getPropertiesForIncidentCustomFields(customFields, issue);
 
     register.timestamp = iPointPropertiesForCustomFields.timestamp;
@@ -189,13 +189,12 @@ function applyErrorType(ipointTags: any, ipointFields:any, issue: any, field: IJ
 
 function applyArrayValues(ipointTags: any, ipointFields:any, issue: any, field: IJiraQueryCustomField){
     const arrayValue: any[] = issue.fields[field.key];
-    let affectedPlataforms: any[] = [];
+    let resultArray: any[] = [];
     if(arrayValue && arrayValue.length > 0){
-        affectedPlataforms = issue.fields[field.key]?.map(function(obj: any) {
+        resultArray = issue.fields[field.key]?.map(function(obj: any) {
             return obj.value;
         });
     }
-    ipointTags[field.name] = affectedPlataforms.length > 0 ? affectedPlataforms.join(",") : field.defaultValue || null;
-    ipointFields[field.name] = affectedPlataforms.length > 0 ? affectedPlataforms.join(",") : field.defaultValue || null;
-    
+    ipointTags[field.name] = resultArray.length > 0 ? resultArray.join(",") : field.defaultValue || null;
+    ipointFields[field.name] = resultArray.length > 0 ? resultArray.join(",") : field.defaultValue || null;
 }

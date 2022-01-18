@@ -12,7 +12,8 @@ export interface IJiraQuery {
   type: string;
   description: string;
   filter: string;
-  customFields: IJiraQueryCustomField[];
+  customFields?: IJiraQueryCustomField[];
+  variables?: {}
 }
 
 export interface IJiraQueryCustomField {

@@ -62,7 +62,7 @@ async function map(url: string, apiVersion: string, authUser: string, authPass:s
       deltaTimeToResolveBug: deltaTimeToResolveBug || 0,
     };
 
-    const customFields:IJiraQueryCustomField[] = jiraQuery.customFields;
+    const customFields:IJiraQueryCustomField[] = jiraQuery?.customFields || [];
     const iPointPropertiesForCustomFields = getPropertiesForCustomFields(customFields, issue);
 
     register.tags = { ...ipointTags, ...iPointPropertiesForCustomFields.ipointTags };

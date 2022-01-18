@@ -2,6 +2,7 @@ import { IJiraQuery } from './jira.types';
 import { getJiraBugs } from "./queries/jira.bugs";
 import { getJiraHours } from "./queries/jira.hours";
 import { getJiraIncidents } from "./queries/jira.incidents";
+import { getJiraActionPlans } from "./queries/jira.actionPlans";
 
 
 import {JiraProviderFunction} from "./jira.provider.types";
@@ -12,6 +13,7 @@ const queries: Record<string, JiraProviderFunction> = {
     BUG: getJiraBugs,
     HOUR: getJiraHours,
     INCIDENT: getJiraIncidents,
+    ACTION_PLAN: getJiraActionPlans,
 };
 
 export async function jiraQueryFactory(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery) {

@@ -2,10 +2,14 @@ import { fieldsByQueryType } from './jira.queryTypes';
 import { IJiraQueryCustomField, IJiraQueryResposeSprint, IJiraQuery } from '../jira.types';
 import { logger } from '../../../shared/logger';
 
-export function getJiraQuerySearchUrl(url:String, apiVersion: string, jiraQuery: IJiraQuery){
-    let urlJiraQuery = url.concat(`/rest/api/${apiVersion}/search?jql=${encodeURI(jiraQuery.filter)}`);
+export function getJiraQuerySearchUrl(url:String, apiVersion: string, jiraQuery: IJiraQuery, param?:string){
+    let jql = encodeURI(jiraQuery.filter);
+    if(param){
+      jql = jql.replace("?", param);
+    }
+    let urlJiraQuery = url.concat(`/rest/api/${apiVersion}/search?jql=${jql}`);
     const fields = fieldsByQueryType[jiraQuery.type];
-    const customFields:IJiraQueryCustomField[] = jiraQuery.customFields;
+    const customFields:IJiraQueryCustomField[] = jiraQuery?.customFields || [];
     const hasCustomFields = customFields && customFields.length > 0;
 
     if(fields || hasCustomFields){
