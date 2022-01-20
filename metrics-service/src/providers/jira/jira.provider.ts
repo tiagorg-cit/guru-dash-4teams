@@ -7,14 +7,10 @@ const influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
 export async function getJiraMetrics(metadata: IJiraMetadata) {
   const result: IPoint[] = [];
-  const url:string = metadata.url
-  const apiVersion:string = metadata.apiVersion
-  const user:string = metadata.user
-  const password:string = metadata.key
   const stepInsert:Boolean = metadata?.stepInsert;
 
   for (const query of metadata.queries) {
-      const queryResults:IPoint[] = await jiraQueryFactory(url, apiVersion, user, password, query);
+      const queryResults:IPoint[] = await jiraQueryFactory(metadata, query);
       try {
         parsePoints(queryResults);
         result.push(...queryResults);

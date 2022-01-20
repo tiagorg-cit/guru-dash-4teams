@@ -1,11 +1,15 @@
-import { IJiraQueryCustomField, IJiraQueryResposeSprint, IJiraQuery } from '../jira.types';
+import { IJiraQueryCustomField, IJiraQueryResposeSprint, IJiraQuery, IJiraMetadata } from '../jira.types';
 import { getJiraQuerySearchUrl, getPropertiesForCustomFields } from './jira.queryUtils';
 import { getQuery } from '../jira.send';
 import { IPoint } from 'influx';
 import { logger } from '../../../shared/logger';
 
-export async function getJiraHours(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery) {
+export async function getJiraHours(metadata: IJiraMetadata, jiraQuery: IJiraQuery) {
     const result: IPoint[] = [];
+    const url = metadata.url;
+    const apiVersion = metadata.apiVersion;
+    const user = metadata.user;
+    const password = metadata.key;
 
     const urlJiraQuery = getJiraQuerySearchUrl(url, apiVersion, jiraQuery);
 
@@ -13,7 +17,7 @@ export async function getJiraHours(url: string, apiVersion: string, authUser: st
     let startAt = 0;
     let page = 1;
     while (next){
-      const queryHoursResult = await getQuery({auth: { username: authUser, password: authPass }}, urlJiraQuery.concat(`&startAt=${startAt}`));
+      const queryHoursResult = await getQuery({auth: { username: user, password: password }}, urlJiraQuery.concat(`&startAt=${startAt}`));
       
       const total = queryHoursResult.data.total;
       const maxResults = queryHoursResult.data.maxResults;
@@ -23,7 +27,7 @@ export async function getJiraHours(url: string, apiVersion: string, authUser: st
       logger.info(`Start at: ${startAt}.`);
 
       for(const issue of queryHoursResult.data.issues){
-        result.push(map(url, apiVersion, authUser, authPass, jiraQuery, issue));
+        result.push(map(url, apiVersion, user, password, jiraQuery, issue));
       }
 
       next = page < total / maxResults;

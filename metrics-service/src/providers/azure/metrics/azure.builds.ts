@@ -3,6 +3,7 @@ import { InfluxDB, IPoint } from 'influx';
 import { IAzureResponse, IAzureBuild, IAzureMetadata, IAzureTimeline, IRecordAzureTimeline } from '../azure.types';
 import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
 import { logger } from '../../../shared/logger';
+import { sendToGalaxy } from '../../../galaxy/galaxy.service'
 
 /**
  * In this fork, in azure pipeline builds, build and release are presents in the same pipeline build with diferent stages
@@ -149,25 +150,10 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
       continuationToken && logger.debug(`Getting next page continuationToken: ${continuationToken}`);
     } while(continuationToken != null);
     //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
-    if(metadata?.connectors?.galaxy){
-      try{
-        const galaxyResponse = await sendDeploysToGalaxy(process.env.GALAXY_HOST + '/' + metadata?.connectors?.galaxy.apiUrl, metadata?.connectors?.galaxy.apiKey, deploysToGalaxy);
-        logger.info(`Send deploys to Galaxy with success for client_id: ${galaxyResponse.data.client_id}`);
-      } catch (err){
-        logger.error(`Error sending deploys to Galaxy`, err);
-      } 
+    if(deploysToGalaxy.deployments?.length > 0){
+      await sendToGalaxy<IGalaxyDeploymentsResponse>(metadata, "POST", deploysToGalaxy);
     }
     return buildsAndReleases;
-}
-
-async function sendDeploysToGalaxy(gopsApiUrl: string, gopsApiKey: string, deploysToGalaxy: IGalaxyDeployments){
-  logger.info(`Sending ${deploysToGalaxy.deployments.length} deploys to galaxy for the gops-api-key: ${gopsApiKey}`);
-
-  const galaxyResponse = await axios.post<IGalaxyDeploymentsResponse>(
-    gopsApiUrl, deploysToGalaxy, { headers: { 'gops-api-key': gopsApiKey } }
-  );
-
-  return galaxyResponse;
 }
 
 function filterTimelineItem(timelineItem: IRecordAzureTimeline, defaultStepName: string, customStepNames: string[]){
@@ -176,7 +162,6 @@ function filterTimelineItem(timelineItem: IRecordAzureTimeline, defaultStepName:
             && (timelineItem?.result === 'succeeded' || timelineItem?.result === 'succeededWithIssues' || timelineItem?.result === 'failed')
             && filterIdentifier(timelineItem?.identifier, defaultStepName, customStepNames);
 }
-
 
 function filterIdentifier(timelineIdentifier: string, defaultIdentifier: string, customIdentifiers: string[]){
   logger.debug(`timelineIdentifier: ${timelineIdentifier} | defaultIdentifier: ${defaultIdentifier} | customIdentifiers: ${customIdentifiers}`);

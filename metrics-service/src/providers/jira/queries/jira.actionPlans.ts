@@ -1,32 +1,32 @@
-import { IJiraQueryCustomField, IJiraQuery } from '../jira.types';
+import { IJiraQueryCustomField, IJiraQuery, IJiraMetadata } from '../jira.types';
 import { getJiraQuerySearchUrl } from './jira.queryUtils';
 import { getQuery } from '../jira.send';
 import { IPoint } from 'influx';
 import { logger } from '../../../shared/logger';
+import { sendToGalaxy } from '../../../galaxy/galaxy.service'
+import { IGalaxyActionPlan, IGalaxyActionPlanIssue, IGalaxyActionPlanResponse } from '../../../galaxy/galaxy.types';
 
 const actionPlanProjectsVariable = "actionPlanProjects";
 
-export async function getJiraActionPlans(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery): Promise<IPoint[]> {
+export async function getJiraActionPlans(metadata: IJiraMetadata, jiraQuery: IJiraQuery): Promise<IPoint[]> {
     const result: IPoint[] = [];
     const fieldVariables: any = jiraQuery?.variables || {};
     const actionPlanProjects: string[] = fieldVariables[actionPlanProjectsVariable];
+
+    const url = metadata.url;
+    const apiVersion = metadata.apiVersion;
+    const user = metadata.user;
+    const password = metadata.key;
 
     if(jiraQuery?.filter.indexOf("?") > -1){
         if(actionPlanProjects && actionPlanProjects.length > 0){
             for(const actionPlanProjectKey of actionPlanProjects){
                 try {
-                    result.push(...await getActionPlans(
-                        getJiraQuerySearchUrl(url, apiVersion, jiraQuery, actionPlanProjectKey), 
-                        apiVersion, 
-                        authUser, 
-                        authPass, 
-                        jiraQuery
-                        )
-                    );
+                    const actions = await loadActionPlansByProject(metadata, jiraQuery, actionPlanProjectKey);
+                    result.push(...actions);
                 } catch (err) {
                     logger.error(err, `Error while getting action plans for project key: ${actionPlanProjectKey}`);
                 }
-                
             }
         } else {
             throw new Error(`Mandatory variable ${actionPlanProjectsVariable} not found for query: ${jiraQuery.name}`);
@@ -36,18 +36,63 @@ export async function getJiraActionPlans(url: string, apiVersion: string, authUs
             result.push(...await getActionPlans(
                 getJiraQuerySearchUrl(url, apiVersion, jiraQuery), 
                 apiVersion, 
-                authUser, 
-                authPass, 
+                user, 
+                password, 
                 jiraQuery
                 )
             );
         } catch (err) {
             logger.error(err, `Error while getting action plans!`);
         }
-        
     }
-        
     return result
+}
+
+export async function loadActionPlansByProject(metadata: IJiraMetadata, jiraQuery: IJiraQuery, actionPlanProjectKey: string): Promise<IPoint[]>{
+    const result: IPoint[] = [];
+    const url = metadata.url;
+    const apiVersion = metadata.apiVersion;
+    const user = metadata.user;
+    const password = metadata.key;
+
+    
+    const actionsPlansByProject: IPoint[] = await getActionPlans(
+        getJiraQuerySearchUrl(url, apiVersion, jiraQuery, actionPlanProjectKey), 
+        apiVersion, 
+        user, 
+        password, 
+        jiraQuery
+    );
+    if(actionsPlansByProject && actionsPlansByProject.length > 0){
+        result.push(...actionsPlansByProject);
+        //Sending to galaxy action plans by project
+        const issuesToGalaxy: IGalaxyActionPlan = buildIssuesToGalaxy(actionPlanProjectKey, actionsPlansByProject);
+        await sendToGalaxy<IGalaxyActionPlanResponse>(metadata, "POST", issuesToGalaxy);
+    }
+    
+    return result;
+}
+
+function buildIssuesToGalaxy(actionPlanProjectKey: string, actionsPlansByProject: IPoint[]): IGalaxyActionPlan{
+    const issuesToGalaxy: IGalaxyActionPlan  = {"project_key": actionPlanProjectKey || "", "issues": []};
+
+    if(actionsPlansByProject && actionsPlansByProject.length > 0){
+        for(const actionPlan of actionsPlansByProject){
+            issuesToGalaxy.issues.push({
+                "issue_key": actionPlan?.fields?.issueName || null,
+                "issue_type": actionPlan?.tags?.issueType || null,
+                "summary": actionPlan?.fields?.summary || null,
+                "created": actionPlan?.fields?.createdDate || null,
+                "status": actionPlan?.fields?.statusCategory || null,
+                "team_name": actionPlan?.fields?.teamname || null,
+                "capabilities": ["Version Control", "Continous Integration"] || null, //MOCKADO 
+                "updated": actionPlan?.fields?.updatedDate || null,
+                "resolved": actionPlan?.fields?.resolutionDate || null,
+                //"due_date": actionPlan?.fields?.duedate || null
+            });
+        }
+    }
+    return issuesToGalaxy;
 }
 
 async function getActionPlans(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery): Promise<IPoint[]>{
@@ -101,11 +146,13 @@ function map(jiraQuery: IJiraQuery, issue: any): IPoint {
       projectKey: issue.fields?.project?.key || "Not Found",
       issueName: issue.key || "Not classified",
       summary: issue.fields.summary || "Not classified",
+      createdDate: issue.fields?.created || "",
       updatedDate: issue.fields?.updated || "",
       resolutionDate: issue.fields?.resolutiondate || "",
       statusCategory: issue.fields?.status?.statusCategory?.name || "Not classified",
       status: issue.fields?.status?.name || "Not classified",
       priority: issue.fields?.priority?.name || "Not classified",
+      dueDate: issue.fields?.duedate || ""
     };
 
     const customFields:IJiraQueryCustomField[] = jiraQuery?.customFields || [];

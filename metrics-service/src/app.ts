@@ -1,11 +1,12 @@
 import { logger } from './shared/logger';
 import { schedule } from 'node-cron';
 import { syncMetrics } from './services/metrics.service';
+import { initServer } from "./server";
 
 const cron = process.env.CRON || '* * * * *';
 logger.info(`Scheduling next execution with expression: ${cron}`);
 
-async function main() {
+async function schedulerMetrics() {
   try {
     await syncMetrics();
   } catch (err) {
@@ -13,6 +14,8 @@ async function main() {
   }
 }
 
-main()
-  .then(() => schedule(cron, main))
+schedulerMetrics()
+  .then(() => schedule(cron, schedulerMetrics))
   .catch(err => logger.error(err, `Error in scheduling execution.`));
+
+initServer();

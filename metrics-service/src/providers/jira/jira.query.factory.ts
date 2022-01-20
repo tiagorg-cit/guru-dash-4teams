@@ -1,4 +1,4 @@
-import { IJiraQuery } from './jira.types';
+import { IJiraMetadata, IJiraQuery } from './jira.types';
 import { getJiraBugs } from "./queries/jira.bugs";
 import { getJiraHours } from "./queries/jira.hours";
 import { getJiraIncidents } from "./queries/jira.incidents";
@@ -16,7 +16,7 @@ const queries: Record<string, JiraProviderFunction> = {
     ACTION_PLAN: getJiraActionPlans,
 };
 
-export async function jiraQueryFactory(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery) {
+export async function jiraQueryFactory(metadata: IJiraMetadata, jiraQuery: IJiraQuery) {
     const jiraQueryType:string = jiraQuery.type;
     const jiraQueryName:string = jiraQuery.name;
     const jiraQueryFunction = queries[jiraQueryType];
@@ -26,7 +26,7 @@ export async function jiraQueryFactory(url: string, apiVersion: string, authUser
     }
   
     logger.info(`Executing JIRA query: ${jiraQueryName}`);
-    const queryResult:IPoint[] = await jiraQueryFunction(url, apiVersion, authUser, authPass, jiraQuery);
+    const queryResult:IPoint[] = await jiraQueryFunction(metadata, jiraQuery);
     logger.info(`Finishing JIRA query: ${jiraQueryName}`);
   
     return queryResult;

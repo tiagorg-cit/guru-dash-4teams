@@ -1,0 +1,107 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"MetricsServiceResponse": {
+				"properties": {
+					"code": {
+						"type": "number",
+						"format": "double"
+					},
+					"error": {
+						"properties": {
+							"code": {
+								"anyOf": [
+									{
+										"type": "string"
+									},
+									{
+										"type": "number",
+										"format": "double"
+									}
+								],
+								"nullable": true
+							},
+							"message": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"message"
+						],
+						"type": "object",
+						"nullable": true
+					},
+					"data": {
+						"properties": {},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "metrics-service",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/action-plan/{provider}/project/{projectKey}/reload": {
+			"post": {
+				"operationId": "ReloadActionPlansByProject",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MetricsServiceResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "provider",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "projectKey",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

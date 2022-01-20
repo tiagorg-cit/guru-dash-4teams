@@ -1,11 +1,16 @@
-import { IJiraQueryCustomField, IJiraQuery } from '../jira.types';
+import { IJiraQueryCustomField, IJiraQuery, IJiraMetadata } from '../jira.types';
 import { getJiraQuerySearchUrl, getPropertiesForCustomFields } from './jira.queryUtils';
 import { getQuery } from '../jira.send';
 import { IPoint } from 'influx';
 import { logger } from '../../../shared/logger';
 
-export async function getJiraBugs(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery) {
+export async function getJiraBugs(metadata: IJiraMetadata, jiraQuery: IJiraQuery) {
     const result: IPoint[] = [];
+
+    const url = metadata.url;
+    const apiVersion = metadata.apiVersion;
+    const user = metadata.user;
+    const password = metadata.key;
 
     const urlJiraQuery = getJiraQuerySearchUrl(url, apiVersion, jiraQuery);
 
@@ -13,7 +18,7 @@ export async function getJiraBugs(url: string, apiVersion: string, authUser: str
     let startAt = 0;
     let page = 1;
     while (next){
-      const queryBugsResult = await getQuery({auth: { username: authUser, password: authPass }}, urlJiraQuery.concat(`&startAt=${startAt}`));
+      const queryBugsResult = await getQuery({auth: { username: user, password: password }}, urlJiraQuery.concat(`&startAt=${startAt}`));
       
       const total = queryBugsResult.data.total;
       const maxResults = queryBugsResult.data.maxResults;
@@ -23,7 +28,7 @@ export async function getJiraBugs(url: string, apiVersion: string, authUser: str
       logger.info(`Start at: ${startAt}.`);
 
       for(const issue of queryBugsResult.data.issues){
-        result.push(await map(url, apiVersion, authUser, authPass, jiraQuery, issue));
+        result.push(await map(url, apiVersion, user, password, jiraQuery, issue));
       }
       
       next = page < total / maxResults;

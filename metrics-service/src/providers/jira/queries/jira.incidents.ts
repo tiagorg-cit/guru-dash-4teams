@@ -1,4 +1,4 @@
-import { IJiraQueryCustomField, IJiraQuery } from '../jira.types';
+import { IJiraQueryCustomField, IJiraQuery, IJiraMetadata } from '../jira.types';
 import { getJiraQuerySearchUrl } from './jira.queryUtils';
 import { getGalaxyFromTo } from "../../strapi/strapi.provider";
 import { generateMonthYearDateKey } from "../../../shared/data_utils";
@@ -10,8 +10,13 @@ import { logger } from '../../../shared/logger';
 let jiraGalaxyFromTo:IGalaxyFromToMeta;
 const fromToType:string = "jira";
 
-export async function getJiraIncidents(url: string, apiVersion: string, authUser: string, authPass:string, jiraQuery: IJiraQuery): Promise<IPoint[]> {
+export async function getJiraIncidents(metadata: IJiraMetadata, jiraQuery: IJiraQuery): Promise<IPoint[]> {
     const result: IPoint[] = [];
+
+    const url = metadata.url;
+    const apiVersion = metadata.apiVersion;
+    const user = metadata.user;
+    const password = metadata.key;
 
     const urlJiraQuery = getJiraQuerySearchUrl(url, apiVersion, jiraQuery);
 
@@ -21,7 +26,7 @@ export async function getJiraIncidents(url: string, apiVersion: string, authUser
     let startAt = 0;
     let page = 1;
     while (next){
-      const queryIncidentResult = await getQuery({auth: { username: authUser, password: authPass }}, urlJiraQuery.concat(`&startAt=${startAt}`));
+      const queryIncidentResult = await getQuery({auth: { username: user, password: password }}, urlJiraQuery.concat(`&startAt=${startAt}`));
       
       const total = queryIncidentResult.data.total;
       const maxResults = queryIncidentResult.data.maxResults;

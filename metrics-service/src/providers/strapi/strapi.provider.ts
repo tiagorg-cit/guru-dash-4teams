@@ -22,6 +22,24 @@ export async function getDatasources(): Promise<IDataSource[]> {
   return res.data;
 }
 
+export async function getDatasourceByProviderName(providerName: string): Promise<IDataSource[]> {
+  const result: IDataSource[] = [];
+  const jwt = await getJWT();
+  const res = await axios.get<IDataSource[]>(process.env.STRAPI_URL! + '/datasources', {
+    headers: {
+      authorization: 'Bearer ' + jwt
+    }
+  });
+  if(res && res?.data && res?.data?.length > 0){
+    for(const datasource of res.data){
+      if(datasource?.provider === providerName){
+        result.push(datasource);
+      }
+    }
+  }
+  return result;
+}
+
 export async function getGalaxyFromTo(): Promise<IGalaxyFromTo[]> {
   const jwt = await getJWT();
   const res = await axios.get<IGalaxyFromTo[]>(process.env.STRAPI_URL! + '/fromtoentries', {

@@ -19,14 +19,15 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1637241481793,
+  "id": 9,
+  "iteration": 1642707123589,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -43,7 +44,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -77,7 +81,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -127,9 +131,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Deployment frequency per week ",
       "tooltip": {
         "shared": true,
@@ -138,9 +140,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -148,29 +148,25 @@
         {
           "$$hashKey": "object:181",
           "format": "none",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:182",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -243,16 +239,24 @@
       "targets": [
         {
           "alias": "$tag_project",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "Q7YSChonk"
+          },
           "query": "select \"duration\" from deploy where $timeFilter and success = 1 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
           "rawQuery": true,
-          "refId": "A"
+          "refId": "A",
+          "resultFormat": "time_series"
         }
       ],
       "title": "# of deploy interval by project",
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -305,7 +309,10 @@
       "type": "piechart"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -360,7 +367,6 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -373,7 +379,10 @@
       "type": "row"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -419,7 +428,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "alias": "AVG",
@@ -504,7 +513,10 @@
       "type": "gauge"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -587,7 +599,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -640,7 +655,10 @@
       "type": "piechart"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -692,25 +710,187 @@
       ],
       "title": "# of failed builds by project",
       "type": "piechart"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 31,
+      "panels": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "Q7YSChonk"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "displayMode": "auto",
+                "filterable": true
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Time"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Deployment Date"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "project"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Repository Name"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "repositoryId"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Repository ID"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "duration"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Duration after Build"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "ms"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "success"
+                },
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {
+                        "options": {
+                          "0": {
+                            "index": 0,
+                            "text": "False"
+                          },
+                          "1": {
+                            "index": 1,
+                            "text": "True"
+                          }
+                        },
+                        "type": "value"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Deploy Successfully"
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 15
+          },
+          "id": 33,
+          "options": {
+            "footer": {
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "8.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "influxdb",
+                "uid": "Q7YSChonk"
+              },
+              "query": "select \"project\", \"repositoryId\", \"duration\", \"duration\" as \"raw_duration\", \"success\" from deploy where $timeFilter and project =~ /^(${buildDefinitionName:pipe})$/ ORDER BY time DESC",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "table"
+            }
+          ],
+          "title": "Dataset",
+          "type": "table"
+        }
+      ],
+      "title": "Raw data",
+      "type": "row"
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [],
           "value": []
         },
-        "datasource": "influxdb",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "Q7YSChonk"
+        },
         "definition": "select distinct(project) from build",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Build Definition Name",
@@ -734,5 +914,6 @@
   "timezone": "",
   "title": "Tech Metrics",
   "uid": "O70U1RsGz2",
-  "version": 2
+  "version": 4,
+  "weekStart": ""
 }

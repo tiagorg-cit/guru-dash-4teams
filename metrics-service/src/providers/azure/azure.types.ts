@@ -1,3 +1,5 @@
+import { IGalaxyMetadataConnector } from "../../galaxy/galaxy.types";
+
 export interface IAzureMetadata {
   organization: string;
   project: string;
@@ -25,13 +27,8 @@ export interface IAzureMetadataBuildsRepositories {
   deploySteps: string[];
 }
 
-interface IAzureConnector{
-   galaxy: IAzureConnectorGalaxy;
-}
-
-interface IAzureConnectorGalaxy {
-  apiKey: string;
-  apiUrl: string;
+interface IAzureConnector {
+   galaxy: IGalaxyMetadataConnector;
 }
 
 export interface IAzureResponse<T> {

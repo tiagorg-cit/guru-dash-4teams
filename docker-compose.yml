@@ -35,6 +35,7 @@ services:
     build: ./metrics-service
     environment:
       - INFLUXDB=http://xxx:yyyy@influxdb:8086/devops
+      - PORT=8080
       - STRAPI_URL=http://strapi:1337
       - STRAPI_USERNAME=api
       - STRAPI_PASSWORD=techmetrics
