@@ -4,7 +4,7 @@ import { getQuery } from '../jira.send';
 import { IPoint } from 'influx';
 import { logger } from '../../../shared/logger';
 import { sendToGalaxy } from '../../../galaxy/galaxy.service'
-import { IGalaxyActionPlan, IGalaxyActionPlanIssue, IGalaxyActionPlanResponse } from '../../../galaxy/galaxy.types';
+import { IGalaxyActionPlan, IGalaxyActionPlanResponse } from '../../../galaxy/galaxy.types';
 
 const actionPlanProjectsVariable = "actionPlanProjects";
 

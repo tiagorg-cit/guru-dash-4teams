@@ -88,7 +88,7 @@
       },
       "id": 38,
       "options": {
-        "content": "<h3>Cycle Time Post Dev</h3>\n\n<span style=\"font-size: 12px;\">Once the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>",
+        "content": "<h3>Lead Time for Changes</h3>\n\n<span style=\"font-size: 12px;\">Once the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>",
         "mode": "markdown"
       },
       "pluginVersion": "8.1.5",
