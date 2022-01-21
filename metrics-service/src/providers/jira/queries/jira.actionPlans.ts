@@ -87,7 +87,7 @@ function buildIssuesToGalaxy(actionPlanProjectKey: string, actionsPlansByProject
                 "team_name": actionPlan?.fields?.teamname || null, 
                 "updated": actionPlan?.fields?.updatedDate || null,
                 "resolved": actionPlan?.fields?.resolutionDate || null,
-                "due_date": actionPlan?.fields?.duedate || null
+                "due_date": actionPlan?.fields?.dueDate || null
             });
         }
     }
