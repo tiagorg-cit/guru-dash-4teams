@@ -84,11 +84,10 @@ function buildIssuesToGalaxy(actionPlanProjectKey: string, actionsPlansByProject
                 "summary": actionPlan?.fields?.summary || null,
                 "created": actionPlan?.fields?.createdDate || null,
                 "status": actionPlan?.fields?.statusCategory || null,
-                "team_name": actionPlan?.fields?.teamname || null,
-                "capabilities": ["Version Control", "Continous Integration"] || null, //MOCKADO 
+                "team_name": actionPlan?.fields?.teamname || null, 
                 "updated": actionPlan?.fields?.updatedDate || null,
                 "resolved": actionPlan?.fields?.resolutionDate || null,
-                //"due_date": actionPlan?.fields?.duedate || null
+                "due_date": actionPlan?.fields?.duedate || null
             });
         }
     }

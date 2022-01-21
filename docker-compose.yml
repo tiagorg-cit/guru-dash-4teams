@@ -41,6 +41,8 @@ services:
       - STRAPI_PASSWORD=techmetrics
       - CRON=0 0 18 * * *
       - GALAXY_HOST=https://galaxyops-svc.ciandt.com
+    ports:
+      - 8080:8080  
     depends_on:
       - influxdb
       - strapi

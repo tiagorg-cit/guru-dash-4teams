@@ -30,11 +30,11 @@ export interface IGalaxyActionPlanIssue {
       summary: string | null;
       created: any | null,
       status: string | null;
-      team_name: string | null;
-      capabilities: string[] | null;
-      updated: any | null;
-      resolved: any | null;
-      //due_date: any | null;
+      team_name?: string | null;
+      capabilities?: string[] | null;
+      updated?: any | null;
+      resolved?: any | null;
+      due_date?: any | null;
 }
 
 export interface IGalaxyActionPlanResponse {
