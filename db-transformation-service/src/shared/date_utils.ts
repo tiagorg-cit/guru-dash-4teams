@@ -30,6 +30,13 @@ export function getDaysInMonth (yearMonth: string): number {
     const spplitedDate = yearMonth.split("-");
     const year = Number.parseInt(spplitedDate[0]);
     const month = Number.parseInt(spplitedDate[1]);
-    return new Date(year, month, 0).getDate();
+    const dateKey:Date = new Date(year, month, 0);
+    
+    const dateNow: Date = new Date();
+    if(dateKey.getMonth() === dateNow.getMonth() && dateKey.getFullYear() === dateNow.getFullYear()){
+        return dateNow.getDate();
+    }
+
+    return dateKey.getDate();
 }
   
