@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 9,
-  "iteration": 1642707123589,
+  "iteration": 1643657387909,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -317,7 +317,7 @@
         "defaults": {
           "color": {
             "fixedColor": "orange",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "hideFrom": {
@@ -663,7 +663,7 @@
         "defaults": {
           "color": {
             "fixedColor": "orange",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "hideFrom": {
@@ -741,8 +741,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -914,6 +913,6 @@
   "timezone": "",
   "title": "Tech Metrics",
   "uid": "O70U1RsGz2",
-  "version": 4,
+  "version": 6,
   "weekStart": ""
 }

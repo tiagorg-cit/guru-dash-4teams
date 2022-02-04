@@ -1,9 +1,13 @@
 import { logger } from '../shared/logger';
 import { getPodRelations } from "../providers/strapi/strapi.provider";
-import { consolidateDeploymentFrequency } from '../consolidate_functions/deploymeny_frequency'
+import { consolidateDeploymentFrequency } from '../consolidate_functions/deploymeny_frequency';
+import { consolidateDeploymentFrequencyLastPeriod } from '../consolidate_functions/deploymeny_frequency_last_period';
 import { consolidateChangeFailureRate } from '../consolidate_functions/change_failure_rate';
+import { consolidateChangeFailureRateLastPeriod } from "../consolidate_functions/change_failure_rate_last_period";
 import { consolidateCycleTimePostDev } from '../consolidate_functions/cycle_time_post_dev';
+import { consolidateCycleTimePostDevLastPeriod } from "../consolidate_functions/cycle_time_post_dev_last_period";
 import { consolidateMeanTimeToRecoverFromJira } from '../consolidate_functions/mttr/mean_time_to_recover_jira';
+import { consolidateMeanTimeToRecoverFromJiraLastPeriod } from "../consolidate_functions/mttr/mean_time_to_recover_jira_last_period";
 import { consolidateMTTRByCorrectionLevel } from '../consolidate_functions/mttr/mttr_by_correction_level';
 import { consolidateMTTRByTargetSquad } from "../consolidate_functions/mttr/mttr_by_target_squad";
 import { consolidateMTTRByPlatform } from "../consolidate_functions/mttr/mttr_by_platform";
@@ -13,10 +17,14 @@ const metricsToConsolidateByPod: Record<string, Function> = {
   deployment_frequency: consolidateDeploymentFrequency,
   change_failure_rate: consolidateChangeFailureRate,
   cycle_time_post_dev: consolidateCycleTimePostDev,
+  deployment_frequency_last_period: consolidateDeploymentFrequencyLastPeriod,
+  cycle_time_post_dev_last_period: consolidateCycleTimePostDevLastPeriod,
+  change_failure_rate_last_period: consolidateChangeFailureRateLastPeriod,
 };
 
 const metricsToConsolidateByProduct: Record<string, any> = {
   mean_time_to_recover: consolidateMeanTimeToRecoverFromJira,
+  mean_time_to_recover_last_period: consolidateMeanTimeToRecoverFromJiraLastPeriod,
   mttr_by_correction_level: consolidateMTTRByCorrectionLevel,
   mttr_by_target_squad: consolidateMTTRByTargetSquad,
   mttr_by_platform: consolidateMTTRByPlatform,

@@ -9,6 +9,14 @@ export interface IGroupedTagsIncidentData {
     affectedproduct: string;
 }
 
+export interface IDistinctProductIncidentData {
+    productId?: string | null;
+}
+
+export interface IMeanCrisisDuration {
+    meanOfCrisisDuration?: number | null;
+}
+
 export interface IIncidentData {
     time: Date;
     productId: string;
@@ -48,6 +56,12 @@ export interface IMeanTimeToRecoverMeasure {
     productName: string;
     numberOfIncidents: number;
     mttr: number;
+}
+
+export interface IMeanTimeToRecoverInLastPeriodMeasure {
+    time: Date;
+    productId: string;
+    mttrInPeriod: number;
 }
 
 export interface IMttrByCorrectionLevelMeasure {
@@ -94,6 +108,45 @@ export interface IDeploymentFrequencyMeasure {
     deploymentFrequency: number; 
 }
 
+export interface IDeploymentFrequencyLastPeriodMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    valueStreamId: string;
+    valueStreamName: string;
+    podId: string;
+    podName: string;
+    numberOfUniqueDeploysInLastPeriod: number | null;
+    deploymentFrequency: number | null; 
+}
+
+export interface IDeploymentIntervalLastPeriodMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    valueStreamId: string;
+    valueStreamName: string;
+    podId: string;
+    podName: string;
+    meanOfDeploymentIntervalInLastPeriod: number | null;
+}
+
+export interface IDeploymentFrequencyLastPeriodMeasureResponse {
+    lastDeploysOnPeriod?: number | null; 
+}
+
+export interface IChangeFailureRateLastPeriodMeasureResponse {
+    failedDeploysOnPeriod?: number | null; 
+}
+
+export interface ITotalDeploysLastPeriodMeasureResponse {
+    qtDeploysInPeriod?: number | null; 
+}
+
+export interface IDeploymentIntervalLastPeriodMeasureResponse {
+    deploymentIntervalForLastDays?: number | null; 
+}
+
 export interface IChangeFailureRateMeasure {
     time: Date;
     productId: string;
@@ -106,6 +159,20 @@ export interface IChangeFailureRateMeasure {
     numberOfSucceededDeploys: number;
     numberOfFailedDeploys: number;
     changeFailureRate: number; 
+}
+
+export interface IChangeFailureRateLastPeriodMeasure {
+    time: Date;
+    productId: string;
+    productName: string;
+    valueStreamId: string;
+    valueStreamName: string;
+    podId: string;
+    podName: string;
+    qtDeploysInPeriod: number;
+    numberOfSucceededDeploysInPeriod: number;
+    numberOfFailedDeploysInPeriod: number;
+    changeFailureRateInLastPeriod: number;
 }
 
 export interface ICycleTimePostDevMeasure {
