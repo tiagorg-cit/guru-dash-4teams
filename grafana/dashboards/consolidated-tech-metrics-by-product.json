@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1641409502683,
+  "iteration": 1644242758919,
   "links": [],
   "panels": [
     {
@@ -185,7 +185,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "",
+          "fields": "/^deployment_frequency_last_period\\.deploymentFrequencyValue$/",
           "values": false
         },
         "text": {},
@@ -194,25 +194,14 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(deploymentFrequencyValue) FROM deployment_frequency WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT deploymentFrequencyValue FROM deployment_frequency_last_period WHERE productId =~ /^(${prodId:pipe})$/",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": "now-90d",
       "timeShift": null,
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "mean"
-            },
-            "replaceFields": true
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -272,7 +261,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "",
+          "fields": "/^cycle_time_post_dev_last_period\\.meanOfDeploymentIntervalInLastPeriod$/",
           "values": false
         },
         "text": {},
@@ -281,25 +270,14 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(meanCycleTimePostDev)/(1000*60*60*24) FROM cycle_time_post_dev WHERE productId =~ /^(${prodId:pipe})$/  AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT meanOfDeploymentIntervalInLastPeriod/(1000*60*60*24) FROM cycle_time_post_dev_last_period WHERE productId =~ /^(${prodId:pipe})$/",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": "now-90d",
       "timeShift": null,
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "mean"
-            },
-            "replaceFields": true
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -368,7 +346,7 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(changeFailureRate) FROM change_failure_rate WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY valueStreamName, time(1d) fill(null)",
+          "query": "SELECT changeFailureRateInLastPeriod FROM change_failure_rate_last_period  WHERE productId =~ /^(${prodId:pipe})$/",
           "rawQuery": true,
           "refId": "A"
         }
@@ -446,7 +424,7 @@
           "calcs": [
             "mean"
           ],
-          "fields": "",
+          "fields": "/^mean_time_to_recover_last_period\\.mttr$/",
           "values": false
         },
         "text": {},
@@ -455,25 +433,14 @@
       "pluginVersion": "8.1.5",
       "targets": [
         {
-          "query": "SELECT mean(mttr)/3600000 FROM mean_time_to_recover WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter GROUP BY productName, time(1d) fill(null)",
+          "query": "SELECT (mttrInPeriod/3600000) as \"mttr\" FROM mean_time_to_recover_last_period WHERE productId =~ /^(${prodId:pipe})$/ ",
           "rawQuery": true,
           "refId": "A"
         }
       ],
       "timeFrom": "now-90d",
       "timeShift": null,
-      "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "mode": "reduceRow",
-            "reduce": {
-              "reducer": "mean"
-            },
-            "replaceFields": true
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -1002,5 +969,5 @@
   "timezone": "utc",
   "title": "Consolidated Tech Metrics by Product",
   "uid": "190U1RsGz4",
-  "version": 11
+  "version": 13
 }
