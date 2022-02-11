@@ -1,0 +1,2491 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 4,
+    "iteration": 1644501334209,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 55,
+        "panels": [],
+        "title": "Overall Results",
+        "type": "row"
+      },
+      {
+        "description": "Average Maturity Level (All Capabalities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #ffffff;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 1
+        },
+        "id": 56,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand assessment_date = '$assessmentMonth'\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Total",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Technical Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 4,
+          "y": 1
+        },
+        "id": 57,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Technical Capabilities'\nand assessment_date = '$assessmentMonth'\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Technical",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Process Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #ffffff;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 8,
+          "y": 1
+        },
+        "id": 58,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Process Capabilities'\nand assessment_date = '$assessmentMonth'\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Process",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Measurement Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #ffffff;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 12,
+          "y": 1
+        },
+        "id": 59,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Measurement Capabilities'\nand assessment_date = '$assessmentMonth'\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Measurement",
+        "type": "stat"
+      },
+      {
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "fixed"
+            },
+            "decimals": 0,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 16,
+          "y": 1
+        },
+        "id": 60,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select count(distinct response_id)\nfrom pod_devops_assessment pda\nwhere 1 = 1\n--and (pod_id::text in ($podId) or vs_id::text in($vsId) or product_id::text in($productId))\nand assessment_date = '$assessmentMonth'",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Respondents",
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 13,
+        "panels": [],
+        "title": "My Results (Filtered by Layer)",
+        "type": "row"
+      },
+      {
+        "description": "Average Maturity Level (All Capabalities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 0,
+          "y": 5
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Total",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Technical Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 4,
+          "y": 5
+        },
+        "id": 5,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Technical Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Technical",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Process Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 8,
+          "y": 5
+        },
+        "id": 15,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Process Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Process",
+        "type": "stat"
+      },
+      {
+        "description": "Average Maturity Level (Measurement Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 12,
+          "y": 5
+        },
+        "id": 7,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select \n round(100.0*avg(answer_result)::decimal, 2) total\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Measurement Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Measurement",
+        "type": "stat"
+      },
+      {
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "fixed"
+            },
+            "decimals": 0,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 4,
+          "x": 16,
+          "y": 5
+        },
+        "id": 35,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "value"
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select count(distinct response_id)\nfrom pod_devops_assessment pda\nwhere 1 = 1\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\nand assessment_date = '$assessmentMonth'",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Respondents",
+        "type": "stat"
+      },
+      {
+        "description": "Maturity Level by Capability (Technical Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": -100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 16,
+          "x": 0,
+          "y": 8
+        },
+        "id": 26,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Total\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Technical Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Total\"",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Technical",
+        "type": "bargauge"
+      },
+      {
+        "description": "Maturity Level by Capability (Process Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": -100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 8,
+          "x": 16,
+          "y": 8
+        },
+        "id": 44,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "limit": 100,
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Total\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Process Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Total\"",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Process",
+        "type": "bargauge"
+      },
+      {
+        "description": "Maturity Level by Capability (Measurement Capabilities)\n<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Not Installed</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">WIP</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Installed</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-100% to -20%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>-20% to 60%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>60% to 100%</em></span></td>\n</tr>\n</tbody>\n</table>\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 2,
+            "mappings": [],
+            "max": 100,
+            "min": -100,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#E90011",
+                  "value": null
+                },
+                {
+                  "color": "#FF9213",
+                  "value": -20
+                },
+                {
+                  "color": "#003575",
+                  "value": 60
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 8,
+          "x": 16,
+          "y": 13
+        },
+        "id": 45,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "8.3.3",
+        "targets": [
+          {
+            "datasource": {
+              "type": "postgres",
+              "uid": "-WJm6Mo7k"
+            },
+            "format": "table",
+            "group": [],
+            "metricColumn": "none",
+            "rawQuery": true,
+            "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Total\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand category_name not in('Feedback')\nand capability_name not in('Feedback')\nand category_name = 'Measurement Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Total\"",
+            "refId": "A",
+            "select": [
+              [
+                {
+                  "params": [
+                    "pct_performance"
+                  ],
+                  "type": "column"
+                }
+              ]
+            ],
+            "table": "pod_four_keys_score",
+            "timeColumn": "last_release_date",
+            "timeColumnType": "timestamp",
+            "where": [
+              {
+                "name": "$__timeFilter",
+                "params": [],
+                "type": "macro"
+              }
+            ]
+          }
+        ],
+        "title": "Measurement",
+        "type": "bargauge"
+      },
+      {
+        "description": "",
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 18
+        },
+        "id": 53,
+        "options": {
+          "content": "Source: Last Capabilities Assessment.\nThis Capabilities Assessment was strongly inspired by <a href=\"https://www.devops-research.com/research.html\" target=\"_blank\">DORA Research</a>\n",
+          "mode": "markdown"
+        },
+        "pluginVersion": "8.3.3",
+        "type": "text"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 20
+        },
+        "id": 62,
+        "panels": [
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#FF9213",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#E90011"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": -20
+                    },
+                    {
+                      "color": "#003575",
+                      "value": 60
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Previous"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "#003575",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 17,
+              "w": 24,
+              "x": 0,
+              "y": 21
+            },
+            "id": 74,
+            "options": {
+              "barWidth": 0.97,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Current\",\n (\n\tselect\n\t round(100.0*avg(pdac2.answer_result)::decimal, 2)\n\tfrom pod_devops_assessment_capabilities pdac2\n\twhere 1 = 1\n\tand category_name = 'Technical Capabilities'\n\tand pdac2.capability_name = pdac.capability_name\n\tand pdac2.assessment_date = (select max(assessment_date) from pod_devops_assessment pda where pda.assessment_date < '$assessmentMonth')\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n ) \"Previous\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand capability_name not in('Feedback')\nand category_name = 'Technical Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Current\"",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_installed"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "vs_category_score",
+                "timeColumn": "evaluation_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Technical",
+            "type": "barchart"
+          },
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#FF9213",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#E90011"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": -20
+                    },
+                    {
+                      "color": "#003575",
+                      "value": 60
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Previous"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "#003575",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 10,
+              "w": 12,
+              "x": 0,
+              "y": 38
+            },
+            "id": 75,
+            "options": {
+              "barWidth": 0.97,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Current\",\n (\n\tselect\n\t round(100.0*avg(pdac2.answer_result)::decimal, 2)\n\tfrom pod_devops_assessment_capabilities pdac2\n\twhere 1 = 1\n\tand category_name = 'Process Capabilities'\n\tand pdac2.capability_name = pdac.capability_name\n\tand pdac2.assessment_date = (select max(assessment_date) from pod_devops_assessment pda where pda.assessment_date < '$assessmentMonth')\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n ) \"Previous\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand capability_name not in('Feedback')\nand category_name = 'Process Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Current\"",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_installed"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "vs_category_score",
+                "timeColumn": "evaluation_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Process",
+            "type": "barchart"
+          },
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#FF9213",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#E90011"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": -20
+                    },
+                    {
+                      "color": "#003575",
+                      "value": 60
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Previous"
+                  },
+                  "properties": [
+                    {
+                      "id": "color",
+                      "value": {
+                        "fixedColor": "#003575",
+                        "mode": "fixed"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 10,
+              "w": 12,
+              "x": 12,
+              "y": 38
+            },
+            "id": 76,
+            "options": {
+              "barWidth": 0.97,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "list",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select\n capability_name ,\n round(100.0*avg(answer_result)::decimal, 2) \"Current\",\n (\n\tselect\n\t round(100.0*avg(pdac2.answer_result)::decimal, 2)\n\tfrom pod_devops_assessment_capabilities pdac2\n\twhere 1 = 1\n\tand category_name = 'Measurement Capabilities'\n\tand pdac2.capability_name = pdac.capability_name\n\tand pdac2.assessment_date = (select max(assessment_date) from pod_devops_assessment pda where pda.assessment_date < '$assessmentMonth')\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n ) \"Previous\"\nfrom pod_devops_assessment_capabilities pdac\nwhere 1 = 1\nand capability_name not in('Feedback')\nand category_name = 'Measurement Capabilities'\nand assessment_date = '$assessmentMonth'\nand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\ngroup by capability_name\norder by \"Current\"",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_installed"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "vs_category_score",
+                "timeColumn": "evaluation_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Measurement",
+            "type": "barchart"
+          }
+        ],
+        "title": "Compare with Previous Assessments",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 21
+        },
+        "id": 48,
+        "panels": [
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#FF9213",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "decimals": 0,
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 0,
+              "y": 49
+            },
+            "id": 51,
+            "options": {
+              "barWidth": 0.5,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "hidden",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "text": {},
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "pluginVersion": "8.2.1",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select\n case \n  when tw.time_working is null or tw.time_working = '' then 'Not Informed'\n  else tw.time_working\n end time_working,\n round(100.0 * count(pdac.response_id) / \n  (select\n    case \n     when count(pdac2.response_id) = 0 then null\n     else count(pdac2.response_id)\n    end\n   from pod_devops_assessment_capabilities pdac2\n   where 1 = 1\n   and assessment_date = '$assessmentMonth'\n   and answer_type = 'YS'\n   and answer in('NA', 'N/A')\n   and (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n  )::decimal, 2)\nfrom (\n select 'Less than 3 months' time_working\n union\n select 'Less than a year' time_working\n union\n select 'A year or more' time_working\n union\n select '' time_working\n) tw\nleft join pod_devops_assessment pda\n on tw.time_working = pda.time_working \nleft join pod_devops_assessment_capabilities pdac\n on pda.response_id = pdac.response_id \n and pdac.answer_type = 'YS'\n and pdac.answer = 'NA'\n and pdac.assessment_date = '$assessmentMonth'\n and (pdac.pod_id::text in ('$podId') or pdac.vs_id::text in('$vsId') or pdac.product_id::text in('$productId'))\ngroup by\n tw.time_working\norder by\n case\n  when tw.time_working = 'Less than 3 months' then 0\n  when tw.time_working = 'Less than a year' then 10\n  when tw.time_working = 'A year or more' then 20\n  else 99\n end\n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Time Working at Company",
+            "type": "barchart"
+          },
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#003575"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": 25
+                    },
+                    {
+                      "color": "#E90011",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 9,
+              "x": 6,
+              "y": 49
+            },
+            "id": 46,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "showUnfilled": true,
+              "text": {}
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "with total_ys as (\n\tselect\n\t capability_name ,\n\t count(*) total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n  and assessment_date = '$assessmentMonth'\n  and category_name in('Technical Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n)\nselect\n capability_name ,\n round(100.0 * total_na / total_ys::decimal, 2) total\nfrom (\n\tselect\n\t capability_name ,\n\t count(*) total_na,\n\t (select total\n\t  from total_ys ys\n\t  where ys.capability_name = pdac.capability_name ) total_ys\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand category_name in('Technical Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand answer in('NA', 'N/A')\n\tand assessment_date = '$assessmentMonth'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n) total\norder by total desc\n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Technical",
+            "type": "bargauge"
+          },
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#003575"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": 25
+                    },
+                    {
+                      "color": "#E90011",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 9,
+              "x": 15,
+              "y": 49
+            },
+            "id": 49,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "showUnfilled": true,
+              "text": {}
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "with total_ys as (\n\tselect\n\t capability_name ,\n\t count(*) total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n  and assessment_date = '$assessmentMonth'\n  and category_name in('Process Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n)\nselect\n capability_name ,\n round(100.0 * total_na / total_ys::decimal, 2) total\nfrom (\n\tselect\n\t capability_name ,\n\t count(*) total_na,\n\t (select total\n\t  from total_ys ys\n\t  where ys.capability_name = pdac.capability_name ) total_ys\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand category_name in('Process Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand answer in('NA', 'N/A')\n\tand assessment_date = '$assessmentMonth'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n) total\norder by total desc\n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Process",
+            "type": "bargauge"
+          },
+          {
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "decimals": 2,
+                "mappings": [],
+                "max": 100,
+                "min": 0,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#003575"
+                    },
+                    {
+                      "color": "#FF9213",
+                      "value": 25
+                    },
+                    {
+                      "color": "#E90011",
+                      "value": 50
+                    }
+                  ]
+                },
+                "unit": "percent"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 3,
+              "w": 9,
+              "x": 15,
+              "y": 52
+            },
+            "id": 50,
+            "options": {
+              "displayMode": "basic",
+              "orientation": "horizontal",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "showUnfilled": true,
+              "text": {}
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "with total_ys as (\n\tselect\n\t capability_name ,\n\t count(*) total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n  and assessment_date = '$assessmentMonth'\n  and category_name in('Measurement Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n)\nselect\n capability_name ,\n round(100.0 * total_na / total_ys::decimal, 2) total\nfrom (\n\tselect\n\t capability_name ,\n\t count(*) total_na,\n\t (select total\n\t  from total_ys ys\n\t  where ys.capability_name = pdac.capability_name ) total_ys\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand category_name in('Measurement Capabilities')\n\tand capability_name not in('Feedback')\n\tand answer_type = 'YS'\n\tand answer in('NA', 'N/A')\n\tand assessment_date = '$assessmentMonth'\n\tand (pod_id::text in ('$podId') or vs_id::text in('$vsId') or product_id::text in('$productId'))\n\tgroup by\n\t capability_name \n) total\norder by total desc\n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Measurement",
+            "type": "bargauge"
+          }
+        ],
+        "title": "Not Applicable Answers",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 39,
+        "panels": [
+          {
+            "description": "Time Working at Company",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#b1b9be",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "decimals": 0,
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 6,
+              "x": 0,
+              "y": 56
+            },
+            "id": 40,
+            "options": {
+              "barWidth": 0.5,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "hidden",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "text": {},
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "pluginVersion": "8.2.1",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": " select\n case \n  when tw.time_working is null or tw.time_working = '' then 'Not Informed'\n  else tw.time_working\n end time_working,\n count(pda.response_id) \"Total\"\nfrom (\n select 'Less than 3 months' time_working\n union\n select 'Less than a year' time_working\n union\n select 'A year or more' time_working\n union\n select '' time_working\n) tw\nleft join pod_devops_assessment pda\n on tw.time_working = pda.time_working \n and (pda.pod_id::text in ('$podId') or pda.vs_id::text in('$vsId') or pda.product_id::text in('$productId'))\n and pda.assessment_date = '$assessmentMonth'\nwhere 1 = 1\ngroup by tw.time_working\norder by\n case\n  when tw.time_working = 'Less than 3 months' then 0\n  when tw.time_working = 'Less than a year' then 10\n  when tw.time_working = 'A year or more' then 20\n  else 99\n end\n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Time Working at Company",
+            "type": "barchart"
+          },
+          {
+            "description": "Was it your first time answering this assessment",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#b1b9be",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-red"
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 6,
+              "x": 6,
+              "y": 56
+            },
+            "id": 69,
+            "options": {
+              "barWidth": 0.5,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "hidden",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "text": {},
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select ans.answer, coalesce(pdac.total, 0) \"Total\"\nfrom (\n\tselect distinct answer \n\tfrom pod_devops_assessment_capabilities pdac \n\twhere question = 'Was it your first time answering this assessment'\n\tand answer is not null and answer <> '' and answer <> '0'\n\tunion\n\tselect 'Not Informed' answer\n) ans\nleft join (\n\tselect\n\t case\n\t  when pdac.answer is null then 'Not Informed'\n\t  else pdac.answer\n\t end answer, \n\t count(*) Total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand (pdac.pod_id::text in ('$podId') or pdac.vs_id::text in('$vsId') or pdac.product_id::text in('$productId'))\n\tand pdac.assessment_date = '$assessmentMonth'\n\tand pdac.question = 'Was it your first time answering this assessment'\n\tgroup by pdac.answer\n) pdac\non ans.answer = pdac.answer \n",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "Was it your first time answering this assessment",
+            "type": "barchart"
+          },
+          {
+            "description": "I Have a Good Knowledge About DevOps",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#b1b9be",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-red"
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 6,
+              "x": 12,
+              "y": 56
+            },
+            "id": 36,
+            "options": {
+              "barWidth": 0.5,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "hidden",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "text": {},
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select ans.answer, coalesce(pdac.total, 0) \"Total\"\nfrom (\n\tselect distinct answer \n\tfrom pod_devops_assessment_capabilities pdac \n\twhere question = 'I have a good knowledge about DevOps'\n\tand answer is not null and answer <> ''\n\tunion\n\tselect 'Not Informed' answer\n) ans\nleft join (\n\tselect\n\t case\n\t  when pdac.answer is null then 'Not Informed'\n\t  else pdac.answer\n\t end answer, \n\t count(*) Total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand (pdac.pod_id::text in ('$podId') or pdac.vs_id::text in('$vsId') or pdac.product_id::text in('$productId'))\n\tand pdac.assessment_date = '$assessmentMonth'\n\tand pdac.question = 'I have a good knowledge about DevOps'\n\tgroup by pdac.answer\n) pdac\non ans.answer = pdac.answer \norder by\n case\n  when ans.answer = 'Strongly disagree' then 10\n  when ans.answer = 'Disagree' then 20\n  when ans.answer = 'Neutral' then 30\n  when ans.answer = 'Agree' then 40\n  else 50\n end",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "I Have a Good Knowledge About DevOps",
+            "type": "barchart"
+          },
+          {
+            "description": "I Had No Difficulties Answering this Questionnaire",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "#b1b9be",
+                  "mode": "fixed"
+                },
+                "custom": {
+                  "axisLabel": "",
+                  "axisPlacement": "hidden",
+                  "axisSoftMin": 0,
+                  "fillOpacity": 80,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineWidth": 1
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "semi-dark-red"
+                    }
+                  ]
+                },
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 6,
+              "x": 18,
+              "y": 56
+            },
+            "id": 37,
+            "options": {
+              "barWidth": 0.5,
+              "groupWidth": 0.7,
+              "legend": {
+                "calcs": [],
+                "displayMode": "hidden",
+                "placement": "bottom"
+              },
+              "orientation": "horizontal",
+              "showValue": "auto",
+              "stacking": "none",
+              "text": {},
+              "tooltip": {
+                "mode": "single"
+              },
+              "xTickLabelRotation": 0
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "postgres",
+                  "uid": "-WJm6Mo7k"
+                },
+                "format": "table",
+                "group": [],
+                "metricColumn": "none",
+                "rawQuery": true,
+                "rawSql": "select ans.answer, coalesce(pdac.total, 0) \"Total\"\nfrom (\n\tselect distinct answer \n\tfrom pod_devops_assessment_capabilities pdac \n\twhere question = 'I had no difficulties answering this questionnaire'\n\tand answer is not null and answer <> '' and answer <> '0'\n\tunion\n\tselect 'Not Informed' answer\n) ans\nleft join (\n\tselect\n\t case\n\t  when pdac.answer is null then 'Not Informed'\n\t  else pdac.answer\n\t end answer, \n\t count(*) Total\n\tfrom pod_devops_assessment_capabilities pdac\n\twhere 1 = 1\n\tand (pdac.pod_id::text in ('$podId') or pdac.vs_id::text in('$vsId') or pdac.product_id::text in('$productId'))\n\tand pdac.assessment_date = '$assessmentMonth'\n\tand pdac.question = 'I had no difficulties answering this questionnaire'\n\tgroup by pdac.answer\n) pdac\non ans.answer = pdac.answer \norder by\n case\n  when ans.answer = 'Strongly disagree' then 10\n  when ans.answer = 'Disagree' then 20\n  when ans.answer = 'Neutral' then 30\n  when ans.answer = 'Agree' then 40\n  else 50\n end",
+                "refId": "A",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "pct_performance"
+                      ],
+                      "type": "column"
+                    }
+                  ]
+                ],
+                "table": "pod_four_keys_score",
+                "timeColumn": "last_release_date",
+                "timeColumnType": "timestamp",
+                "where": [
+                  {
+                    "name": "$__timeFilter",
+                    "params": [],
+                    "type": "macro"
+                  }
+                ]
+              }
+            ],
+            "title": "I Had No Difficulties Answering this Questionnaire",
+            "type": "barchart"
+          }
+        ],
+        "title": "Respondents Profile",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 34,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "2021-12-01",
+            "value": "2021-12-01"
+          },
+          "definition": "select distinct to_char(assessment_date, 'YYYY-MM-DD') from pod_devops_assessment pda order by to_char(assessment_date, 'YYYY-MM-DD') desc",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Assessment Month",
+          "multi": false,
+          "name": "assessmentMonth",
+          "options": [],
+          "query": "select distinct to_char(assessment_date, 'YYYY-MM-DD') from pod_devops_assessment pda order by to_char(assessment_date, 'YYYY-MM-DD') desc",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "7abc175c-4399-4ac3-9ce8-39612d84b98b",
+            "value": "7abc175c-4399-4ac3-9ce8-39612d84b98b"
+          },
+          "hide": 0,
+          "label": "Product Id",
+          "name": "productId",
+          "options": [
+            {
+              "selected": true,
+              "text": "7abc175c-4399-4ac3-9ce8-39612d84b98b",
+              "value": "7abc175c-4399-4ac3-9ce8-39612d84b98b"
+            }
+          ],
+          "query": "7abc175c-4399-4ac3-9ce8-39612d84b98b",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+            "value": "dd316e6a-ddde-4143-8681-e1319ba5f54d"
+          },
+          "hide": 0,
+          "label": "Value Stream Id",
+          "name": "vsId",
+          "options": [
+            {
+              "selected": true,
+              "text": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+              "value": "dd316e6a-ddde-4143-8681-e1319ba5f54d"
+            }
+          ],
+          "query": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+          "skipUrlSync": false,
+          "type": "textbox"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+            "value": "dd316e6a-ddde-4143-8681-e1319ba5f54d"
+          },
+          "hide": 0,
+          "label": "Pod Id",
+          "name": "podId",
+          "options": [
+            {
+              "selected": true,
+              "text": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+              "value": "dd316e6a-ddde-4143-8681-e1319ba5f54d"
+            }
+          ],
+          "query": "dd316e6a-ddde-4143-8681-e1319ba5f54d",
+          "skipUrlSync": false,
+          "type": "textbox"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Devops Assessment",
+    "uid": "SCih-s5nk",
+    "version": 53,
+    "weekStart": ""
+  }
