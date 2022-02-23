@@ -37,11 +37,12 @@ export async function getBuilds(metadata: IAzureMetadata) {
         const repositoryType = metadataBuild.type;
         const customBuildSteps: string[] = metadataBuild.buildSteps;
         const customDeploySteps: string[] = metadataBuild.deploySteps;
+        const deployBranch: string | undefined = metadataBuild.deployBranch;
         
         logger.info(`Getting BUILD and RELEASE information for repository: ${repositoryName}`);
         
         const buildsAndReleasesResponse: IPoint[] = 
-              await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, defaultBuildStepName, customBuildSteps, defaultDeployStepName, customDeploySteps ,minDate)
+              await getBuildsAndReleasesResponse(metadata, repositoryId, repositoryType, defaultBuildStepName, customBuildSteps, defaultDeployStepName, customDeploySteps, deployBranch, minDate)
         buildsAndReleases.push(...buildsAndReleasesResponse);  
         
         if(stepInsert){
@@ -86,7 +87,7 @@ function predicate(build: IAzureBuild) {
 async function getBuildsAndReleasesResponse(metadata: IAzureMetadata, 
   repositoryId:string, repositoryType:string, defaultBuildStepName: string, 
   customBuildStepNames: string[], defaultDeployStepName: string, 
-  customDeployStepNames: string[], minTime:string){
+  customDeployStepNames: string[], deployBranch:string | undefined, minTime:string){
     
     let continuationToken = '';
     const buildsAndReleases: IPoint[] = [];
@@ -116,10 +117,20 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
               const buildsFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
                 return filterTimelineItem(timelineItem, defaultBuildStepName, customBuildStepNames);
               });
-              
-              const releasesFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
-                return filterTimelineItem(timelineItem, defaultDeployStepName, customDeployStepNames);  
-              });
+
+              let releasesFiltered: IRecordAzureTimeline[] = [];
+
+              if(deployBranch){
+                if(deployBranch === buildItem.sourceBranch){
+                  releasesFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
+                    return filterTimelineItem(timelineItem, defaultDeployStepName, customDeployStepNames);  
+                  });
+                }
+              } else {
+                releasesFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
+                  return filterTimelineItem(timelineItem, defaultDeployStepName, customDeployStepNames);  
+                });
+              }
               
               logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${buildsFiltered?.length} filtered items by BUILD filter predicates!`);
               logger.debug(`The timeline of build number: ${buildItem?.buildNumber} returned: ${releasesFiltered?.length} filtered items by RELEASE filter predicates!`);
@@ -134,8 +145,8 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
                   deploysToGalaxy.deployments.push({
                     "project": buildItem?.repository?.name,
                     "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
-                    "duration": releaseFiltered.result === 'succeeded'? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
-                    "success": releaseFiltered.result === 'succeeded'
+                    "duration":  releaseFiltered.finishTime ? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
+                    "success": releaseFiltered.result === 'succeeded' || releaseFiltered.result === 'succeededWithIssues'
                   });
                 }
               }
@@ -214,8 +225,8 @@ function mapReleases(repositoryId: string, repositoryName:string, build: IRecord
       project: repositoryName,
     },
     fields: { 
-      duration: release.result === 'succeeded' ? new Date(release.finishTime).getTime() - new Date(build.finishTime).getTime() : 0,
-      success: release.result === 'succeeded' ? 1 : 0,
+      duration: release.finishTime ? new Date(release.finishTime).getTime() - new Date(build.finishTime).getTime() : 0,
+      success: release.result === 'succeeded' || release.result === 'succeededWithIssues' ? 1 : 0,
       project: repositoryName,
       repositoryId: repositoryId
     },

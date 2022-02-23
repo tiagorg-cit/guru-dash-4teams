@@ -25,6 +25,7 @@ export interface IAzureMetadataBuildsRepositories {
   name: string;
   buildSteps: string[];
   deploySteps: string[];
+  deployBranch?: string;
 }
 
 interface IAzureConnector {
@@ -53,6 +54,7 @@ export interface IAzureBuild {
   result: string;
   startTime: string;
   finishTime: string;
+  sourceBranch: string;
 }
 
 export interface IAzureTimeline {
