@@ -19,13 +19,14 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1644242758919,
+  "id": 7,
+  "iteration": 1645635830333,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 1,
@@ -38,12 +39,11 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "title": " Velocity Metrics",
       "type": "text"
     },
     {
-      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 1,
@@ -56,12 +56,11 @@
         "content": "",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "title": " Stability Metrics",
       "type": "text"
     },
     {
-      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 4,
@@ -74,12 +73,11 @@
         "content": "<h3>Deployment Frequency</h3>\n\n<span style=\"font-size: 12px;\">How often does your organization deploy code to production? This measure can be read as: \"One deploy is done on average every...\" \n  Source: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>\n           ",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "type": "text"
     },
     {
-      "datasource": null,
-      "description": "",
+      "description": "(Adaptation needed for BEES Scenario, we are working to improve that metric for you)",
       "gridPos": {
         "h": 4,
         "w": 6,
@@ -88,14 +86,13 @@
       },
       "id": 38,
       "options": {
-        "content": "<h3>Lead Time for Changes</h3>\n\n<span style=\"font-size: 12px;\">Once the code is delivered by the development team, on average, how long does it take for that code to go into production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>",
+        "content": "<h3>Lead Time for Changes</h3>\n\n<span style=\"font-size: 12px;\">How long does it take to go from code builded to code successfully running in production? \nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a></span>",
         "mode": "markdown"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "type": "text"
     },
     {
-      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 4,
@@ -108,11 +105,10 @@
         "content": "<h3>Change Failure Rate</h3>\n\n<span style=\"font-size: 12px;\">\nPercentage of deploys that failed their automated execution.\n<br>\nSource: <a href=\"https://dev.azure.com/ab-inbev/GHQ_B2B_Delta\" target=\"_blank\">Azure DevOps (Pipelines)</a>\n</span>",
         "mode": "html"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "type": "text"
     },
     {
-      "datasource": null,
       "description": "",
       "gridPos": {
         "h": 4,
@@ -125,11 +121,14 @@
         "content": "<h3>Mean Time to Recover</h3>\n\n<span style=\"font-size: 12px;\">\nHow long it takes an organization to recover from a failure in production?\n<br>\nSource: <a href=\"https://ab-inbev.atlassian.net\" target=\"_blank\">JIRA (BEESOE Project)</a>\n</span>",
         "mode": "html"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "type": "text"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Deployment Frequency</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per month and once every six months</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per week and once per month</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per day and once per week</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>On demand (multiple deploys per day)</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
         "defaults": {
@@ -175,7 +174,6 @@
       },
       "hideTimeOverride": false,
       "id": 31,
-      "interval": null,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -191,7 +189,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "query": "SELECT deploymentFrequencyValue FROM deployment_frequency_last_period WHERE productId =~ /^(${prodId:pipe})$/",
@@ -200,12 +198,14 @@
         }
       ],
       "timeFrom": "now-90d",
-      "timeShift": null,
       "transformations": [],
       "type": "stat"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Cycle Time Post Dev</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one month and six months</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one week and one month</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one day and one week</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Less than one day</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
         "defaults": {
@@ -251,7 +251,6 @@
       },
       "hideTimeOverride": false,
       "id": 40,
-      "interval": null,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -267,7 +266,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "query": "SELECT meanOfDeploymentIntervalInLastPeriod/(1000*60*60*24) FROM cycle_time_post_dev_last_period WHERE productId =~ /^(${prodId:pipe})$/",
@@ -276,12 +275,14 @@
         }
       ],
       "timeFrom": "now-90d",
-      "timeShift": null,
       "transformations": [],
       "type": "stat"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Change Failure Rate</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>46% +</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>45% - 31%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>30% - 16%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>15% - 0%</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
         "defaults": {
@@ -327,7 +328,6 @@
       },
       "hideTimeOverride": false,
       "id": 41,
-      "interval": null,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -343,7 +343,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "query": "SELECT changeFailureRateInLastPeriod FROM change_failure_rate_last_period  WHERE productId =~ /^(${prodId:pipe})$/",
@@ -352,7 +352,6 @@
         }
       ],
       "timeFrom": "now-90d",
-      "timeShift": null,
       "transformations": [
         {
           "id": "calculateField",
@@ -368,7 +367,10 @@
       "type": "stat"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Mean Time to Recover</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>> 7 days</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>1 - 7 day(s)</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>1 - 24 hour(s)</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>< 1 hour</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
         "defaults": {
@@ -414,7 +416,6 @@
       },
       "hideTimeOverride": false,
       "id": 46,
-      "interval": null,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -430,7 +431,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "query": "SELECT (mttrInPeriod/3600000) as \"mttr\" FROM mean_time_to_recover_last_period WHERE productId =~ /^(${prodId:pipe})$/ ",
@@ -439,12 +440,14 @@
         }
       ],
       "timeFrom": "now-90d",
-      "timeShift": null,
       "transformations": [],
       "type": "stat"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -540,7 +543,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -553,7 +557,6 @@
         }
       ],
       "timeFrom": "6M",
-      "timeShift": null,
       "transformations": [
         {
           "id": "calculateField",
@@ -569,7 +572,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -664,7 +670,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -677,7 +684,6 @@
         }
       ],
       "timeFrom": "6M",
-      "timeShift": null,
       "transformations": [
         {
           "id": "calculateField",
@@ -693,7 +699,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -788,7 +797,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -801,7 +811,6 @@
         }
       ],
       "timeFrom": "6M",
-      "timeShift": null,
       "transformations": [
         {
           "id": "calculateField",
@@ -818,7 +827,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "influxdb",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Q7YSChonk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -913,7 +925,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -926,13 +939,12 @@
         }
       ],
       "timeFrom": "6M",
-      "timeShift": null,
       "transformations": [],
       "type": "timeseries"
     }
   ],
   "refresh": false,
-  "schemaVersion": 30,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -943,8 +955,6 @@
           "text": "",
           "value": ""
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Galaxy Product Id",
         "name": "prodId",
@@ -969,5 +979,6 @@
   "timezone": "utc",
   "title": "Consolidated Tech Metrics by Product",
   "uid": "190U1RsGz4",
-  "version": 13
+  "version": 6,
+  "weekStart": ""
 }
