@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { IPoint } from 'influx';
+import { InfluxDB, IPoint } from 'influx';
 import { IBambooBuild, IBambooPlanList, IBambooProject, IBambooMetadata } from '../bamboo.types';
 import { logger } from '../../../shared/logger';
 import { getQuery } from '../bamboo.send';
@@ -12,6 +11,8 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
   const url:string = metadata.bambooServer
   const authUser:string = metadata.user
   const authPass:string = metadata.key
+  const stepInsert:boolean = metadata.stepInsert || false;
+  const influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
   const hasProjects = listProjects && listProjects.length > 0;
   const result: IPoint[] = [];
@@ -59,11 +60,15 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
             const getBuilds = await getQuery({auth: { username: authUser, password: authPass }},
             urlBambooBuilds)
             .then((response) => { return response.data; });
-
-            result.push(await map(getBuilds));
             
-          }
-          else{
+            const iPointBuild:IPoint = map(getBuilds);
+            result.push(iPointBuild);
+            
+            if(stepInsert){
+              logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+              await influxDBInstance.writePoints([iPointBuild]);
+            }
+          }else{
               logger.info(`Plan ${planObjectItem.key} without builds`);
           }          
         }
@@ -90,6 +95,8 @@ function map(build: IBambooBuild): IPoint {
   const ipointFields:any = {
     duration: new Date(build.buildCompletedTime).getTime() - new Date(build.buildStartedTime).getTime(),
     success: build.buildState === 'Successful' ? 1 : 0,
+    project: build.plan?.shortName,
+    repositoryId: build.plan?.key
   };
 
   register.tags = { ...ipointTags };

@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { IPoint } from 'influx';
+import { InfluxDB, IPoint } from 'influx';
 import { IBambooPlanList, IBambooProject, IBambooMetadata,IBambooRelease,IBambooReleaseProjet } from '../bamboo.types';
 import { logger } from '../../../shared/logger';
 import { getQuery } from '../bamboo.send';
+
 
 
 //Get Plankeys for Project
@@ -37,10 +37,9 @@ export async function getPlanKey(url: string,authUser:string,authPass:string,lis
       const planObject = getPlans.data.plans.plan;
 
       if (planObject){
-        for  (let i=0; i < planObject.length; i++){
-         
+        for  (let i=0; i < planObject.length; i++){         
           let planObjectItem:IBambooPlanList = planObject[i];
-          result.push(planObjectItem.key)
+          result.push(planObjectItem)
 
         }
       }
@@ -55,15 +54,17 @@ export async function getReleases(metadata: IBambooMetadata) {
   const url:string = metadata.bambooServer
   const authUser:string = metadata.user
   const authPass:string = metadata.key
+  const stepInsert:boolean = metadata.stepInsert || false;
+  const influxDBInstance: InfluxDB = new InfluxDB(process.env.INFLUXDB!);
 
   const result:any[] = [];
   const listOfPlanKeys = await getPlanKey(url,authUser, authPass ,metadata.projects);
 
   for  (let i=0; i < listOfPlanKeys.length; i++){
 
-    const plankeyID:IBambooReleaseProjet = listOfPlanKeys[i];
+    const plan:IBambooPlanList = listOfPlanKeys[i];
 
-    const urlBambooDeployExists = url.concat(`/rest/api/latest/deploy/project/forPlan?planKey=${plankeyID}`);
+    const urlBambooDeployExists = url.concat(`/rest/api/latest/deploy/project/forPlan?planKey=${plan.key}`);
     const getDeploymentsExists = await getQuery({auth: { username: authUser, password: authPass }},
       urlBambooDeployExists)
     .then((response) => { return response.data; });
@@ -92,15 +93,19 @@ export async function getReleases(metadata: IBambooMetadata) {
           .then((response) => { return response; });
        
           const listOFDeployments = getDeploymentsResult.data;
-  
+          const pointsToPersist: IPoint[] = [];
           for  (let i=0; i < listOFDeployments.size; i++){
             const deployResultList:IBambooRelease = listOFDeployments.results[i];
             if (deployResultList){
-              result.push(await map(deployResultList));
-            }
-            
-            
+              const point:IPoint = map(deployResultList, plan);
+              pointsToPersist.push(point);
+            }            
           }
+          if(stepInsert){
+            logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+            await influxDBInstance.writePoints(pointsToPersist);
+          }
+          result.push(pointsToPersist);
         }
       }
     }
@@ -110,7 +115,7 @@ export async function getReleases(metadata: IBambooMetadata) {
   
 }
 
-function map(deploy: IBambooRelease): IPoint {
+function map(deploy: IBambooRelease, plan: IBambooPlanList): IPoint {
   const createdDate:Date = new Date(deploy.startedDate);
 
   let register:IPoint =  {
@@ -119,12 +124,14 @@ function map(deploy: IBambooRelease): IPoint {
   };
 
   const ipointTags:any = {
-    project: deploy.deploymentVersionName
+    project: plan.shortName
   };
 
   const ipointFields:any = {
     duration: new Date(deploy.finishedDate).getTime() - new Date(deploy.startedDate).getTime(),
     success: deploy.deploymentState === 'SUCCESS' ? 1 : 0,
+    project: plan.shortName,
+    repositoryId: plan.key
   };
 
   register.tags = { ...ipointTags };
