@@ -46,7 +46,7 @@
       "dashes": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -165,7 +165,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -241,7 +241,7 @@
           "alias": "$tag_project",
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "query": "select \"duration\" from deploy where $timeFilter and success = 1 and project =~ /^(${buildDefinitionName:pipe})$/ group by project",
           "rawQuery": true,
@@ -255,7 +255,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -311,7 +311,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -381,7 +381,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -515,7 +515,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -601,7 +601,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -657,7 +657,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -724,7 +724,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "fieldConfig": {
             "defaults": {
@@ -857,7 +857,7 @@
             {
               "datasource": {
                 "type": "influxdb",
-                "uid": "Q7YSChonk"
+                "uid": "P3C6603E967DC8568"
               },
               "query": "select \"project\", \"repositoryId\", \"duration\", \"duration\" as \"raw_duration\", \"success\" from deploy where $timeFilter and project =~ /^(${buildDefinitionName:pipe})$/ ORDER BY time DESC",
               "rawQuery": true,
@@ -887,7 +887,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "Q7YSChonk"
+          "uid": "P3C6603E967DC8568"
         },
         "definition": "select distinct(project) from build",
         "hide": 0,

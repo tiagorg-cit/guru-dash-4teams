@@ -77,7 +77,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Deployment Frequency</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per month and once every six months</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per week and once per month</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between once per day and once per week</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>On demand (multiple deploys per day)</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
@@ -154,7 +154,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Cycle Time Post Dev</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one month and six months</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one week and one month</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Between one day and one week</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>Less than one day</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
@@ -230,7 +230,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "<table style=\"border-collapse: collapse; width: 100%; height: 54px;\" border=\"1\">\n<tbody>\n<tr style=\"height: 18px;\">\n<td style=\"width: 100%; height: 18px; text-align: center;\" colspan=\"4\"><strong>Change Failure Rate</strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #E90011;\"><strong><span style=\"color: #ffffff;\">Low</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #FF9213;\"><strong><span style=\"color: #ffffff;\">Medium</span></strong></td>\n<td style=\"width: 25%; height: 18px; text-align: center; background-color: #1A6AC9;\"><strong><span style=\"color: #FFFFFF;\">High</span></strong></td>\n<td style=\"width: 25%; text-align: center; height: 18px; background-color: #003575;\"><strong><span style=\"color: #FFFFFF;\">Elite</span></strong></td>\n</tr>\n<tr style=\"height: 18px;\">\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>46% +</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>45% - 31%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>30% - 16%</em></span></td>\n<td style=\"width: 25%; height: 18px; text-align: center;\"><span style=\"color: #808080;\"><em>15% - 0%</em></span></td>\n</tr>\n</tbody>\n</table>",
       "fieldConfig": {
@@ -306,7 +306,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -434,7 +434,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {
@@ -561,7 +561,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "fieldConfig": {
         "defaults": {

@@ -29,7 +29,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -81,7 +81,7 @@
           "alias": "This product had",
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "query": "SELECT count(issueName) FROM jira_incidents WHERE productId =~ /^(${prodId:pipe})$/ AND $timeFilter",
           "rawQuery": true,
@@ -94,7 +94,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -168,7 +168,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -242,7 +242,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -381,7 +381,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -444,7 +444,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -507,7 +507,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -583,7 +583,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -722,7 +722,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "Q7YSChonk"
+        "uid": "P3C6603E967DC8568"
       },
       "description": "",
       "fieldConfig": {
@@ -822,7 +822,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -948,7 +948,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -1023,7 +1023,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -1149,7 +1149,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -1240,7 +1240,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -1329,7 +1329,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
@@ -1432,7 +1432,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "Q7YSChonk"
+            "uid": "P3C6603E967DC8568"
           },
           "description": "",
           "fieldConfig": {
