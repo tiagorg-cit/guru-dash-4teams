@@ -2,8 +2,8 @@ import { InfluxDB, IPoint } from 'influx';
 import { IBambooPlanList, IBambooProject, IBambooMetadata,IBambooRelease,IBambooReleaseProjet } from '../bamboo.types';
 import { logger } from '../../../shared/logger';
 import { getQuery } from '../bamboo.send';
-
-
+import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
+import { sendToGalaxy } from '../../../galaxy/galaxy.service'
 
 //Get Plankeys for Project
 export async function getPlanKey(url: string,authUser:string,authPass:string,listProjects:IBambooProject[]) {
@@ -59,6 +59,8 @@ export async function getReleases(metadata: IBambooMetadata) {
 
   const result:any[] = [];
   const listOfPlanKeys = await getPlanKey(url,authUser, authPass ,metadata.projects);
+
+  const deploysToGalaxy: IGalaxyDeployments = { "deployments" : [] };
 
   for  (let i=0; i < listOfPlanKeys.length; i++){
     const plan:IBambooPlanList = listOfPlanKeys[i];
@@ -119,6 +121,14 @@ export async function getReleases(metadata: IBambooMetadata) {
                 if (deployResultList){
                   const point:IPoint = map(deployResultList, plan);
                   pointsToPersist.push(point);
+                  if(metadata?.connectors?.galaxy){
+                    deploysToGalaxy.deployments.push({
+                      "project": point.fields?.project,
+                      "timestamp": new Date(deployResultList.startedDate),
+                      "duration": new Date(deployResultList.finishedDate).getTime() - new Date(deployResultList.startedDate).getTime(),
+                      "success": deployResultList.deploymentState === 'SUCCESS'
+                    });
+                  }
                 }            
               }
               if(stepInsert){
@@ -131,6 +141,10 @@ export async function getReleases(metadata: IBambooMetadata) {
         }
       }
     }
+  }
+  //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
+  if(deploysToGalaxy.deployments?.length > 0){
+    await sendToGalaxy<IGalaxyDeploymentsResponse>(metadata, "POST", deploysToGalaxy);
   }
   logger.info(`Bamboo: Task Getting Releases completed`);
   return result;
