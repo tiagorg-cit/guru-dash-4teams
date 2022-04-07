@@ -34,11 +34,17 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
       const projetData = getProject.data;
       logger.info(`Current project key: ${projetData.key}`);
 
-      const getPlans = await getQuery({auth: { username: authUser, password: authPass }},
-        urlBambooProject.concat(`.json?expand=plans`))
-      .then((response) => {
-          return response;
-      });
+      let getPlans;
+      try{
+        getPlans = await getQuery({auth: { username: authUser, password: authPass }},
+          urlBambooProject.concat(`.json?expand=plans`))
+        .then((response) => {
+            return response;
+        });
+      } catch(err){
+        logger.error(`Error on get plans for builds from project ${field.name}`);
+        continue;
+      }
       
       const planObject = getPlans.data.plans.plan;
 
@@ -47,19 +53,31 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
           let planObjectItem:IBambooPlanList = planObject[i];
 
           const urlBambooBuildsExists = url.concat(`/rest/api/latest/result/${planObjectItem.key}`);
+          let getBuildsExists;
 
-          const getBuildsExists = await getQuery({auth: { username: authUser, password: authPass }},
-            urlBambooBuildsExists)
-          .then((response) => { return response.data.results; });
-
+          try {
+            getBuildsExists = await getQuery({auth: { username: authUser, password: authPass }},
+              urlBambooBuildsExists)
+            .then((response) => { return response.data.results; });
+          } catch(err) {
+            logger.error(`Error on get build results from plan ${planObjectItem.key} of project ${field.name}`);
+            continue;
+          }
+          
           if (getBuildsExists.size != 0){
             
             const urlBambooBuilds = url.concat(`/rest/api/latest/result/${planObjectItem.key}`).concat(`-latest.json`);
             logger.info(`Getting builds Information ${planObjectItem.key}`);
- 
-            const getBuilds = await getQuery({auth: { username: authUser, password: authPass }},
-            urlBambooBuilds)
-            .then((response) => { return response.data; });
+            
+            let getBuilds;
+            try {
+              getBuilds = await getQuery({auth: { username: authUser, password: authPass }},
+              urlBambooBuilds)
+              .then((response) => { return response.data; });
+            } catch (err) {
+              logger.error(`Error on get last build results from plan ${planObjectItem.key} of project ${field.name}`);
+              continue;
+            }
             
             const iPointBuild:IPoint = map(getBuilds);
             result.push(iPointBuild);
@@ -68,7 +86,7 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
               logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
               await influxDBInstance.writePoints([iPointBuild]);
             }
-          }else{
+          } else{
               logger.info(`Plan ${planObjectItem.key} without builds`);
           }          
         }

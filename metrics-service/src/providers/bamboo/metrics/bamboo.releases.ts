@@ -61,15 +61,22 @@ export async function getReleases(metadata: IBambooMetadata) {
   const listOfPlanKeys = await getPlanKey(url,authUser, authPass ,metadata.projects);
 
   for  (let i=0; i < listOfPlanKeys.length; i++){
-
     const plan:IBambooPlanList = listOfPlanKeys[i];
 
     const urlBambooDeployExists = url.concat(`/rest/api/latest/deploy/project/forPlan?planKey=${plan.key}`);
-    const getDeploymentsExists = await getQuery({auth: { username: authUser, password: authPass }},
-      urlBambooDeployExists)
-    .then((response) => { return response.data; });
+    let getDeploymentsExists;
+    
+    try{
+      getDeploymentsExists = await getQuery({auth: { username: authUser, password: authPass }},
+        urlBambooDeployExists)
+      .then((response) => { return response.data; });
+    } catch (err) {
+      logger.error(`Error on get deploys for plan key ${plan.key}`);
+      continue;
+    }
 
     const deploymentIDs = getDeploymentsExists;
+
     for  (let i=0; i < deploymentIDs.length; i++){
 
       const deployProjectItem:IBambooReleaseProjet = deploymentIDs[i].id;
@@ -78,34 +85,49 @@ export async function getReleases(metadata: IBambooMetadata) {
       if (deployProjectItem != null){
 
         const urlBambooDeployEnv = url.concat(`/rest/api/latest/deploy/project/${deployProjectItem}`);
-        const getDeploymentsEnvs = await getQuery({auth: { username: authUser, password: authPass }},
-          urlBambooDeployEnv)
-        .then((response) => { return response; });
+        
+        let getDeploymentsEnvs;
+        try {
+          getDeploymentsEnvs = await getQuery({auth: { username: authUser, password: authPass }},
+            urlBambooDeployEnv)
+          .then((response) => { return response; });
+        } catch (err) {
+          logger.error(`Error on get deploys environments for plan key ${plan.key}`);
+          continue;
+        }
       
         const deploymentEnvs = getDeploymentsEnvs.data.environments;
-        
-        for  (let i=0; i < deploymentEnvs.length; i++){
-  
-          const deployEnvResults = deploymentEnvs[i];         
-          const urlBambooDeployResult = url.concat(`/rest/api/latest/deploy/environment/${deployEnvResults.id}/results`);               
-          const getDeploymentsResult = await getQuery({auth: { username: authUser, password: authPass }},
-            urlBambooDeployResult)
-          .then((response) => { return response; });
-       
-          const listOFDeployments = getDeploymentsResult.data;
-          const pointsToPersist: IPoint[] = [];
-          for  (let i=0; i < listOFDeployments.size; i++){
-            const deployResultList:IBambooRelease = listOFDeployments.results[i];
-            if (deployResultList){
-              const point:IPoint = map(deployResultList, plan);
-              pointsToPersist.push(point);
-            }            
+        if(deploymentEnvs){
+          for (let i=0; i < deploymentEnvs.length; i++){
+            const deployEnvResults = deploymentEnvs[i];         
+            const urlBambooDeployResult = url.concat(`/rest/api/latest/deploy/environment/${deployEnvResults.id}/results`);               
+            let getDeploymentsResult;
+            try {
+              getDeploymentsResult = await getQuery({auth: { username: authUser, password: authPass }},
+                urlBambooDeployResult)
+              .then((response) => { return response; });
+            } catch(err) {
+              logger.error(`Error on get results of deploys for environment ${deployEnvResults.id} for plan key ${plan.key}`);
+              continue;
+            }
+            
+            if(getDeploymentsResult){
+              const listOFDeployments = getDeploymentsResult.data;
+              const pointsToPersist: IPoint[] = [];
+              for  (let i=0; i < listOFDeployments.size; i++){
+                const deployResultList:IBambooRelease = listOFDeployments.results[i];
+                if (deployResultList){
+                  const point:IPoint = map(deployResultList, plan);
+                  pointsToPersist.push(point);
+                }            
+              }
+              if(stepInsert){
+                logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+                await influxDBInstance.writePoints(pointsToPersist);
+              }
+              result.push(pointsToPersist);
+            }
           }
-          if(stepInsert){
-            logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
-            await influxDBInstance.writePoints(pointsToPersist);
-          }
-          result.push(pointsToPersist);
         }
       }
     }
