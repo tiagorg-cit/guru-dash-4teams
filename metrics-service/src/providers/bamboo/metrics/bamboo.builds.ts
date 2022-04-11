@@ -42,7 +42,7 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
             return response;
         });
       } catch(err){
-        logger.error(`Error on get plans for builds from project ${field.name}`);
+        logger.error(`Error on get plans for builds from project ${field.name}`, err);
         continue;
       }
       
@@ -60,7 +60,7 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
               urlBambooBuildsExists)
             .then((response) => { return response.data.results; });
           } catch(err) {
-            logger.error(`Error on get build results from plan ${planObjectItem.key} of project ${field.name}`);
+            logger.error(`Error on get build results from plan ${planObjectItem.key} of project ${field.name}`, err);
             continue;
           }
           
@@ -75,7 +75,7 @@ export async function getPlans(listProjects:IBambooProject[],metadata: IBambooMe
               urlBambooBuilds)
               .then((response) => { return response.data; });
             } catch (err) {
-              logger.error(`Error on get last build results from plan ${planObjectItem.key} of project ${field.name}`);
+              logger.error(`Error on get last build results from plan ${planObjectItem.key} of project ${field.name}`, err);
               continue;
             }
             

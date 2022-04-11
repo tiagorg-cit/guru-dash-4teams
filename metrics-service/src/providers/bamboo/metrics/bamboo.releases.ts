@@ -16,31 +16,42 @@ export async function getPlanKey(url: string,authUser:string,authPass:string,lis
       
       logger.info(`validate project ${field.name} exist - Bamboo`);
       const urlBambooProject = url.concat(`/rest/api/latest/project/${field.name}`);
-
-      const getProject = await getQuery({auth: { username: authUser, password: authPass }}, urlBambooProject)
-      .then((response) => { return response; });
-      const statusResponse = getProject.status
-
-      if (!getProject) {
-        throw new Error(`Error getting Bamboo Projects with status: ${statusResponse}`);
+      let getProject;
+      try {
+        getProject = await getQuery({auth: { username: authUser, password: authPass }}, urlBambooProject)
+          .then((response) => { return response; });
+        const statusResponse = getProject.status
+        if (!getProject) {
+          throw new Error(`Error getting Bamboo Projects with status: ${statusResponse}`);
+        }
+      } catch (err) {
+        logger.error(`Error on validate project ${field.name} exists!`, err);
+        continue;
       }
-
-      const projetData = getProject.data;
-      logger.info(`Current project key: ${projetData.key}`);
-
-      const getPlans = await getQuery({auth: { username: authUser, password: authPass }},
-        urlBambooProject.concat(`.json?expand=plans`))
-      .then((response) => {
-          return response;
-      });
       
-      const planObject = getPlans.data.plans.plan;
+      if(getProject){
+        const projetData = getProject.data;
+        logger.info(`Current project key: ${projetData.key}`);
 
-      if (planObject){
-        for  (let i=0; i < planObject.length; i++){         
-          let planObjectItem:IBambooPlanList = planObject[i];
-          result.push(planObjectItem)
-
+        let getPlans;
+        try {
+          getPlans = await getQuery({auth: { username: authUser, password: authPass }},
+            urlBambooProject.concat(`.json?expand=plans`))
+          .then((response) => {
+              return response;
+          });
+        } catch (err) {
+          logger.error(`Error on get plans for project ${field.name}`, err);
+          continue;
+        }
+        if(getPlans){
+          const planObject = getPlans.data.plans.plan;
+          if (planObject){
+            for  (let i=0; i < planObject.length; i++){         
+              let planObjectItem:IBambooPlanList = planObject[i];
+              result.push(planObjectItem)
+            }
+          }
         }
       }
     }
@@ -73,7 +84,7 @@ export async function getReleases(metadata: IBambooMetadata) {
         urlBambooDeployExists)
       .then((response) => { return response.data; });
     } catch (err) {
-      logger.error(`Error on get deploys for plan key ${plan.key}`);
+      logger.error(`Error on get deploys for plan key ${plan.key}`, err);
       continue;
     }
 
@@ -94,7 +105,7 @@ export async function getReleases(metadata: IBambooMetadata) {
             urlBambooDeployEnv)
           .then((response) => { return response; });
         } catch (err) {
-          logger.error(`Error on get deploys environments for plan key ${plan.key}`);
+          logger.error(`Error on get deploys environments for plan key ${plan.key}`, err);
           continue;
         }
       
@@ -109,7 +120,7 @@ export async function getReleases(metadata: IBambooMetadata) {
                 urlBambooDeployResult)
               .then((response) => { return response; });
             } catch(err) {
-              logger.error(`Error on get results of deploys for environment ${deployEnvResults.id} for plan key ${plan.key}`);
+              logger.error(`Error on get results of deploys for environment ${deployEnvResults.id} for plan key ${plan.key}`, err);
               continue;
             }
             
