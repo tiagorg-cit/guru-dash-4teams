@@ -8,6 +8,7 @@ services:
       - INFLUXDB_DB=devops
     volumes:
       - ./influx/influxdb.conf:/etc/influxdb/influxdb.conf
+      - ~/influx/data:/var/lib/influxdb  
     ports:
       - 8086:8086  
 
