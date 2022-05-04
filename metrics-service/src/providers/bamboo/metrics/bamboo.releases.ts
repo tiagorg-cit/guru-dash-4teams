@@ -36,7 +36,7 @@ export async function getPlanKey(url: string,authUser:string,authPass:string,lis
         let getPlans;
         try {
           getPlans = await getQuery({auth: { username: authUser, password: authPass }},
-            urlBambooProject.concat(`.json?expand=plans`))
+            urlBambooProject.concat(`.json?expand=plans&max-result=1000`))
           .then((response) => {
               return response;
           });
