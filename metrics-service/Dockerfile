@@ -1,4 +1,4 @@
-FROM node:14.15.1-buster-slim
+FROM node:14.17.0-buster-slim
 
 ENV APP_HOME /opt/app
 RUN mkdir -p $APP_HOME
