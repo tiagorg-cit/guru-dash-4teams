@@ -4,6 +4,7 @@ import { IAzureResponse, IAzureBuild, IAzureMetadata, IAzureTimeline, IRecordAzu
 import { IGalaxyDeployments, IGalaxyDeploymentsResponse } from '../../../galaxy/galaxy.types';
 import { logger } from '../../../shared/logger';
 import { sendToGalaxy } from '../../../galaxy/galaxy.service'
+import { sendToGalaxyDataIngestion } from '../../../galaxy/galaxy.data-ingestion.service';
 
 /**
  * In this fork, in azure pipeline builds, build and release are presents in the same pipeline build with diferent stages
@@ -91,7 +92,8 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     
     let continuationToken = '';
     const buildsAndReleases: IPoint[] = [];
-    const deploysToGalaxy: IGalaxyDeployments = { "deployments" : [] }; 
+    const deploysToGalaxy: IGalaxyDeployments = { "deployments" : [] };
+    const deploysToDataIngestionGalaxy: IGalaxyDeployments = { "deployments" : [] };
     
     do {  
       const buildResponse = await callAzureBuild(
@@ -142,7 +144,14 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
               for(let releaseFiltered of releasesFiltered){
                 buildsAndReleases.push(mapReleases(buildItem?.repository?.id, buildItem?.repository?.name, buildsFiltered[0], releaseFiltered));
                 if(metadata?.connectors?.galaxy){
-                  deploysToGalaxy.deployments.push({
+                  deploysToDataIngestionGalaxy.deployments.push({
+                      "buildNumber": buildItem?.buildNumber,
+                      "projectId": buildItem?.repository?.id, 
+                      "project": buildItem?.repository?.name,
+                      "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
+                      "success": releaseFiltered.result === 'succeeded' || releaseFiltered.result === 'succeededWithIssues'
+                  });
+                  deploysToGalaxy.deployments.push({ 
                     "project": buildItem?.repository?.name,
                     "timestamp": releaseFiltered.startTime ? new Date(releaseFiltered.startTime) : new Date(buildsFiltered[0].finishTime),
                     "duration":  releaseFiltered.finishTime ? new Date(releaseFiltered.finishTime).getTime() - new Date(buildsFiltered[0].finishTime).getTime() : 0,
@@ -163,6 +172,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
     //MANDAR PARA O GALAXY A LISTA DE DEPLOYS
     if(deploysToGalaxy.deployments?.length > 0){
       await sendToGalaxy<IGalaxyDeploymentsResponse>(metadata, "POST", deploysToGalaxy);
+      await sendToGalaxyDataIngestion(metadata, "POST", deploysToDataIngestionGalaxy);
     }
     return buildsAndReleases;
 }

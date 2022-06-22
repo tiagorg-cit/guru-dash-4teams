@@ -50,7 +50,7 @@ export interface IAzureBuild {
       href: string;
     }
   };
-  buildNumber: number;
+  buildNumber: string;
   result: string;
   startTime: string;
   finishTime: string;

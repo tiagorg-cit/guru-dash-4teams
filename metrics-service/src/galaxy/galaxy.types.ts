@@ -1,6 +1,23 @@
 export interface IGalaxyMetadataConnector {
     apiKey: string;
     apiUrl: string;
+    clientId: string;
+    dataIngestion: IGalaxyDataIngestionMetadataConnector;
+}
+
+export interface IGalaxyDataIngestionMetadataConnector {
+    type: string;
+    apiUrl: string;
+}
+
+export interface IGalaxyDataIngestionDeployment {
+    deploymentDate: Date,
+    deploymentSucceeded: Boolean;
+    artifactId?: string;
+    artifactName: string;
+    deploymentId?: string;
+    previousBuildId?: string;
+    deploymentMarker?: string;
 }
 
 export interface IGalaxyDeployments {
@@ -13,9 +30,11 @@ export interface IGalaxyDeploymentsResponse {
 }
 
 export interface IGalaxyDeploy {
+    buildNumber?: string;
+    projectId?: string;
     project: string;
     timestamp: Date;
-    duration: Number;
+    duration?: Number;
     success: Boolean;
 };
 
