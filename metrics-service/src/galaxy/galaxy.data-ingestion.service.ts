@@ -36,8 +36,8 @@ export async function sendToGalaxyDataIngestion(metadata: any, method: string, d
             }
         }
         return Promise.resolve();       
-    } catch (err) {
-        logger.error(`Error sending items to Galaxy`, err);
+    } catch (err: any) {
+        logger.error(err, `Error sending items to Galaxy API DATA INGESTION`);
     }
 }
 

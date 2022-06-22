@@ -23,8 +23,8 @@ export async function sendToGalaxy<T = any>(metadata: any, method: string, body?
         return fnAxios<T>(
             galaxyUrlToCall, body, { headers: { 'gops-api-key': galaxyApiKey } }
         );
-    } catch (err) {
-        logger.error(`Error sending items to Galaxy`, err);
+    } catch (err: any) {
+        logger.error(err, `Error sending items to Galaxy`);
     }
 }
 
