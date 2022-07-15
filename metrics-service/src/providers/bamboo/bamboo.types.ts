@@ -7,6 +7,7 @@ export interface IBambooMetadata {
   user: string;
   key: string;
   projects: IBambooProject[];
+  environments?: string[];
 }
 
 interface IBambooConnector {

@@ -112,42 +112,47 @@ export async function getReleases(metadata: IBambooMetadata) {
         const deploymentEnvs = getDeploymentsEnvs.data.environments;
         if(deploymentEnvs){
           for (let i=0; i < deploymentEnvs.length; i++){
-            const deployEnvResults = deploymentEnvs[i];         
-            const urlBambooDeployResult = url.concat(`/rest/api/latest/deploy/environment/${deployEnvResults.id}/results`);               
-            let getDeploymentsResult;
-            try {
-              getDeploymentsResult = await getQuery({auth: { username: authUser, password: authPass }},
-                urlBambooDeployResult)
-              .then((response) => { return response; });
-            } catch(err) {
-              logger.error(`Error on get results of deploys for environment ${deployEnvResults.id} for plan key ${plan.key}`, err);
-              continue;
-            }
-            
-            if(getDeploymentsResult){
-              const listOFDeployments = getDeploymentsResult.data;
-              const pointsToPersist: IPoint[] = [];
-              for  (let i=0; i < listOFDeployments.size; i++){
-                const deployResultList:IBambooRelease = listOFDeployments.results[i];
-                if (deployResultList){
-                  const point:IPoint = map(deployResultList, plan);
-                  pointsToPersist.push(point);
-                  if(metadata?.connectors?.galaxy){
-                    deploysToGalaxy.deployments.push({
-                      "project": point.fields?.project,
-                      "timestamp": new Date(deployResultList.startedDate),
-                      "duration": new Date(deployResultList.finishedDate).getTime() - new Date(deployResultList.startedDate).getTime(),
-                      "success": deployResultList.deploymentState === 'SUCCESS'
-                    });
+            const deployEnvResults = deploymentEnvs[i];
+
+            if (verifyEnvironment(metadata.environments, deployEnvResults.name)) {
+
+                const urlBambooDeployResult = url.concat(`/rest/api/latest/deploy/environment/${deployEnvResults.id}/results?max-result=1000`);
+                let getDeploymentsResult;
+                try {
+                  getDeploymentsResult = await getQuery({auth: { username: authUser, password: authPass }},
+                    urlBambooDeployResult)
+                  .then((response) => { return response; });
+                } catch(err) {
+                  logger.error(`Error on get results of deploys for environment ${deployEnvResults.id} for plan key ${plan.key}`, err);
+                  continue;
+                }
+
+                if(getDeploymentsResult){
+                  const listOFDeployments = getDeploymentsResult.data;
+                  const pointsToPersist: IPoint[] = [];
+                  for  (let i=0; i < listOFDeployments.size; i++){
+                    const deployResultList:IBambooRelease = listOFDeployments.results[i];
+                    if (deployResultList){
+                      const point:IPoint = map(deployResultList, plan);
+                      pointsToPersist.push(point);
+                      if(metadata?.connectors?.galaxy){
+                        deploysToGalaxy.deployments.push({
+                          "project": point.fields?.project,
+                          "timestamp": new Date(deployResultList.startedDate),
+                          "duration": new Date(deployResultList.finishedDate).getTime() - new Date(deployResultList.startedDate).getTime(),
+                          "success": deployResultList.deploymentState === 'SUCCESS'
+                        });
+                      }
+                    }
                   }
-                }            
-              }
-              if(stepInsert){
-                logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
-                await influxDBInstance.writePoints(pointsToPersist);
-              }
-              result.push(pointsToPersist);
+                  if(stepInsert){
+                    logger.debug(`Writing InfluxDB points in BABY STEPS for ALL REPOs`);
+                    await influxDBInstance.writePoints(pointsToPersist);
+                  }
+                  result.push(pointsToPersist);
+                }
             }
+
           }
         }
       }
@@ -160,6 +165,22 @@ export async function getReleases(metadata: IBambooMetadata) {
   logger.info(`Bamboo: Task Getting Releases completed`);
   return result;
   
+}
+
+function verifyEnvironment(environments: string[], env: string): boolean {
+
+    if (environments) {
+        for (let i=0; i < environments.length; i++){
+
+            if (environments[i] == env) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    return true;
 }
 
 function map(deploy: IBambooRelease, plan: IBambooPlanList): IPoint {
