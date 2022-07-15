@@ -167,7 +167,7 @@ export async function getReleases(metadata: IBambooMetadata) {
   
 }
 
-function verifyEnvironment(environments: string[], env: string): boolean {
+function verifyEnvironment(environments: string[] | undefined, env: string): boolean {
 
     if (environments) {
         for (let i=0; i < environments.length; i++){
