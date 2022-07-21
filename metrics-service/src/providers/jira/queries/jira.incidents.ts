@@ -119,9 +119,16 @@ function getPropertiesForIncidentCustomFields(customFields:IJiraQueryCustomField
                 case 'affectedcountries':
                     applyArrayValues(ipointTags, ipointFields, issue, field);
                     break;
+                case 'crisisenddate':
+                    const crisisEndDateValue = getDefaultValue(issue, field) === 'NOT CLASSIFIED' ? issue.fields['resolutiondate'] : getDefaultValue(issue, field);
+                    ipointTags[field.name] = crisisEndDateValue;
+                    ipointFields[field.name] = crisisEndDateValue;
+                    break;    
                 case 'crisisstartdate':
-                    timestamp = new Date(issue.fields[field.key]);
-                    const crisisStartDateValue = getDefaultValue(issue, field);
+                    if(issue.fields[field.key] != undefined){
+                        timestamp = new Date(issue.fields[field.key]);
+                    }
+                    const crisisStartDateValue = getDefaultValue(issue, field) === 'NOT CLASSIFIED' ? issue.fields['created'] : getDefaultValue(issue, field);
                     const crisisMonthYear = generateMonthYearDateKey(new Date(crisisStartDateValue));
                     ipointFields['crisismonthyear'] = crisisMonthYear;
                     ipointTags['crisismonthyear'] = crisisMonthYear;
@@ -145,11 +152,13 @@ function getPropertiesForIncidentCustomFields(customFields:IJiraQueryCustomField
         }
         const crisisStartDate = new Date(ipointFields['crisisstartdate']);
         const crisisEndDate = new Date(ipointFields['crisisenddate']);
+        
         if(crisisStartDate && crisisEndDate){
             const crisisDuration = crisisEndDate.getTime() - crisisStartDate.getTime();
             ipointFields['crisisduration'] = crisisDuration;
             ipointTags['crisisduration'] = crisisDuration;
         }
+        
     }
     return {
         "timestamp": timestamp,
