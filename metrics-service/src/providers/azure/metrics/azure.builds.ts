@@ -47,8 +47,13 @@ export async function getBuilds(metadata: IAzureMetadata) {
         buildsAndReleases.push(...buildsAndReleasesResponse);  
         
         if(stepInsert){
-          logger.debug(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
-          await influxDBInstance.writePoints(buildsAndReleasesResponse);
+          try {
+            logger.debug(`Writing InfluxDB points in BABY STEPS for REPO NAME: ${repositoryName}`);
+            await influxDBInstance.writePoints(buildsAndReleasesResponse);
+          } catch (error: any){
+            logger.error(error, `Error to write InfluxDB points into database for repo ${repositoryName}`);
+          }
+          
         }
 
         logger.info(`Finishing BUILD and RELEASE information for repository: ${repositoryName}`);
@@ -107,10 +112,16 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
 
         if(timelineHref){
           try {
-            const timelineResponse = await axios.get<IAzureTimeline>(
-              `${timelineHref}`,
-              { auth: { username: 'username', password: metadata.key } }
-            );
+            let timelineResponse;
+            try{
+              timelineResponse = await axios.get<IAzureTimeline>(
+                `${timelineHref}`,
+                { auth: { username: 'username', password: metadata.key } }
+              );
+            } catch(err: any){
+              logger.error(err, `Error while GET timeline information about build number: ${buildItem?.buildNumber}`);
+              continue;
+            }     
 
             logger.debug(`The build number: ${buildItem?.buildNumber} returned: ${timelineResponse?.data?.records?.length} timeline items!`);
 
@@ -160,8 +171,8 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
                 }
               }
             }
-          } catch (err){
-            logger.error(err, `Error while get timeline information about build number: ${buildItem?.buildNumber}`);
+          } catch (err: any){
+            logger.error(err, `Error while PROCESS timeline information about build number: ${buildItem?.buildNumber}`);
           }
         }
       }
