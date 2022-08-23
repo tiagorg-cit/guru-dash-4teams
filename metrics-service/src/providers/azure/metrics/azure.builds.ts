@@ -134,7 +134,7 @@ async function getBuildsAndReleasesResponse(metadata: IAzureMetadata,
               let releasesFiltered: IRecordAzureTimeline[] = [];
 
               if(deployBranch){
-                if(deployBranch === buildItem.sourceBranch){
+                if(deployBranch == buildItem.sourceBranch){
                   releasesFiltered = timelineResponse?.data?.records?.filter((timelineItem: IRecordAzureTimeline) => {
                     return filterTimelineItem(timelineItem, defaultDeployStepName, customDeployStepNames);  
                   });
